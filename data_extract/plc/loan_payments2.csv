@@ -1,0 +1,166 @@
+Client_loan_id,Member,Date, Narration , Ref ,Principal paid,Interest- Paid
+1,Annet Sempangi,25/03/2020,Payment,11960,1102740,260
+2,Steven Kiwanuka.B,30/06/2020,Title acquired- transferred to PLC,,53441983,
+4,Sheila Kawooya,10/7/2019,Payment,10426,30000,
+4,Sheila Kawooya,18/07/2019,Payment,10468,33000,
+4,Sheila Kawooya,24/07/2019,Payment,10472,50000,
+4,Sheila Kawooya,1/8/2019,Payment,10502,150000,
+4,Sheila Kawooya,2/9/2019,Payment,10571,30000,
+4,Sheila Kawooya,1/10/2019,Payment,10605,30000,
+4,Sheila Kawooya,6/1/2020,Payment,10824,97000,
+4,Sheila Kawooya,29/01/2020,Payment,10890,97300,
+4,Sheila Kawooya,6/2/2020,Payment,10956,97300,
+4,Sheila Kawooya,14/02/2020,Payment,10912,97300,
+4,Sheila Kawooya,17/03/2020,Payment,10947,97300,
+4,Sheila Kawooya,19/05/2020,Payment,11081,97300,
+4,Sheila Kawooya,29/06/2020,Payment,11109,97300,
+5,Godfrey Mayanja,12/8/2019,Payment,10513,205000,
+5,Godfrey Mayanja,2/10/2019,Payment,10661,200000,
+5,Godfrey Mayanja,5/11/2019,Payment,10714,200000,
+5,Godfrey Mayanja,5/2/2020,Payment,10955,200000,
+6,Julius Mwebesa,4/9/2019,Payment,10534,100000,
+6,Julius Mwebesa,4/9/2019,Payment,10579,37700,
+8,Mary Lillian Manyonga,31/07/2019,Payment,10441,3385000,
+8,Mary Lillian Manyonga,30/08/2019,Payment,10560,3385000,
+8,Mary Lillian Manyonga,28/09/2019,Payment,10602,3385000,
+8,Mary Lillian Manyonga,31/10/2019,Payment,10635,3385000,
+8,Mary Lillian Manyonga,30/11/2019,Payment,10734,3385000,
+8,Mary Lillian Manyonga,21/12/2019,Payment,10797,3601000,
+9,Fredrick Sentongo,2/7/2019,Payment,10398,,1000000
+9,Fredrick Sentongo,15/07/2019,Payment,10464,,500000
+9,Fredrick Sentongo,18/07/2019,Payment,10432,,800000
+9,Fredrick Sentongo,16/12/2019,Payment,10749,1000000,
+10,Ronald Ngabirano Byemero,6/8/2019,Payment,10494,300000,
+10,Ronald Ngabirano Byemero,19/02/2020,Payment,10973,710000,
+10,Ronald Ngabirano Byemero,24/02/2020,Payment,10922,,300000
+10,Ronald Ngabirano Byemero,30/06/2020,Payment,11112,133241,247059
+11,Harriet Mulonde,30/07/2019,Payment,10479,289552,210447.9074
+11,Harriet Mulonde,1/9/2019,Payment,10568,338920,161080
+11,Harriet Mulonde,31/10/2019,Payment,10638,844732,255268.2964
+11,Harriet Mulonde,28/01/2020,Payment,10887,158681,21319
+12,Ruth Nakitto Kawessa,1/8/2019,Payment,10450,1077976,222024
+12,Ruth Nakitto Kawessa,27/10/2019,Payment,10706,538302,311698
+12,Ruth Nakitto Kawessa,22/05/2020,Payment,11034,1510828,164172
+13,Patricia Nyachwo Iga,13/09/2019,Payment,10545,850337,145785
+15,Tonny Wasswa,11/7/2019,Payment,10457,235788,14212
+16,Tom Kimulya,1/10/2019,Payment,10608,,300000
+16,Tom Kimulya,21/10/2019,Payment,10688,,600000
+16,Tom Kimulya,1/11/2019,Payment,10642,387164,612836.4361
+16,Tom Kimulya,4/11/2019,Payment,10712,966742,33258
+16,Tom Kimulya,2/12/2019,Payment,10776,696169,90831
+17,Innocent Wemesa,10/9/2019,Payment,10601,,1520900
+17,Innocent Wemesa,11/9/2019,Payment,10653,685822,1159528
+17,Innocent Wemesa,1/10/2019,Payment,10606,593000,
+17,Innocent Wemesa,5/10/2019,Payment,10612,2243291,256709
+18,Grace Nayebale,1/8/2019,Payment,10483,290807,209193
+18,Grace Nayebale,23/09/2019,Payment,10547,516109,145891
+19,Dominic Kassamba,6/7/2019,Payment,10452,60398,1602
+20,Paul Kigozi,1/7/2019,Payment,10444,753263,79737
+21,Grace Arotin,1/7/2019,Payment,10421,1517731,185269
+22,Faith Olivia Namuddu,31/07/2019,Payment,Jv 01,,350000
+22,Faith Olivia Namuddu,1/8/2019,Payment,Jv 02,3896269,408731
+23,Florence Katiti,2/8/2019,Payment,10488,,150000
+23,Florence Katiti,2/11/2019,Payment,10645,,147600
+23,Florence Katiti,30/06/2020,Payment,11113,147700,
+24,Henry Isooba,31/01/2020,Payment,10891,,1000000
+24,Henry Isooba,30/06/2020,Payment,11116,,400000
+25,Alex Rutafa,25/07/2019,Payment,10436,560855,69145
+26,David Manyonga,1/7/2019,Payment,10423,2807323,297677
+26,David Manyonga,15/07/2019,Payment,10430,3146225,78775
+27,Ernest Katara Ngabirano,2/7/2019,Payment,10396,1658453,505547
+27,Ernest Katara Ngabirano,31/07/2019,Payment,10443,1746062,417938
+27,Ernest Katara Ngabirano,4/9/2019,Payment,10580,1868287,331713.3643
+27,Ernest Katara Ngabirano,6/9/2019,Payment,10537,1983033,10967
+28,Geofrey Odeke,8/7/2019,Payment,10453,365439,40561
+29,Fred Nsamba Bukenya,13/02/2020,Payment,10965,3893184,2106815.834
+29,Fred Nsamba Bukenya,21/02/2020,Payment,10920,106816,184
+30,Martin Lattimore Nen-ongo,1/7/2019,Payment,10393,1108830,691170
+30,Martin Lattimore Nen-ongo,14/08/2019,Payment,10518,733585,666414.685
+30,Martin Lattimore Nen-ongo,19/09/2019,Payment,10546,358393,172607
+30,Martin Lattimore Nen-ongo,20/09/2019,Payment,10596,1799192,808
+31,Martin Wamboza Mukone,24/07/2019,Payment,10471,1153600,171400
+32,David Manyonga,10/7/2019,Payment,10428,884417,115583.2833
+32,David Manyonga,26/07/2019,Payment,10437,1755814,47186
+33,Henry Mande,12/7/2019,Payment,10460,1494011,505989
+33,Henry Mande,27/09/2019,Payment,10600,182867,167133
+33,Henry Mande,30/12/2019,Payment,10800,263711,136289
+33,Henry Mande,7/2/2020,Payment,10906,59411,10589
+34,David Masiga,15/07/2019,Payment,10431,804111,58889
+35,Ibrahim Kyambadde,26/07/2019,Payment,10438,368989,57011.192
+35,Ibrahim Kyambadde,30/07/2019,Payment,10442,99613,387
+36,Samuel Mpuuga,12/8/2019,Payment,10514,470955,229044.648
+36,Samuel Mpuuga,8/9/2019,Payment,10543,587220,52780
+37,Zaina Kalinaki,2/8/2019,Payment,10486,915645,155355
+38,Joseph Bulega,26/07/2019,Payment,10435,260191,69809.144
+38,Joseph Bulega,26/08/2019,Payment,10521,293496,36504
+39,Ismail Kiyaga,1/7/2019,Payment,10394,1424,144576
+39,Ismail Kiyaga,1/7/2019,Payment,10469,146000,
+39,Ismail Kiyaga,1/8/2019,Payment,10484,91691,54309
+39,Ismail Kiyaga,1/9/2019,Payment,10567,102694,43306
+39,Ismail Kiyaga,1/10/2019,Payment,10604,115017,30983
+39,Ismail Kiyaga,1/11/2019,Payment,10639,143174,2826
+40,Dorothy Mirembe,2/7/2019,Payment,10397,170258,38742
+40,Dorothy Mirembe,5/8/2019,Payment,10506,185822,25178
+41,Methodius Adaku,1/10/2019,Payment,10609,,500000
+41,Methodius Adaku,21/11/2019,Payment,10725,,500000
+41,Methodius Adaku,4/1/2020,Payment,10858,,700000
+42,Joseph Okou Cypria,6/7/2019,Payment,10395,,500000
+42,Joseph Okou Cypria,18/07/2019,Payment,10480,2393352,606648
+42,Joseph Okou Cypria,31/07/2019,Payment,10481,343601,156399
+42,Joseph Okou Cypria,16/08/2019,Payment,10565,1118956,181044
+42,Joseph Okou Cypria,16/08/2019,Payment,10566,645000,
+42,Joseph Okou Cypria,10/9/2019,Payment,10588,499091,61909
+43,Issa Isabirye,15/07/2019,Payment,10429,229413,62586.90048
+43,Issa Isabirye,7/8/2019,Payment,10508,244443,22557
+44,Edward Kabuuza,1/7/2019,Payment,10394,46400,82400
+44,Edward Kabuuza,1/7/2019,Payment,10469,128800,
+44,Edward Kabuuza,1/8/2019,Payment,10484,128800,
+44,Edward Kabuuza,1/9/2019,Payment,10567,100603,28197
+44,Edward Kabuuza,1/10/2019,Payment,10604,95397,33403
+45,Sisto Oyet.O,20/07/2019,Payment,10433,547840,58160
+46,Mark Ssali,30/07/2019,Payment,10440,313405,103595
+46,Mark Ssali,28/08/2019,Payment,10557,391899,44101
+47,Milcah Kubinga,31/07/2019,Payment,10478,1629271,381729
+47,Milcah Kubinga,28/08/2019,Payment,10555,1809729,170271
+48,Nelson Akwech Omara,2/7/2019,Payment,10392,431200,357800
+48,Nelson Akwech Omara,3/7/2019,Payment,10564,789000,
+48,Nelson Akwech Omara,1/8/2019,Payment,10569,661020,127980
+48,Nelson Akwech Omara,3/10/2019,Payment,10666,618780,170220
+49,Gadson Mukunda K,5/7/2019,Payment,10425,473125,142875
+49,Gadson Mukunda K,7/8/2019,Payment,10529,526875,89125
+50,Sarah Olum Mabuya,1/7/2019,Payment,10394,473333,426667
+50,Sarah Olum Mabuya,12/7/2019,Payment,10459,695147,304853
+50,Sarah Olum Mabuya,1/8/2019,Payment,10484,476087,423913
+50,Sarah Olum Mabuya,12/8/2019,Payment,10512,232626,267374
+50,Sarah Olum Mabuya,1/9/2019,Payment,10567,510105,389895
+50,Sarah Olum Mabuya,6/9/2019,Payment,10540,478197,121803
+50,Sarah Olum Mabuya,1/10/2019,Payment,10604,443392,456608
+50,Sarah Olum Mabuya,8/10/2019,Payment,10672,457256,142744
+50,Sarah Olum Mabuya,1/11/2019,Payment,10639,534280,365720
+50,Sarah Olum Mabuya,15/11/2019,Payment,10758,322017,227983
+50,Sarah Olum Mabuya,1/12/2019,Payment,10773,684898,215102
+50,Sarah Olum Mabuya,9/12/2019,Payment,10744,537376,112624
+50,Sarah Olum Mabuya,2/1/2020,Payment,10854,667304,232696
+50,Sarah Olum Mabuya,17/01/2020,Payment,10873,441878,158122
+50,Sarah Olum Mabuya,1/2/2020,Payment,10896,794402,105598
+50,Sarah Olum Mabuya,13/02/2020,Payment,10966,521941,78059
+50,Sarah Olum Mabuya,5/3/2020,Payment,10993,908177,41823
+51,Sheila Ssemugooma,16/10/2019,Payment,10684,5376048,4623952
+51,Sheila Ssemugooma,16/10/2019,Payment,10683,265000,
+51,Sheila Ssemugooma,26/11/2019,Payment,10728,3954089,1045911
+51,Sheila Ssemugooma,11/12/2019,Payment,10786,6713484,286515.5085
+51,Sheila Ssemugooma,6/2/2020,Payment,10958,4691379,443621
+52,Sandra Kyomugisha,5/9/2019,Payment,10536,,330000
+52,Sandra Kyomugisha,14/10/2019,Payment,10637,219790,-330000
+52,Sandra Kyomugisha,30/10/2019,Payment,10631,780210,50790
+53,Ismail Haaka Wafula,2/8/2019,Payment,10504,1000000,45000
+53,Ismail Haaka Wafula,3/9/2019,Payment,10533,,70000
+54,Elias Okecho,22/07/2019,Payment,10434,448556,182444
+54,Elias Okecho,2/9/2019,Payment,10574,418666,212334
+54,Elias Okecho,1/10/2019,Payment,10658,525274,105726
+54,Elias Okecho,29/10/2019,Payment,10698,607504,59496
+55,Aogon Silver Emudong,1/8/2019,Payment,10448,1780000,1665000
+55,Aogon Silver Emudong,6/9/2019,Payment,10583,1887160,1612840
+55,Aogon Silver Emudong,8/10/2019,Payment,10674,2216987,1233012.992
+55,Aogon Silver Emudong,31/10/2019,Payment,10633,2781504,668495.8867
+55,Aogon Silver Emudong,21/11/2019,Payment,10726,6334349,443651

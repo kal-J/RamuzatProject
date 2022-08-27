@@ -1,0 +1,15 @@
+
+savings transactions
+--------------------
+
+sv_acc | date | memo | amount | new_date
+27	6/29/2021	Recovery of outstanding loan balance from savings	(412,000.00)    29/06/2021
+
+Pending withdraw transaction from savings
+-----------------------------
+42	2/28/2021	Annual subscription fees for 2021 deducted from Fred Michael	(10,000.00)	32	8	28/02/2021
+
+LOANS NOT RUN
+-------------
+6/29/2021	General Journal	LO13/21 Mugoya David	Recovery of outstanding loan balance from savings	027 Mugoya David Mugabi	(400,000.00)	027 Mugoya David Mugabi	1		
+

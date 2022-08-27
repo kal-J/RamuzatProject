@@ -1,0 +1,22 @@
+fieldset 
+	{
+		border: 1px solid #ddd !important;
+		margin: 0;
+		padding: 10px;       
+		position: relative;
+		border-radius:4px;
+		background-color:;
+  		max-width:500px;
+  		padding:8px;	
+	}	
+	
+	legend
+	{
+		/*border:2px solid #ddd;*/
+	    -moz-border-radius:4px;
+	    -webkit-border-radius:4px;	
+	    border-radius:4px;
+	    max-width:300px;
+	    font-size: 16px;
+	    font-weight: bold;
+	}

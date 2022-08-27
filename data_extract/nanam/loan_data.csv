@@ -1,0 +1,47 @@
+Account_No_ID,Member ID,Name,Date ,Details ,Ref No.,Debit /Opening Balance,Credit ,Balance ,Interest Rate (%),Total Interest,Loan Period,Due Date
+1,69,Aisha Nabasirye ,1/1/2022,Opening Balance,,14600000, - ,14600000,6,4356000,3,1/13/2022
+2,48,Allan Kiwumulo ,1/1/2022,Opening Balance,,8900000,,23500000,6,463107,2,1/18/2022
+3,46,Allen Kirabo ,1/1/2022,Opening Balance,,25000000,,48500000,6,1500000,1,1/6/2022
+4,57,Andrew Mugabi ,1/1/2022,Opening Balance,,60000000,,108500000,6,9261958,4,1/26/2022
+5,61,Andrew Muguluma ,1/1/2022,Opening Balance,,2057000,,110557000,6,186988,3,1/15/1900
+6,87,Anthony Simiyu ,1/1/2022,Opening Balance,,13000000,,123557000,6,2862285,6,1/24/2022
+7,91,Arthur Tabula ,1/1/2022,Opening Balance,,7066607,,130623607,6,864463,6,1/1/2022
+8,18,Benon Bainomugisha ,1/1/2022,Opening Balance,,22500000,,153123607,6,4050000,1,1/1/2022
+9,77,Bernard Nuwagaba ,1/1/2022,Opening Balance,,1710000,,154833607,6,615600,3,1/26/2022
+10,92,Bosesi Taremwa ,1/1/2022,Opening Balance,,10000000,,164833607,6,2201758,6,1/27/2022
+11,20,Cleus Bamutura ,1/1/2022,Opening Balance,,10000000,,174833607,6,908738,2,1/15/2022
+12,11,Collins Aogon ,1/1/2022,Opening Balance,,10500000,,185333607,6,1284459,3,1/14/2022
+13,37,Edwin Kalyango ,1/1/2022,Opening Balance,,4090000,,189423607,6,373977,3,1/27/2022
+14,17,Eric Bagashe Bwaraare ,1/1/2022,Opening Balance,,20000000,,209423607,6,2400000,3,1/15/2022
+15,80,Eric Olobo Moro,1/1/2022,Opening Balance,,16000000,,225423607,6,6950000,3,1/30/2022
+16,85,Eric Sakwa ,1/1/2022,Opening Balance,,3160760,,228584367,6,189646,3,1/8/2022
+17,97,Frank Turyahikayo ,1/1/2022,Opening Balance,,30000000,,258584367,6,1869883,3,1/19/2022
+18,30,Fred Gamubaka Cedric ,1/1/2022,Opening Balance,,35960000,,294544367,6,4317600,4,1/28/2022
+19,47,Fred Kitamirike ,1/1/2022,Opening Balance,,10000000,,304544367,6,1223294,3,1/22/2022
+20,49,Gerald Kizito ,1/1/2022,Opening Balance,,3000000,,307544367,6,540000,3,1/24/2022
+21,15,Harriet Ayebare ,1/1/2022,Opening Balance,,16500000,,324044367,6,1090765,3,1/6/2022
+22,35,Harvey Kacope Raymond ,1/1/2022,Opening Balance,,6000000,,330044367,6,1321055,6,1/24/2022
+23,89,Herman Ssewanyana ,1/1/2022,Opening Balance,,17000000,,347044367,6,1020000,3,1/27/2022
+24,12,Innocent Asiimwe ,1/1/2022,Opening Balance,,4500000,,351544367,6,990791,6,1/6/2022
+25,50,Irene Kobusingye Nahamya ,1/1/2022,Opening Balance,,5000000,,356544367,6,611647,3,1/18/2022
+26,40,Joan Brenda Kauma ,1/1/2022,Opening Balance,,1675899,,358220266,6,1675899,10,1/19/2022
+27,3,Joel Adomati ,1/1/2022,Opening Balance,,26000000,,384220266,6,4013435,4,1/21/2022
+28,24,John Byaruhanga ,1/1/2022,Opening Balance,,3500000,,387720266,6,1627250,3,1/26/2022
+29,1,John K Abaho ,1/1/2022,Opening Balance,,1500000,,389220266,6,136311,2,1/1/2022
+30,98,Jonan Twinamatsiko ,1/1/2022,Opening Balance,,5735410,,394955676,6,344125,4,1/10/2022
+31,76,Joseline Nangumya ,1/1/2022,Opening Balance,,11500000,,406455676,6,3845209,4,1/20/2022
+32,75,Juliet Namara ,1/1/2022,Opening Balance,,18000000,,424455676,6,160000,1,1/3/2022
+33,70,Katherine Nabwire ,1/1/2022,Opening Balance,,4801200,,429256876,6,436306,3,1/10/2022
+34,23,Lydia Bwamiki ,1/1/2022,Opening Balance,,3374792,,432631668,6,972927,10,1/6/2022
+35,58,Medard Muganzi ,1/1/2022,Opening Balance,,27080000,,459711668,6,1080000,1,1/7/2022
+36,44,Merab Kemirembe,1/1/2022,Opening Balance,,1148074,,460859742,6,,3,1/25/2022
+37,29,Michael Eraku ,1/1/2022,Opening Balance,,10000022,,470859764,6,600001,3,1/16/2022
+38,67,Moses Muwonge ,1/1/2022,Opening Balance,,35000000,,505859764,6,3180583,2,1/11/2022
+39,71,Moses Nahamya ,1/1/2022,Opening Balance,,6350378,,512210142,6,381023,2,1/9/2022
+40,79,Moses Nyesiga ,1/1/2022,Opening Balance,,6346414,,518556556,6,576978,5,1/6/2022
+41,34,Nelson Kabwama ,1/1/2022,Opening Balance,,1769641,,520326197,6,105588,4,1/14/2022
+42,19,Peter Balimunsi ,1/1/2022,Opening Balance,,5000000,,525326197,6,3997328,2,1/23/2022
+43,8,Philemon Akatuhurira ,1/1/2022,Opening Balance,,16655534,,541981731,6,3997328,1,1/26/2022
+44,36,Richard Kakooza ,1/1/2022,Opening Balance,,33997145,,575978876,6,2659886,6,1/10/2022
+45,38,Stephen Katawera ,1/1/2022,Opening Balance,,20893159,,596872035,6,2507159,3,1/8/2022
+46,14,Wilfred Asiimwe Muganga ,1/1/2022,Opening Balance,,5200000,,602072035,6,802703,4,1/1/2022

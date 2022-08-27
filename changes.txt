@@ -1,0 +1,245 @@
+//  contact javascript 
+        var handleDataTableButtons = function (tabClicked) {
+            if ($('#tblContact').length && tabClicked === "tab-contact") {
+                if(typeof(dTable['tblContact'])!=='undefined'){
+                    $(".tab-pane").removeClass("active");
+                    $("#tab-contact").addClass("active");
+                    dTable['tblContact'].ajax.reload(null,true);
+                }else{
+                    dTable['tblContact'] = $('#tblContact').DataTable({
+                        "searching": false,
+                        "paging": false,
+                        "responsive": true,
+                        "dom": '<"html5buttons"B>lTfgitp',
+                        "buttons": [
+                            {"extend": 'excel', title: 'ExampleFile'},
+                            {"extend": 'pdf', title: 'ExampleFile'},
+                            {"extend": 'print',
+                                "customize": function (win) {
+                                    $(win.document.body).addClass('white-bg');
+                                    $(win.document.body).css('font-size', '10px');
+                                    $(win.document.body).find('table')
+                                            .addClass('compact')
+                                            .css('font-size', 'inherit');
+                                }
+                            }
+                        ],
+                        "ajax": {
+                            "url": "<?php echo base_url('contact/jsonList/') . $user['id'] ?>",
+                            "dataType": "json",
+                            "type": "POST",
+                            "data": {}
+                        },
+                        "columns": [
+                            {"data": "mobile_number"},
+                            {"data": "contact_type"},
+                            {"data": "id", render: function (data, type, full, meta) {
+                                    var ret_txt = "<a href='#' ><i class='fa fa-edit'></i></a>";
+                                    return ret_txt;
+                                }}
+                        ]
+                    });
+                }
+            }
+            // nextofkin ajax
+            if ($('#tblNextOfKin').length && tabClicked === "tab-kin") {
+                if(typeof(dTable['tblNextOfKin'])!=='undefined'){
+                    $(".tab-pane").removeClass("active");
+                    $("#tab-kin").addClass("active");
+                    dTable['tblNextOfKin'].ajax.reload(null,true);
+                }else{
+                    dTable['tblNextOfKin'] =
+                        $('#tblNextOfKin').DataTable({
+                    "pageLength": 25,
+                    "searching": false,
+                    "paging": false,
+                    "responsive": true,
+                    "dom": '<"html5buttons"B>lTfgitp',
+                    "buttons": [
+                        {"extend": 'excel', title: 'ExampleFile'},
+                        {"extend": 'pdf', title: 'ExampleFile'},
+
+                        {"extend": 'print',
+                            "customize": function (win) {
+                                $(win.document.body).addClass('white-bg');
+                                $(win.document.body).css('font-size', '10px');
+
+                                $(win.document.body).find('table')
+                                        .addClass('compact')
+                                        .css('font-size', 'inherit');
+                            }
+                        }
+                    ],
+                    "ajax": {
+                        "url": "<?php echo base_url('NextOfKin/jsonList/') . $user['id'] ?>",
+                        "dataType": "json",
+                        "type": "POST",
+                        "data": {}
+                    },
+                    "columns": [
+                        {"data": "firstname_", render: function (data, type, full, meta) {
+                                return data + " " + full.lastname_;
+                            }},
+
+                        {"data": "gender_"},
+                        {"data": "relationship"},
+                        {"data": "address"},
+                        {"data": "telphone"},
+                        {"data": "id", render: function (data, type, full, meta) {
+                                var ret_txt = "<a href='#' ><i class='fa fa-edit'></i></a>";
+                                return ret_txt;
+                            }}
+                    ]
+
+                });
+                }
+            }
+            //  address javascript
+            if ($('#tblAddress').length && tabClicked === "tab-address") {
+                if(typeof(dTable['tblAddress'])!=='undefined'){
+                    $(".tab-pane").removeClass("active");
+                    $("#tab-address").addClass("active");
+                    dTable['tblAddress'].ajax.reload(null,true);
+                }else{
+                    dTable['tblAddress'] =
+                        $('#tblAddress').DataTable({
+                    "pageLength": 25,
+                    "searching": false,
+                    "paging": false,
+                    "responsive": true,
+                    "dom": '<"html5buttons"B>lTfgitp',
+                    "buttons": [
+                        {"extend": 'excel', title: 'ExampleFile'},
+                        {"extend": 'pdf', title: 'ExampleFile'},
+                        {"extend": 'print',
+                            "customize": function (win) {
+                                $(win.document.body).addClass('white-bg');
+                                $(win.document.body).css('font-size', '10px');
+
+                                $(win.document.body).find('table')
+                                        .addClass('compact')
+                                        .css('font-size', 'inherit');
+                            }
+                        }
+                    ],
+                    "ajax": {
+                        "url": "<?php echo base_url('Address/jsonList/') . $user['id'] ?>",
+                        "dataType": "json",
+                        "type": "POST",
+                        "data": {}
+                    },
+                    "columns": [
+                        {"data": "address1"},
+                        {"data": "address_type"},
+                        {"data": "parish_id"},
+                        {"data": "village"},
+                        {"data": "id", render: function (data, type, full, meta) {
+                                var ret_txt = "<a  data-toggle='modal' data-target='#add_address_modal'><i class='fa fa-edit'></i></a>";
+                                return ret_txt;
+                            }}
+                    ]
+
+                });
+                }
+            }
+            //  employment javascript 
+            if ($('#tblEmployment').length && tabClicked === "tab-employment") {
+                if(typeof(dTable['tblEmployment'])!=='undefined'){
+                    $(".tab-pane").removeClass("active");
+                    $("#tab-employment").addClass("active");
+                    dTable['tblEmployment'].ajax.reload(null,true);
+                }else{
+                    dTable['tblEmployment'] = $('#tblEmployment').DataTable({
+                    "pageLength": 25,
+                    "searching": true,
+                    "paging": true,
+                    "responsive": true,
+                    "dom": '<"html5buttons"B>lTfgitp',
+                    "buttons": [
+                        {"extend": 'excel', title: 'ExampleFile'},
+                        {"extend": 'pdf', title: 'ExampleFile'},
+                        {"extend": 'print',
+                            "customize": function (win) {
+                                $(win.document.body).addClass('white-bg');
+                                $(win.document.body).css('font-size', '10px');
+                                $(win.document.body).find('table')
+                                        .addClass('compact')
+                                        .css('font-size', 'inherit');
+                            }
+                        }
+                    ],
+                    "ajax": {
+                        "url": "<?php echo base_url('employment/jsonList/') . $user['id'] ?>",
+                        "dataType": "json",
+                        "type": "POST",
+                        "data": {}
+                    },
+                    "columns": [
+                        {"data": "position"},
+                        {"data": "employer"},
+                        {"data": "years_of_employment"},
+                        {"data": "nature_of_employment"},
+                        {"data": "start_date"},
+                        {"data": "end_date"},
+                        {"data": "monthly_salary"},
+                        {"data": "id", render: function (data, type, full, meta) {
+                                var ret_txt = "<a href='#add_employment-modal' data-toggle='modal' class='edit_me' ><i class='fa fa-edit'></i></a>";
+                                return ret_txt;
+                            }}
+                    ]
+
+                });
+                }
+            }
+            //  business javascript 
+            if ($('#tblBusiness').length && tabClicked === "tab-business") {
+                if(typeof(dTable['tblBusiness'])!=='undefined'){
+                    $(".tab-pane").removeClass("active");
+                    $("#tab-business").addClass("active");
+                    dTable['tblBusiness'].ajax.reload(null,true);
+                }else{
+                    dTable['tblBusiness'] =
+                        $('#tblBusiness').DataTable({
+                    "pageLength": 25,
+                    "searching": false,
+                    "paging": false,
+                    "responsive": true,
+                    "dom": '<"html5buttons"B>lTfgitp',
+                    "buttons": [
+                        {"extend": 'excel', title: 'ExampleFile'},
+                        {"extend": 'pdf', title: 'ExampleFile'},
+                        {"extend": 'print',
+                            "customize": function (win) {
+                                $(win.document.body).addClass('white-bg');
+                                $(win.document.body).css('font-size', '10px');
+
+                                $(win.document.body).find('table')
+                                        .addClass('compact')
+                                        .css('font-size', 'inherit');
+                            }
+                        }
+                    ],
+                    "ajax": {
+                        "url": "<?php echo base_url('business/jsonList/') . $user['id'] ?>",
+                        "dataType": "json",
+                        "type": "POST",
+                        "data": {}
+                    },
+                    "columns": [
+                        {"data": "businessname"},
+                        {"data": "natureofbusiness"},
+                        {"data": "businesslocation"},
+                        {"data": "numberofemployees"},
+                        {"data": "businessworth"},
+                        {"data": "ursbnumber"},
+                        {"data": "certificateofincorporation"},
+                        {"data": "id", render: function (data, type, full, meta) {
+                                var ret_txt = "<a href='#' ><i class='fa fa-edit'></i></a>";
+                                return ret_txt;
+                            }}
+                    ]
+
+                });
+                }
+            }
+        };

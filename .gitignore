@@ -1,0 +1,10 @@
+/nbproject/private/
+/.vscode/
+/.idea/
+/nbproject/
+/uploads/*
+/application/config/database.php
+/application/config/config.php
+/system_cache/*
+/db_cache/
+/myassets/cache/*

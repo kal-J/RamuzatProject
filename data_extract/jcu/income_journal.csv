@@ -1,0 +1,67 @@
+CREDIT ACCOUNT ID,INCOME TYPE,DATE,NARRATIVE,SPLIT,AMOUNT,DEBIT ACCOUNT ID,NEW DATE,REF
+18,Annual subscription,1/31/2021,Annual subscription fees for 43 Members for 2021,DFCU SACCO A/C,420000.00,40,31/01/2021,General Journal
+18,Annual subscription,2/28/2021,Annual subscription fees for 2021 deducted from Fred Michael,042 Fred Micheal Twesige,10000.00,8,28/02/2021,General Journal
+54,Interest from Mutual Funds,8/31/2020,Interest earned on savings with ICEA in August 2020,ICEA Money Market,18892.24,51,31/08/2020,General Journal
+54,Interest from Mutual Funds,8/31/2020,Interest earned on savings with UAP Umbrella unit trust fund,UAP Umbrella Trust,18199.66,53,31/08/2020,General Journal
+54,Interest from Mutual Funds,9/30/2020,Interrest earned from UAP in September 2020,UAP Umbrella Trust,135114.08,53,30/09/2020,General Journal
+54,Interest from Mutual Funds,9/30/2020,Interrest earned from ICEA in September 2020,ICEA Money Market,194578.20,51,30/09/2020,General Journal
+54,Interest from Mutual Funds,10/31/2020,Interrest earned from UAP in October 2020,UAP Umbrella Trust,140165.11,53,31/10/2020,General Journal
+54,Interest from Mutual Funds,10/31/2020,Interrest earned from ICEA  in October 2020,ICEA Money Market,329426.29,51,31/10/2020,General Journal
+54,Interest from Mutual Funds,11/30/2020,Interrest earned from UAP in November 2020,UAP Umbrella Trust,135224.83,53,30/11/2020,General Journal
+54,Interest from Mutual Funds,11/30/2020,Interrest earned from ICEA  in November 2020,ICEA Money Market,326498.60,51,30/11/2020,General Journal
+54,Interest from Mutual Funds,12/31/2020,Interrest earned from ICEA  in December 2020,ICEA Money Market,384057.64,51,31/12/2020,General Journal
+54,Interest from Mutual Funds,12/31/2020,Interrest earned from UAP in December 2020,UAP Umbrella Trust,141977.69,53,31/12/2020,General Journal
+54,Interest from Mutual Funds,1/31/2021,Interrest earned from ICEA  in January 2021,ICEA Money Market,457945.49,51,31/01/2021,General Journal
+54,Interest from Mutual Funds,1/31/2021,Interrest earned from UAP in January 2021,UAP Umbrella Trust,145792.64,53,31/01/2021,General Journal
+54,Interest from Mutual Funds,2/28/2021,Interrest earned from ICEA  in February 2021,ICEA Money Market,459670.96,51,28/02/2021,General Journal
+54,Interest from Mutual Funds,2/28/2021,Interrest earned from UAP in January 2021,UAP Umbrella Trust,134947.26,53,28/02/2021,General Journal
+54,Interest from Mutual Funds,3/31/2021,Interrest earned from ICEA  in March 2021,ICEA Money Market,551393.07,51,31/03/2021,General Journal
+54,Interest from Mutual Funds,3/31/2021,Interrest earned from UAP in March 2021,UAP Umbrella Trust,149718.93,53,31/03/2021,General Journal
+54,Interest from Mutual Funds,4/30/2021,Interrest earned from UAP in April 2021,UAP Umbrella Trust,145660.15,53,30/04/2021,General Journal
+54,Interest from Mutual Funds,4/30/2021,"Interrest earned from ICEA  in April, 2021",ICEA Money Market,507540.98,51,30/04/2021,General Journal
+54,Interest from Mutual Funds,5/31/2021,"Interrest earned from ICEA  in May, 2021",ICEA Money Market,516132.53,51,31/05/2021,General Journal
+54,Interest from Mutual Funds,5/31/2021,"Interrest earned from UAP in May, 2021",UAP Umbrella Trust,146361.35,53,31/05/2021,General Journal
+54,Interest from Mutual Funds,6/30/2021,"Interrest earned from ICEA  in June, 2021",ICEA Money Market,516132.53,51,30/06/2021,General Journal
+54,Interest from Mutual Funds,6/30/2021,"Interrest earned from UAP in June, 2021",UAP Umbrella Trust,146361.35,53,30/06/2021,General Journal
+55,Interest on bank balances,12/31/2020,Interest earned from DFCU bank account in October - December 2020,DFCU SACCO A/C,46729.00,40,31/12/2020,General Journal
+55,Interest on bank balances,1/31/2021,Interest earned from DFCU bank account in January 2021,DFCU SACCO A/C,17107.00,40,31/01/2021,General Journal
+55,Interest on bank balances,2/28/2021,Interest earned from DFCU bank account in February 2021,DFCU SACCO A/C,34411.00,40,28/02/2021,General Journal
+55,Interest on bank balances,3/31/2021,Interest earned from DFCU bank account in March 2021,DFCU SACCO A/C,55500.00,40,31/03/2021,General Journal
+55,Interest on bank balances,4/30/2021,Interest earned from DFCU bank account in April 2021,DFCU SACCO A/C,69558.00,40,30/04/2021,General Journal
+55,Interest on bank balances,5/31/2021,Interest earned from DFCU bank account in May 2021,DFCU SACCO A/C,73590.00,40,31/05/2021,General Journal
+55,Interest on bank balances,6/30/2021,Interest earned from DFCU bank account in June 2021,DFCU SACCO A/C,70615.00,40,30/06/2021,General Journal
+2,Loan processing fees,8/10/2020,Loan processing fees for Buhanga's loan,Equity Joint A/C,20000.00,50,10/08/2020,Check
+2,Loan processing fees,8/28/2020,Loan processing fees for Sagula''s loan,Equity Joint A/C,20000.00,50,28/08/2020,Check
+2,Loan processing fees,9/22/2020,Loan processing fees for Timothy Mucunguzi's loan,Equity Joint A/C,20000.00,50,22/09/2020,Check
+2,Loan processing fees,9/22/2020,Loan processing fees for Fred''s loan,Equity Joint A/C,20000.00,50,22/09/2020,Check
+2,Loan processing fees,9/22/2020,Insurance charge for Fred Micheals Loan,Equity Joint A/C,6000.00,50,22/09/2020,Check
+2,Loan processing fees,10/23/2020,Loan processing fees for Laura Bagaya Wendy's loan,Equity Joint A/C,20000.00,50,23/10/2020,Check
+2,Loan processing fees,10/23/2020,Insurance charge for Laura Bagaya Wendy's Loan,Equity Joint A/C,15000.00,50,23/10/2020,Check
+2,Loan processing fees,11/18/2020,Loan processing fees for Josephine Kayondo's loan,DFCU SACCO A/C,20000.00,40,18/11/2020,Check
+2,Loan processing fees,11/18/2020,Insurance charge for Josephine Kayondo's Loan,DFCU SACCO A/C,52000.00,40,18/11/2020,Check
+2,Loan processing fees,1/6/2021,Loan processing fees for Timothy Asiimwe's loan,DFCU SACCO A/C,30000.00,40,06/01/2021,Check
+2,Loan processing fees,1/19/2021,Loan processing fees for Nelson Agaba's loan,DFCU SACCO A/C,30000.00,40,19/01/2021,Check
+2,Loan processing fees,3/16/2021,Loan  processing fees - Bwayo Emmanuel,DFCU SACCO A/C,30000.00,40,16/03/2021,Check
+2,Loan processing fees,4/8/2021,Loan  processing fees - Abilu Isaac,DFCU SACCO A/C,30000.00,40,08/04/2021,Check
+2,Loan processing fees,5/3/2021,Loan processing fees for Timothy Mucunguzi's loan,DFCU SACCO A/C,30000.00,40,03/05/2021,Check
+2,Loan processing fees,5/3/2021,Loan processing fees for Nelson Agaba's loan,DFCU SACCO A/C,30000.00,40,03/05/2021,Check
+2,Loan processing fees,5/3/2021,Loan processing fees for Isaac Abilu's loan,DFCU SACCO A/C,30000.00,40,03/05/2021,Check
+2,Loan processing fees,5/3/2021,Loan processing fees for Sharon Nassuna's loan,DFCU SACCO A/C,30000.00,40,03/05/2021,Check
+2,Loan processing fees,5/3/2021,Loan processing fees for Mary Nakale's loan,DFCU SACCO A/C,30000.00,40,03/05/2021,Check
+2,Loan processing fees,6/2/2021,Loan processing fees for David Mugoya's loan,DFCU SACCO A/C,30000.00,40,02/06/2021,Check
+20,Membership fees,2/28/2020,Annual membership/subscription fees,Equity Joint A/C,760000.00,50,28/02/2020,General Journal
+20,Membership fees,3/31/2020,Annual membership/subscription fees (Ayoo & Abeja),Equity Joint A/C,40000.00,50,31/03/2020,General Journal
+20,Membership fees,8/31/2020,Membership fees from Timothy Asiimwe,Equity Joint A/C,20000.00,50,31/08/2020,General Journal
+20,Membership fees,8/31/2020,Membership fees from Joshua Omilo,Equity Joint A/C,20000.00,50,31/08/2020,General Journal
+20,Membership fees,9/30/2020,Membership fees by Emmanuel Engena upon joining the SACCO,Equity Joint A/C,20000.00,50,30/09/2020,General Journal
+20,Membership fees,11/30/2020,Membership subscription fees - Wilfred Oboko,DFCU SACCO A/C,20000.00,40,30/11/2020,General Journal
+20,Membership fees,12/31/2020,Membership subscription for Luyima Muzamir upon joining the SACCO in December 2020,DFCU SACCO A/C,20000.00,40,31/12/2020,General Journal
+20,Membership fees,1/20/2021,Annual Membership subscription for 2021 - Engena Emmanuel,DFCU SACCO A/C,10000.00,40,20/01/2021,General Journal
+20,Membership fees,1/31/2021,Membership subscription fees for Gorreth Ayebale,DFCU SACCO A/C,20000.00,40,31/01/2021,General Journal
+36,Other Income,2/1/2020,Grant from JCU for the SACCO inception expenses,PETTY CASH,500000.00,52,01/02/2020,General Journal
+36,Other Income,12/31/2020,Funds over transfered from JCU account in Oct 2020,Ask My Accountant,3000.00,40,31/12/2020,General Journal
+56,Withdrawal fees,4/30/2021,Transaction bank charges,DFCU SACCO A/C,20000.00,40,30/04/2021,Check
+56,Withdrawal fees,5/28/2021,Transaction processing - Sagula,DFCU SACCO A/C,20000.00,40,28/05/2021,Check
+56,Withdrawal fees,6/18/2021,Transaction processing charges,DFCU SACCO A/C,20000.00,40,18/06/2021,Check
+56,Withdrawal fees,6/23/2021,Transaction processing charges on a withdraw by Josephine,DFCU SACCO A/C,30000.00,40,23/06/2021,Check
+56,Withdrawal fees,6/29/2021,Transaction processing charges on a withdraw by Timothy Mucunguzi,DFCU SACCO A/C,20000.00,40,29/06/2021,Check

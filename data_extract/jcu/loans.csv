@@ -1,0 +1,70 @@
+DATE,TYPE,NAME,NARRATIVE,SPLIT,AMOUNT,DEBIT,CREDIT,NEW AMOUNT,NEW DATE,JOURNAL_TYPE
+8/10/2020,Check,L001/20 Buhanga Robert,Loan to Buhanga Robert,Equity Joint A/C,-1800000,1,50,1800000,10/8/2020,4
+8/31/2020,General Journal,L001/20 Buhanga Robert,Loan principal repayment forBuhanga Robert for the Month of August 2020,Equity Joint A/C,-278276,50,1,278276,31/08/2020,6
+9/30/2020,General Journal,L001/20 Buhanga Robert,Loan principal repayment for Buhanga Robert for the Month of September 2020,Equity Joint A/C,-286624,50,1,286624,30/09/2020,6
+10/27/2020,General Journal,L001/20 Buhanga Robert,Loan principal repayment for Buhanga Robert for the Month of October 2020,DFCU SACCO A/C,-295222,40,1,295222,27/10/2020,6
+11/30/2020,General Journal,L001/20 Buhanga Robert,Loan principal repayment for Buhanga Robert for the Month of November 2020,DFCU SACCO A/C,-304079,40,1,304079,30/11/2020,6
+12/31/2020,General Journal,L001/20 Buhanga Robert,Loan principal repayment for Buhanga Robert for the Month of December 2020,DFCU SACCO A/C,-313202,40,1,313202,31/12/2020,6
+1/31/2021,General Journal,L001/20 Buhanga Robert,Loan principal repayment for Buhanga Robert for the Month of January 2021,DFCU SACCO A/C,-322597,40,1,322597,31/01/2021,6
+8/28/2020,Check,L002/20 Sagula Samson,PV: 7109 Loan to Samson Sagula,Equity Joint A/C,-660000,1,50,660000,28/08/2020,4
+9/30/2020,General Journal,L002/20 Sagula Samson,Loan principal repayment for Sagula Samsom for the Month of September 2020,Equity Joint A/C,-102034,50,1,102034,30/09/2020,6
+10/27/2020,General Journal,L002/20 Sagula Samson,Loan principal repayment for Sagula Samsom for the Month of October 2020,DFCU SACCO A/C,-105095,40,1,105095,27/10/2020,6
+11/30/2020,General Journal,L002/20 Sagula Samson,Loan principal repayment for Sagula Samsom for the Month of November 2020,DFCU SACCO A/C,-108248,40,1,108248,30/11/2020,6
+12/31/2020,General Journal,L002/20 Sagula Samson,Loan principal repayment for Sagula Samsom for the Month of December 2020,DFCU SACCO A/C,-111496,40,1,111496,31/12/2020,6
+1/31/2021,General Journal,L002/20 Sagula Samson,Loan principal repayment for Sagula Samsom for the Month of January 2021,DFCU SACCO A/C,-114841,40,1,114841,31/01/2021,6
+2/28/2021,General Journal,L002/20 Sagula Samson,Loan principal repayment for Sagula Samsom for the Month of February 2021,DFCU SACCO A/C,-118286,40,1,118286,28/02/2021,6
+9/22/2020,Check,L003/20 Mucunguzi Timothy,Loan to Mucunguzi Timothy,Equity Joint A/C,-2105000,1,50,2105000,22/09/2020,4
+10/27/2020,General Journal,L003/20 Mucunguzi Timothy,Loan principal repayment for Mucunguzi Timothy for the Month of October 2020,DFCU SACCO A/C,-325428,40,1,325428,27/10/2020,6
+11/30/2020,General Journal,L003/20 Mucunguzi Timothy,Loan principal repayment for Mucunguzi Timothy for the Month of November 2020,DFCU SACCO A/C,-335191,40,1,335191,30/11/2020,6
+12/31/2020,General Journal,L003/20 Mucunguzi Timothy,Loan principal repayment for Mucunguzi Timothy for the Month of December 2020,DFCU SACCO A/C,-345246,40,1,345246,31/12/2020,6
+1/31/2021,General Journal,L003/20 Mucunguzi Timothy,Loan principal repayment for Mucunguzi Timothy for the Month of January 2021,DFCU SACCO A/C,-355604,40,1,355604,31/01/2021,6
+2/28/2021,General Journal,L003/20 Mucunguzi Timothy,Loan principal repayment for Mucunguzi Timothy for the Month of February 2021,DFCU SACCO A/C,-366272,40,1,366272,28/02/2021,6
+3/30/2021,General Journal,L003/20 Mucunguzi Timothy,Loan principal repayment for Mucunguzi Timothy for the Month of March 2021,DFCU SACCO A/C,-377259,40,1,377259,30/03/2021,6
+5/3/2021,Check,L003/20 Mucunguzi Timothy,Loan to Mucunguzi Timothy,DFCU SACCO A/C,-2070000,1,40,2070000,3/5/2021,4
+5/31/2021,General Journal,L003/20 Mucunguzi Timothy,Loan principal repayment for Timothy Mucunguzi's Loan in the Month of  May 2021,DFCU SACCO A/C,-1019704,40,1,1019704,31/05/2021,6
+6/24/2021,General Journal,L003/20 Mucunguzi Timothy,Loan principal repayment for Timothy Mucunguzi's Loan in the Month of  June 2021,DFCU SACCO A/C,-1050296,40,1,1050296,24/06/2021,6
+9/22/2020,Check,L004/20 Fred Micheal,PV: 7109 Loan to Fred Micheal Twesige,Equity Joint A/C,-600000,1,50,600000,22/09/2020,4
+10/27/2020,General Journal,L004/20 Fred Micheal,Loan principal repayment for Fred Micheal for the Month of October 2020,DFCU SACCO A/C,-194118,40,1,194118,27/10/2020,6
+11/30/2020,General Journal,L004/20 Fred Micheal,Loan principal repayment for Fred Micheal for the Month of November 2020,DFCU SACCO A/C,-199942,40,1,199942,30/11/2020,6
+12/31/2020,General Journal,L004/20 Fred Micheal,Loan principal repayment for Fred Micheal for the Month of December 2020,DFCU SACCO A/C,-205940,40,1,205940,31/12/2020,6
+10/23/2020,Check,L005/20 Laura Bagaya Wendy,PV: 7111 Loan to Laura Bagaya Wendy,Equity Joint A/C,-1500000,1,50,1500000,23/10/2020,4
+11/30/2020,General Journal,L005/20 Laura Bagaya Wendy,Loan principal repayment for Laura Bagaya for the Month of November 2020,DFCU SACCO A/C,-231896,40,1,231896,30/11/2020,6
+12/31/2020,General Journal,L005/20 Laura Bagaya Wendy,Loan principal repayment for Laura Bagaya for the Month of December 2020,DFCU SACCO A/C,-238853,40,1,238853,31/12/2020,6
+1/31/2021,General Journal,L005/20 Laura Bagaya Wendy,Loan principal repayment for Laura Bagaya for the Month of January 2021,DFCU SACCO A/C,-246019,40,1,246019,31/01/2021,6
+2/28/2021,General Journal,L005/20 Laura Bagaya Wendy,Loan principal repayment for Laura Bagaya for the Month of February 2021,DFCU SACCO A/C,-253399,40,1,253399,28/02/2021,6
+3/30/2021,General Journal,L005/20 Laura Bagaya Wendy,Loan principal repayment for Laura Bagaya for the Month of March 2021,DFCU SACCO A/C,-261001,40,1,261001,30/03/2021,6
+4/30/2021,General Journal,L005/20 Laura Bagaya Wendy,Loan principal repayment for Laura Bagaya for the Month of April 2021,DFCU SACCO A/C,-268832,40,1,268832,30/04/2021,6
+11/18/2020,Check,L006/20 Josephine Kayondo,PV: 7112 Loan to Josephine Kayondo,DFCU SACCO A/C,-5200000,1,40,5200000,18/11/2020,4
+11/30/2020,General Journal,L006/20 Josephine Kayondo,Loan principal repayment for Josephine Kayonndo for the Month of November 2020,DFCU SACCO A/C,-803906,40,1,803906,30/11/2020,6
+12/31/2020,General Journal,L006/20 Josephine Kayondo,Loan principal repayment for Josephine Kayonndo for the Month of December 2020,DFCU SACCO A/C,-828024,40,1,828024,31/12/2020,6
+1/31/2021,General Journal,L006/20 Josephine Kayondo,Loan principal repayment for Josephine Kayonndo for the Month of January 2021,DFCU SACCO A/C,-852866,40,1,852866,31/01/2021,6
+2/28/2021,General Journal,L006/20 Josephine Kayondo,Loan principal repayment for Josephine Kayonndo for the Month of February 2021,DFCU SACCO A/C,-878450,40,1,878450,28/02/2021,6
+3/30/2021,General Journal,L006/20 Josephine Kayondo,Loan principal repayment for Josephine Kayonndo for the Month of March 2021,DFCU SACCO A/C,-904805,40,1,904805,30/03/2021,6
+4/30/2021,General Journal,L006/20 Josephine Kayondo,Loan principal repayment for Josephine Kayonndo for the Month of April 2021,DFCU SACCO A/C,-931949,40,1,931949,30/04/2021,6
+1/6/2021,Check,L007/21 Timothy Asiimwe,PV: 7115 Loan to Timothy Asiimwe,DFCU SACCO A/C,-6150000,1,40,6150000,6/1/2021,4
+1/31/2021,General Journal,L007/21 Timothy Asiimwe,Loan principal repayment for Timothy Asiimwe for the Month of January 2021,DFCU SACCO A/C,-1470016,40,1,1470016,31/01/2021,6
+2/28/2021,General Journal,L007/21 Timothy Asiimwe,Loan principal repayment for Timothy Asiimwe for the Month of February 2021,DFCU SACCO A/C,-1514117,40,1,1514117,28/02/2021,6
+3/30/2021,General Journal,L007/21 Timothy Asiimwe,Loan principal repayment for Timothy Asiimwe for the Month of March 2021,DFCU SACCO A/C,-1559540,40,1,1559540,30/03/2021,6
+4/30/2021,General Journal,L007/21 Timothy Asiimwe,Loan principal repayment for Timothy Asiimwe for the Month of April 2021,DFCU SACCO A/C,-1606327,40,1,1606327,30/04/2021,6
+1/19/2021,Check,L008/21 Nelson Agaba,PV: 7116 Loan to Nelson Agaba,DFCU SACCO A/C,-3900000,1,40,3900000,19/01/2021,4
+2/28/2021,General Journal,L008/21 Nelson Agaba,Loan principal repayment for Nelson Agaba for the Month of February 2021,DFCU SACCO A/C,-1261768,40,1,1261768,28/02/2021,6
+3/30/2021,General Journal,L008/21 Nelson Agaba,Loan principal repayment for Nelson Agaba for the Month of March 2021,DFCU SACCO A/C,-1299621,40,1,1299621,30/03/2021,6
+4/30/2021,General Journal,L008/21 Nelson Agaba,Loan principal repayment for Nelson Agaba for the Month of April 2021,DFCU SACCO A/C,-1338611,40,1,1338611,30/04/2021,6
+5/3/2021,Check,L008/21 Nelson Agaba,Loan to Nelson Agaba,DFCU SACCO A/C,-2070000,1,40,2070000,3/5/2021,4
+5/31/2021,General Journal,L008/21 Nelson Agaba,Loan principal repayment for Nelson Agaba for the Month of May 2021,DFCU SACCO A/C,-1019705,40,1,1019705,31/05/2021,6
+6/24/2021,General Journal,L008/21 Nelson Agaba,Loan principal repayment for Nelson Agaba for the Month of June 2021,DFCU SACCO A/C,-1050295,40,1,1050295,24/06/2021,6
+3/16/2021,Check,L009/21 Bwayo Emmanuel,PV: 7119 Loan to Bwayo Dission Emmanuel,DFCU SACCO A/C,-1070000,1,40,1070000,16/03/2021,4
+3/31/2021,General Journal,L009/21 Bwayo Emmanuel,Loan pricipal repayment by Bwayo Emma in March 2021,DFCU SACCO A/C,-527094,40,1,527094,31/03/2021,6
+4/30/2021,General Journal,L009/21 Bwayo Emmanuel,Loan principal repayment for Bwayo Emma for the Month of April 2021,DFCU SACCO A/C,-542906,40,1,542906,30/04/2021,6
+4/8/2021,Check,L010/21 Abilu Isaac B,PV: 7120 Loan to Abilu Isaac,DFCU SACCO A/C,-1070000,1,40,1070000,8/4/2021,4
+4/30/2021,General Journal,L010/21 Abilu Isaac B,Loan principal repayment for Abilu Isaac for the Month of April 2021,DFCU SACCO A/C,-1070000,40,1,1070000,30/04/2021,6
+5/3/2021,Check,L010/21 Abilu Isaac B,Loan to Isaac Abilu,DFCU SACCO A/C,-2070000,1,40,2070000,3/5/2021,4
+5/31/2021,General Journal,L010/21 Abilu Isaac B,Loan principal repayment for Abilu Isaac for the Month of  May 2021,DFCU SACCO A/C,-1019704,40,1,1019704,31/05/2021,6
+6/24/2021,General Journal,L010/21 Abilu Isaac B,Loan principal repayment for Abilu Isaac for the Month of  June 2021,DFCU SACCO A/C,-1050296,40,1,1050296,24/06/2021,6
+5/3/2021,Check,L011/21 Sharon Nassuna,Loan to Sharon Nassuna,DFCU SACCO A/C,-2070000,1,40,2070000,3/5/2021,4
+5/31/2021,General Journal,L011/21 Sharon Nassuna,Loan principal repayment for Sharon Nassuna for the Month of  May 2021,DFCU SACCO A/C,-1019704,40,1,1019704,31/05/2021,6
+6/24/2021,General Journal,L011/21 Sharon Nassuna,Loan principal repayment for Sharon Nassuna for the Month of  June 2021,DFCU SACCO A/C,-1050296,40,1,1050296,24/06/2021,6
+5/3/2021,Check,L012/21 Nakale Mary,Loan to Mary Nakale,DFCU SACCO A/C,-1570000,1,40,1570000,3/5/2021,4
+5/31/2021,General Journal,L012/21 Nakale Mary,Loan principal repayment for Mary Nakale's Loan in the Month of  May 2021,DFCU SACCO A/C,-773400,40,1,773400,31/05/2021,6
+6/24/2021,General Journal,L012/21 Nakale Mary,Loan principal repayment for Mary Nakale's Loan in the Month of  June 2021,DFCU SACCO A/C,-796600,40,1,796600,24/06/2021,6
+6/2/2021,Check,LO13/21 Mugoya David,Loan to David Mugoya,DFCU SACCO A/C,-400000,1,40,400000,2/6/2021,4

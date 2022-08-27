@@ -1,0 +1,9 @@
+script:
+  - pipe: atlassian/ftp-deploy:0.3.7
+    variables:
+      USER: my-ftp-user
+      PASSWORD: $FTP_PASSWORD
+      SERVER: 127.0.0.1
+      REMOTE_PATH: /tmp/my-remote-directory
+      LOCAL_PATH: /my-working-directory,
+      EXTRA_ARGS: "--exclude=filename_to_exclude.txt --exclude=folder_to_exclude/"

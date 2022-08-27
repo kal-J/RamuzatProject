@@ -1,0 +1,4 @@
+id,loan_no,member_id,loan_product_id,amount_approved,disbursement_date
+1,LN0001,67,1,2499999.99,1/11/2020
+2,LN0002,72,1,1000000,4/11/2020
+5,LN0003,93,1,2000000,2/11/2020
