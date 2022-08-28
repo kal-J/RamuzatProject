@@ -216,7 +216,7 @@
                             </ul>
                         </li>
                         <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-loan_fee"></i>Loan Fees</a></li>
-                        <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-loan_payable_today"></i>Loans Payable Today</a></li>
+                        <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-loan_payable_today"></i>Expected Repayments</a></li>
                         <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-loan_payments"></i>Transactions</a></li>
                         <?php if ($org['mobile_payments'] == 1) { ?>
                             <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-pending_payout"></i>Payout Requests

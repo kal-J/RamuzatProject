@@ -28,9 +28,18 @@
              "dataType": "json",
              "type": "POST",
              "data": function(d){
-              //d.date_to = moment(end_date,'X').format('YYYY-MM-DD');
-              //d.date_from = moment(start_date,'X').format('YYYY-MM-DD');
+
+              let date_to = $("#end_date_filter").val();
+              let date_from = $("#start_date_filter").val();
+
+              if(date_to) {
+                d.date_to_filter = moment(date_to,'DD-MM-YYYY').format('YYYY-MM-DD');
+              }
+              if(date_from) {
+                d.date_from_filter = moment(date_from,'DD-MM-YYYY').format('YYYY-MM-DD');
+              }
               d.state_ids = [7,8,9,10,11,12,13,14,15];
+              d.credit_officer_id = $("#selected_credit_officer").val();
               <?php if(isset($user['id'])){ ?>
               d.client_id = <?php echo $user['id'] ?>; 
               <?php } ?>
@@ -42,34 +51,24 @@
               "order": [[ 12, "desc" ]],
               "footerCallback": function (tfoot, data, start, end, display) {
                     var api = this.api();
-                $.each([2,3,4,5,6,7,8], function(key,val){
-                  if(val==8){
+                $.each([3,4,5,6,7,8,9,10], function(key,val){
+                  if(val==10){
 
-                    var current_page_expected_val=(parseFloat(api.column(4, {page: 'current'}).data().sum()) + parseFloat(api.column(3, {page: 'current'}).data().sum()));
+                    var current_page_expected_val=(parseFloat(api.column(5, {page: 'current'}).data().sum()) + parseFloat(api.column(4, {page: 'current'}).data().sum()));
 
-                    var current_page_remaining_val = (parseFloat(api.column(5, {page: 'current'}).data().sum()) !== NaN)?parseFloat(current_page_expected_val)-parseFloat(api.column(5, {page: 'current'}).data().sum()):current_page_expected_val;
+                    var current_page_remaining_val = (parseFloat(api.column(6, {page: 'current'}).data().sum()) !== NaN)?parseFloat(current_page_expected_val)-parseFloat(api.column(6, {page: 'current'}).data().sum()):current_page_expected_val;
 
+                    var all_page_expected_val=(parseFloat(api.column(5).data().sum()) + parseFloat(api.column(4).data().sum()));
 
-
-                    var all_page_expected_val=(parseFloat(api.column(4).data().sum()) + parseFloat(api.column(3).data().sum()));
-
-                    var all_page_remaining_val = (parseFloat(api.column(5).data().sum()) !== NaN)?parseFloat(all_page_expected_val)-parseFloat(api.column(5).data().sum()):all_page_expected_val;
+                    var all_page_remaining_val = (parseFloat(api.column(6).data().sum()) !== NaN)?parseFloat(all_page_expected_val)-parseFloat(api.column(6).data().sum()):all_page_expected_val;
 
 
                     $(api.column(val).footer()).html(curr_format(round(current_page_remaining_val,2)) +"<br>["+curr_format(round(all_page_remaining_val,2)) +"]");
 
-                  }else if(val==6){
-
-                    var current_page_expected_val=(parseFloat(api.column(6, {page: 'current'}).data().sum()) -parseFloat(api.column(5, {page: 'current'}).data().sum()));
-
-                    var all_page_amount = (parseFloat(api.column(6).data().sum()) -parseFloat(api.column(5).data().sum()));
-
-                    $(api.column(val).footer()).html(curr_format(round(current_page_expected_val,2)) +"<br>["+curr_format( round(all_page_amount,2)) +"]");
-                    
                   }else{                  
                     var current_page_amount = api.column(val, {page: 'current'}).data().sum();
                     var all_page_amount = api.column(val).data().sum();
-                   if(val==3){
+                   if(val==4){
                         $(api.column(val).footer()).html(curr_format(round(current_page_amount,0)) +"<br>["+curr_format( round(all_page_amount,0)) +"]");
                     }else{
                         $(api.column(val).footer()).html(curr_format(round(current_page_amount,2)) +"<br>["+curr_format( round(all_page_amount,2)) +"]");
@@ -95,6 +94,9 @@
                           return (full.group_name == null)?link2:link1;
                       }
                   },
+                  { data: "credit_officer_name",render:function( data, type, full, meta ){
+                      return data;
+                    }  },
                   { data: "member_name",render:function( data, type, full, meta ){
                       return (data&&full.group_name)?full.group_name+' [ '+data+' ]':(!data&&full.group_name)?full.group_name:data;
                     }  },
@@ -110,11 +112,11 @@
                   { data: "paid_amount", render:function( data, type, full, meta ){
                   return curr_format(data*1);
                     } },
-                  { data: "amount_in_demand", render:function( data, type, full, meta ){
-                    if(parseFloat(full.paid_amount) > parseFloat(0)) {
-                      return round(((data)-parseFloat(full.paid_amount)) ,2) > 0 ? curr_format(round(((data)-parseFloat(full.paid_amount)) ,2)) : 0;
-                    }
-                    return curr_format( round(data,2));
+                    { data: "paid_principal", render:function( data, type, full, meta ){
+                  return curr_format(data*1);
+                    } },
+                    { data: "paid_interest", render:function( data, type, full, meta ){
+                  return curr_format(data*1);
                     } },
                   { data: "days_in_demand", render:function( data, type, full, meta ){
                   return curr_format(data*1);

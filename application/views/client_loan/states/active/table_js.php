@@ -41,8 +41,8 @@
               "order": [[ 12, "desc" ]],
               "footerCallback": function (tfoot, data, start, end, display) {
                     var api = this.api();
-                $.each([2,3,4,5,6,7,8], function(key,val){
-                  if(val==8){
+                $.each([2,3,4,5,6,7], function(key,val){
+                  if(val==7){
 
                     var current_page_expected_val=(parseFloat(api.column(4, {page: 'current'}).data().sum()) + parseFloat(api.column(3, {page: 'current'}).data().sum()));
 
@@ -54,14 +54,6 @@
 
                     $(api.column(val).footer()).html(curr_format(round(current_page_remaining_val,0)) +"<br>["+curr_format(round(all_page_remaining_val,0)) +"]");
 
-                  }else if(val==6){
-
-                    var current_page_expected_val=(parseFloat(api.column(6, {page: 'current'}).data().sum()));
-
-                    var all_page_amount = (parseFloat(api.column(6).data().sum()) -parseFloat(api.column(5).data().sum()));
-
-                    $(api.column(val).footer()).html(curr_format(round(current_page_expected_val,0)) +"<br>["+curr_format( round(current_page_expected_val,0)) +"]");
-                    
                   }else{                  
                     var current_page_amount = api.column(val, {page: 'current'}).data().sum();
                     var all_page_amount = api.column(val).data().sum();
@@ -106,12 +98,7 @@
                   { data: "paid_amount", render:function( data, type, full, meta ){
                   return curr_format(data*1);
                     } },
-                  { data: "amount_in_demand", render:function( data, type, full, meta ){
-                    if(parseFloat(full.paid_amount) > parseFloat(0)) {
-                      return round(((data)-parseFloat(full.paid_amount)) ,0) > 0 ? curr_format(round(((data)-parseFloat(full.paid_amount)) ,0)) : 0;
-                    }
-                    return curr_format( round(data,0));
-                    } },
+                  
                   { data: "days_in_demand", render:function( data, type, full, meta ){
                   return curr_format(data*1);
                     } },

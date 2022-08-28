@@ -169,9 +169,6 @@ class Client_loan extends CI_Controller
     {
         $data['draw'] = intval($this->input->post('draw'));
         $data['data'] = $this->client_loan_model->get_dTable();
-        // foreach ($data['data'] as $key => $value) {
-        //    $data['data'][$key]['total_penalty']= $this->get_total_penalty($value['id']);
-        // }
         $filteredl_records_cnt = $this->client_loan_model->get_found_rows();
         $data['recordsTotal'] = $this->client_loan_model->get2();
         $data['recordsFiltered'] = current($filteredl_records_cnt);
@@ -181,17 +178,8 @@ class Client_loan extends CI_Controller
     public function loans_payable_today()
     {
         $data['draw'] = intval($this->input->post('draw'));
-        $current_date=$this->input->post('current_date');
-        $payable_loans = [];
-        $loans_all = $this->client_loan_model->get_loan_payable_today();
-        foreach($loans_all as $key=>$loan_detail){
-            if ($loan_detail['next_pay_date']==$current_date){
-                array_push($payable_loans, $loan_detail);
-            //echo json_encode($loan_detail);
-
-
-            }
-        }
+        $payable_loans = $this->client_loan_model->get_loan_payable_today();
+        
         $data['data'] = $payable_loans;
         echo json_encode($data);
       

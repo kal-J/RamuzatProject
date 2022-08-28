@@ -26,7 +26,7 @@
                   <th>Disbursed Amount (UGX)</th>
                   <th>Expected Interest (UGX)</th>
                   <th>Paid Amount (UGX)</th>
-                  <th>Amount Demanded (UGX)</th>
+                  <!-- <th>Amount Demanded (UGX)</th> -->
                   <th>Days Due</th>
                   <th>Remaining bal (UGX)</th>
                   <th>Disbursement Date</th>

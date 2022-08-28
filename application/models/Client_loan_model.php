@@ -291,9 +291,11 @@ class Client_loan_model extends CI_Model
         $this->db->join("$this->days_in_demand days_in_demand", 'days_in_demand.client_loan_id=a.id', 'left');
         $this->db->join('payment_details', 'a.id =payment_details.client_loan_id AND payment_details.status_id =1', 'left');
         $this->db->join('payment_mode', 'a.preferred_payment_id =payment_mode.id ', 'left');
+        
         if (isset($_SESSION['role']) && ($_SESSION['role'] == 'Credit Officer' || $_SESSION['role_id'] == 4)) {
             $this->db->where('a.credit_officer_id', $_SESSION['staff_id']);
         }
+
         if ($this->input->post('client_id') != "" && !empty($this->input->post('client_id'))) {
             $this->db->where('a.member_id', $this->input->post('client_id'));
         }
@@ -591,6 +593,25 @@ class Client_loan_model extends CI_Model
             $this->db->where("a.application_date <='" . $this->input->post('start_date_at') . "'");
             $this->db->where("a.application_date >='" . $this->input->post('end_date_at') . "'");
         }
+
+
+
+        if ($this->input->post('date_to_filter') != NULL) {
+            $this->db->where("loan_state.action_date <='" . $this->input->post('date_to_filter') . "'");
+        }
+        
+        if ($this->input->post('date_from_filter') != NULL) {
+            $this->db->where("loan_state.action_date >='" . $this->input->post('date_from_filter') . "'");
+        }
+        
+        if ($this->input->post('repayment_expected_end_date') != NULL) {
+            $this->db->where("pay_day.next_pay_date <='" . $this->input->post('repayment_expected_end_date') . "'");
+        }
+        
+        if ($this->input->post('repayment_expected_start_date') != NULL) {
+            $this->db->where("pay_day.next_pay_date >='" . $this->input->post('repayment_expected_start_date') . "'");
+        }
+        
         // end disbursed loan filters .
 
         if ($this->input->post('state_id') !== NULL && is_numeric($this->input->post('state_id'))) {

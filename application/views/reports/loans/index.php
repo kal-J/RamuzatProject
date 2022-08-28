@@ -84,8 +84,8 @@ $end_date = date('d-m-Y', strtotime($fiscal_year['end_date']));
 
                         <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-charts"><i class="fa"></i> Charts </a>
                         </li>
-                        <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-disbursed_loans"><i class="fa"></i> Disbursed Loans </a>
-                        </li>
+                        <!-- <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-disbursed_loans"><i class="fa"></i> Disbursed Loans </a>
+                        </li> -->
 
 
 
@@ -95,7 +95,7 @@ $end_date = date('d-m-Y', strtotime($fiscal_year['end_date']));
                         <?php $this->view('reports/loans/in_arrears_loan_view_tab'); ?>
                         <?php $this->view('reports/loans/closed_loan_view_tab'); ?>
                         <?php $this->view('reports/loans/loan_charts'); ?>
-                        <?php $this->view('reports/loans/disbursed_loans'); ?>
+                        <!-- <?php //$this->view('reports/loans/disbursed_loans'); ?> -->
                         <?php $this->view('reports/loans/figures_in_loans'); ?>
                         <?php $this->view('reports/loans/loan_report_display'); ?>
                         <?php $this->view('reports/loans/history/tab_view'); ?>
