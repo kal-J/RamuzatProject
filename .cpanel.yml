@@ -1,4 +1,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/python/ramuzat/public_html/matrix
-    - /bin/cp .cpanel.yml $DEPLOYPATH
+    - /bin/cp -R * $DEPLOYPATH
