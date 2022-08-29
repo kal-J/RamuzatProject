@@ -324,6 +324,7 @@ var Expense_type = function () {
 
 var Client_loanModel = function () {
     var self = this;
+    self.staffs = ko.observableArray(<?php echo isset($staffs) ? json_encode($staffs) : ''; ?>);
     self.interest_amount_bf = ko.observable(0);
     self.compute_interest_from_disbursement_date = ko.observable("0");
     self.compute_interest_from_disbursement_date.subscribe(() => {

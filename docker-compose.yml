@@ -1,0 +1,89 @@
+version: "3.7"
+services:
+
+  app:
+    build:
+      args:
+        user: sammy
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: efinanci
+    container_name: efinanci-ramzat-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - efinanci
+    depends_on:
+      - db
+      - nginx
+
+  db:
+    image: mariadb
+    container_name: efinanci-ramzat-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: sacco_fms
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
+      MYSQL_USER: sacco_fms
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - efinanci
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: efinanci-ramzat-pma
+    restart: unless-stopped
+    ports:
+      - 8061:80
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+    links:
+      - db:db
+    depends_on:
+      - db
+    networks:
+      - efinanci
+
+  php_fpm:
+    build:
+      args:
+          user: sammy
+          uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    working_dir: /var/www/
+    container_name: efinanci-ramzat-php-fpm
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+    networks:
+      - efinanci
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: efinanci-ramzat-nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - efinanci
+    depends_on:
+      - db
+      - php_fpm
+
+networks:
+  efinanci:
+    driver: bridge

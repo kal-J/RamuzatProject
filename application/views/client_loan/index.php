@@ -96,6 +96,7 @@ $end_date   = date('d-m-Y', strtotime($fiscal_year['end_date']));
             <?php $this->view('client_loan/states/refinanced/table_js'); ?>
             <?php $this->view('client_loan/fees/table_js'); ?>
             <?php $this->view('client_loan/payments/table_js'); ?>
+            <?php $this->view('client_loan/loans_payable/table_js'); ?>
         };
         TableManageButtons = function() {
             "use strict";
