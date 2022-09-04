@@ -55,7 +55,7 @@
           <th>Ref #</th>
           <th>Credit Officer</th>
           <th>Client Name</th>
-          <th>Requested Amount (UGX)</th>
+          <th>Product Name</th>
           <th>Disbursed Amount (UGX)</th>
           <th>Expected Interest (UGX)</th>
           <th>Total Paid (UGX)</th>

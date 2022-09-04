@@ -13,7 +13,7 @@ class Loans_col_setup {
     protected $CI;
 
     private $columns = ["a.id",  "a.loan_no", "a.member_id", "concat(c.firstname, ' ', c.lastname, ' ', c.othernames) member_name",
-        "a.credit_officer_id","concat(d.firstname, ' ', d.lastname, ' ', d.othernames) credit_officer_name","a.approved_installments","a.approved_repayment_frequency",
+        "a.credit_officer_id","TRIM(concat(d.firstname, ' ', d.lastname, ' ', d.othernames)) credit_officer_name","a.approved_installments","a.approved_repayment_frequency",
         "a.approved_repayment_made_every","a.group_loan_id", "a.status_id", "a.loan_product_id","e.min_guarantor","e.min_collateral","e.product_name", 
         "a.requested_amount", "a.application_date","a.disbursement_date", "a.disbursement_note", "a.interest_rate","a.offset_made_every", "a.offset_period",
         "f.made_every_name AS offset_every","g.made_every_name AS approved_made_every_name", "a.grace_period", "a.repayment_frequency",
