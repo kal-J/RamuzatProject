@@ -8,12 +8,17 @@
     <div class="mt-4 py-2 d-flex justify-content-center">
 
     <div class="d-flex py-2">
-      <div class="input-group date col-4">
+      <div class="input-group date col-6">
         <label class="my-auto" for="start_date">From :&nbsp;</label>
         <input id="repayment_expected_start_date" class="col-6" autocomplete="off" placeholder="DD-MM-YYYY" value="" type="text" onkeydown="return false" name="start_date" required />
         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        <span onclick="(() => {
+                $('#repayment_expected_start_date').val('');
+              })()" 
+        role="button" style="font-size: 1.2rem; cursor: pointer;" class="d-flex align-items-center text-center px-2 text-danger border "><i class="fa fa-trash"></i></span>
       </div>
-      <div class="input-group date col-4">
+      
+      <div class="input-group date col-6">
         <label class="my-auto" for="end_date">To :&nbsp;</label>
         <input id="repayment_expected_end_date" class="col-6" autocomplete="off" placeholder="DD-MM-YYYY" value="<?php echo date('d-m-Y'); ?>" type="text" onkeydown="return false" name="end_date" required />
         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -38,12 +43,13 @@
                     <th>Ref #</th>
                     <th>Credit Officer</th>
                     <th>Client Name</th>
-                    <th>Product Name</th>
-                    <th>Requested Amount (UGX)</th>
                     <th>Disbursed Amount (UGX)</th>
                     <th>Expected Interest (UGX)</th>
                     <th>Paid Amount (UGX)</th>
-                    <th>Remaining bal (UGX)</th>
+                    <th>Principal Due</th>
+                    <th>Interest Due</th>
+                    <th>Total Amount Due</th>
+                    <th>Due Days</th>
                     <th>Disbursement Date</th>
                     <th>Next Pay Date</th>
                     <th>Loan Due Date</th>
@@ -56,6 +62,7 @@
             <tfoot>
                 <tr>
                     <th colspan="2">Totals</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

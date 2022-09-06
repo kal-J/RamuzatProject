@@ -77,7 +77,11 @@ class Client_loan_model extends CI_Model
             )";
 
         //
-        $this->amount_in_demand = "(SELECT client_loan_id, SUM(interest_amount+principal_amount) amount_in_demand, SUM(principal_amount) principal_in_demand FROM `fms_repayment_schedule` WHERE status_id <>2 AND repayment_date <= CURDATE() GROUP BY client_loan_id)";
+        $un_cleared_installments = "(SELECT SUM(lp.paid_principal) total_paid_principal, SUM(lp.paid_interest) total_paid_interest, rs.id AS schedule_id FROM fms_loan_installment_payment lp LEFT JOIN fms_repayment_schedule rs ON rs.id=lp.repayment_schedule_id WHERE lp.status_id=1 AND rs.payment_status<>1 AND rs.payment_status<>3 AND rs.repayment_date <= CURDATE() GROUP BY rs.id)";
+        
+        $this->amount_in_demand = "(SELECT client_loan_id, (SUM(interest_amount+principal_amount) - SUM(ifnull(uci.total_paid_principal,0) + ifnull(uci.total_paid_interest, 0)) ) amount_in_demand, (SUM(principal_amount) - ifnull(uci.total_paid_principal, 0)) principal_in_demand, (SUM(interest_amount) - ifnull(uci.total_paid_interest, 0) ) interest_in_demand  FROM `fms_repayment_schedule` 
+        LEFT JOIN $un_cleared_installments uci ON uci.schedule_id=fms_repayment_schedule.id
+        WHERE payment_status IN(2,4) AND status_id=1 AND repayment_date <= CURDATE() GROUP BY client_loan_id)";
 
         $this->days_in_demand = "(SELECT *, DATEDIFF(CURDATE(),repayment_date) days_in_demand FROM fms_repayment_schedule
                 WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE repayment_date <= CURDATE() AND payment_status <> 1 AND payment_status <> 3 AND status_id=1 GROUP BY client_loan_id ))";
@@ -266,7 +270,7 @@ class Client_loan_model extends CI_Model
     private function get_select()
     {
         $this->db->from('client_loan a');
-        $this->db->select('fg.group_name,mm.payment_status as mm_payment_status,checkout_request_id,status_description AS mm_status_description,mm.message AS mm_massage, installments_no, paid_installments_no, a.interest_amount_bf,e.product_name');
+        $this->db->select('fg.group_name,mm.payment_status as mm_payment_status,checkout_request_id,status_description AS mm_status_description,mm.message AS mm_massage, installments_no, paid_installments_no, a.interest_amount_bf,e.product_name,interest_in_demand');
         $this->db->join("$this->no_of_installments ins_no", 'ins_no.client_loan_id=a.id', 'left');
         $this->db->join("$this->paid_installments paid_ins_no", 'paid_ins_no.client_loan_id=a.id', 'left');
         $this->db->join('group_loan gl', 'gl.id=a.group_loan_id', 'left');
@@ -365,7 +369,7 @@ class Client_loan_model extends CI_Model
 
         $this->db->select("a.id, d.crb_card_no,loan_no,a.branch_id,loan_product_type.type_name,  member_id,b.branch_name,o.`name`,d.date_of_birth,ms.marital_status_name,
                     d.dependants_no,d.children_no,
-                    a.credit_officer_id,concat(d.firstname, ' ', d.lastname, ' ', d.othernames) credit_officer_name, f.method_description,
+                    a.credit_officer_id,concat(d.firstname, ' ', d.lastname) credit_officer_name, f.method_description,
                     group_loan_id, a.status_id ,approved_installments ,approved_repayment_frequency,approved_repayment_made_every,  a.loan_product_id,  e.min_guarantor,e.min_collateral, e.product_name, a.requested_amount, application_date,
                     disbursement_date, disbursement_note, a.interest_rate, a.offset_made_every,offset_period,g.made_every_name AS offset_every, grace_period, a.repayment_frequency,repayment_made_every.made_every_name, a.repayment_made_every,
                     installments, a.penalty_calculation_method_id, a.penalty_tolerance_period, penalty_rate_charged_per, penalty_rate, link_to_deposit_account,
@@ -436,7 +440,7 @@ class Client_loan_model extends CI_Model
 
         $this->db->select("a.id, d.crb_card_no,loan_no, loan_product_type.type_name,  member_id,b.branch_name,a.branch_id,o.`name`,d.date_of_birth,ms.marital_status_name,
                     d.dependants_no,d.children_no,
-                    a.credit_officer_id,concat(d.firstname, ' ', d.lastname, ' ', d.othernames) credit_officer_name, f.method_description,
+                    a.credit_officer_id,concat(d.firstname, ' ', d.lastname) credit_officer_name, f.method_description,
                     group_loan_id, a.status_id ,approved_installments ,approved_repayment_frequency,approved_repayment_made_every,  a.loan_product_id,  e.min_guarantor,e.min_collateral, e.product_name, a.requested_amount, application_date,
                     disbursement_date, disbursement_note, a.interest_rate, a.offset_made_every,offset_period,g.made_every_name AS offset_every, grace_period, a.repayment_frequency,repayment_made_every.made_every_name, a.repayment_made_every,
                     installments, ifnull(a.penalty_calculation_method_id, e.penalty_calculation_method_id) penalty_calculation_method_id, ifnull(a.penalty_tolerance_period, e.penalty_tolerance_period) penalty_tolerance_period, ifnull(a.penalty_rate_charged_per, e.penalty_rate_chargedPer) penalty_rate_charged_per, penalty_rate, link_to_deposit_account,

@@ -14,14 +14,11 @@
             "language": {
               processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
             },
-            //"ordering": true,
-            "serverSide": true,
+            
             "deferRender": true,
             "searching": true,
             "paging": true,
             "responsive": true,
-            //"columnDefs": [{"targets":3, "type":"date-eu"}],
-            //"bInfo": true,
             "dom": '<"html5buttons"B>lTfgirtp',
             "buttons": <?php if(in_array('6', $client_loan_privilege)){ ?> getBtnConfig('<?php echo $title; ?>'), <?php } else { echo "[],"; } ?>
             "ajax":{
@@ -56,21 +53,13 @@
                 $.each([4,5,6,7,8], function(key,val){
                   if(val==8){
 
-                    var current_page_expected_val=((parseFloat(api.column(5, {page: 'current'}).data().sum()) + parseFloat(api.column(6, {page: 'current'}).data().sum())) - parseFloat(api.column(7, {page: 'current'}).data().sum()));
+                    var current_page_expected_val=((parseFloat(api.column(6, {page: 'current'}).data().sum()) + parseFloat(api.column(7, {page: 'current'}).data().sum())) );
 
-                    var all_page_expected_val=((parseFloat(api.column(5).data().sum()) + parseFloat(api.column(6).data().sum())) - parseFloat(api.column(7).data().sum()));
+                    var all_page_expected_val=((parseFloat(api.column(6).data().sum()) + parseFloat(api.column(7).data().sum())) );
 
 
                     $(api.column(val).footer()).html(curr_format(round(current_page_expected_val,2)) +"<br>["+curr_format(round(all_page_expected_val,2)) +"]");
 
-                  }else if(val==7){
-
-                    var current_page_expected_val=(parseFloat(api.column(7, {page: 'current'}).data().sum()) -parseFloat(api.column(6, {page: 'current'}).data().sum()));
-
-                    var all_page_amount = (parseFloat(api.column(7).data().sum()) -parseFloat(api.column(6).data().sum()));
-
-                    $(api.column(val).footer()).html(curr_format(round(current_page_expected_val,2)) +"<br>["+curr_format( round(all_page_amount,2)) +"]");
-                    
                   }else{                  
                     var current_page_amount = api.column(val, {page: 'current'}).data().sum();
                     var all_page_amount = api.column(val).data().sum();
@@ -90,7 +79,7 @@
 
               },
               "columnDefs": [
-                { "searchable": true, "sortable": true }
+                { "searchable": true, "sortable": true, 'targets' : [0,1,2,3,4,5,6,7,8,9,10,11]  }
               ],
             "columns":[
                   {data: 'loan_no', render: function (data, type, full, meta) {
@@ -104,17 +93,13 @@
                   },
                   { data: "credit_officer_name",render:function( data, type, full, meta ){
                       return data;
-                    }  },
+                    },
+                  },
                   
                   { data: "member_name",render:function( data, type, full, meta ){
                       return (data&&full.group_name)?full.group_name+' [ '+data+' ]':(!data&&full.group_name)?full.group_name:data;
                     }  },
-                  { data: "product_name",render:function( data, type, full, meta ){
-                      return data
-                    }  },
-                  { data: "requested_amount", render:function( data, type, full, meta ){
-                  return curr_format(data*1);
-                    } },
+                 
                   { data: "expected_principal", render:function( data, type, full, meta ){
                   return curr_format(round(data,0));
                     } },
@@ -124,10 +109,21 @@
                   { data: "paid_amount", render:function( data, type, full, meta ){
                   return curr_format(data*1);
                     } },
-                  
-                  { data: "expected_interest" , render:function( data, type, full, meta ){
-                  return full.paid_amount ? curr_format( round(((parseFloat(full.expected_principal)+parseFloat(data))-parseFloat(full.paid_amount)) ,2)):curr_format( round((parseFloat(full.expected_principal)+parseFloat(data)),2));
+                  { data: "principal_in_demand", render:function( data, type, full, meta ){
+                  return curr_format(data*1);
                     } },
+                  { data: "interest_in_demand", render:function( data, type, full, meta ){
+                  return curr_format(data*1);
+                    } },
+                  
+                  { data: "principal_in_demand" , render:function( data, type, full, meta ){
+                        return curr_format(parseFloat(data) + parseFloat(full.interest_in_demand));
+                    } 
+                  },
+                  { data: "days_in_demand" , render:function( data, type, full, meta ){
+                        return data;
+                    } 
+                  },
                   { data: "action_date", render:function( data, type, full, meta ){
                   return (data)?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'None';;
                     }  },

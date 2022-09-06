@@ -51,7 +51,7 @@
               "order": [[ 12, "desc" ]],
               "footerCallback": function (tfoot, data, start, end, display) {
                     var api = this.api();
-                $.each([3,4,5,6,7,8,9,10], function(key,val){
+                $.each([4,5,6,7,8,9,10], function(key,val){
                   if(val==10){
 
                     var current_page_expected_val=(parseFloat(api.column(5, {page: 'current'}).data().sum()) + parseFloat(api.column(4, {page: 'current'}).data().sum()));
@@ -100,8 +100,8 @@
                   { data: "member_name",render:function( data, type, full, meta ){
                       return (data&&full.group_name)?full.group_name+' [ '+data+' ]':(!data&&full.group_name)?full.group_name:data;
                     }  },
-                  { data: "requested_amount", render:function( data, type, full, meta ){
-                  return curr_format(data*1);
+                  { data: "product_name", render:function( data, type, full, meta ){
+                  return data;
                     } },
                   { data: "expected_principal", render:function( data, type, full, meta ){
                   return curr_format(round(data,0));

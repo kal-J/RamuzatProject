@@ -179,7 +179,9 @@ class Client_loan extends CI_Controller
     {
         $data['draw'] = intval($this->input->post('draw'));
         $payable_loans = $this->client_loan_model->get_loan_payable_today();
-        
+        $filteredl_records_cnt = $this->client_loan_model->get_found_rows();
+        $data['recordsTotal'] = $this->client_loan_model->get2();
+        $data['recordsFiltered'] = current($filteredl_records_cnt);
         $data['data'] = $payable_loans;
         echo json_encode($data);
       
