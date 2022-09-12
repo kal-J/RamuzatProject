@@ -197,10 +197,10 @@ foreach ($data as $loan_detail) {
                                 <td colspan="3">No collateral security was provided by the applicant</td>
                             </tr>
                             <?php } else {
-                            foreach ($loan_detail['loan_collateral'] as $key => $collateral) {  ?>
+                            foreach ($loan_detail['loan_collateral'] as $key => $collateral) { ?>
                                 <tr>
                                     <td><?php echo $key + 1; ?></td>
-                                    <td><?php echo $collateral['item_name']; ?></td>
+                                    <td><?php echo isset($collateral['collateral_type_name']) ? $collateral['collateral_type_name'] : ''; ?></td>
                                     <td><?php echo number_format($collateral['item_value'], 2); ?></td>
                                 </tr>
                         <?php }

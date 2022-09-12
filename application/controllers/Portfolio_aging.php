@@ -240,7 +240,8 @@ class Portfolio_aging extends CI_Controller
             //        $action_button = null;
             //    }
 
-            array_push($all_portfolio_details, [$aging_name . " ( " . $start_range . "-" . $end_range . " ) " => ['number_of_accounts' => count($all_portfolio_range_data[$aging_name]), 'sum_outstanding_loan_portfolio' => $sum_outstanding_loan_portfolio, 'provision_percentage' => $provision_percentage, 'required_provision_amount' => $required_provision_amount, 'action_button' => $action_button]]);
+            /* array_push($all_portfolio_details, [$aging_name . " ( " . $start_range . "-" . $end_range . " ) " => ['number_of_accounts' => count($all_portfolio_range_data[$aging_name]), 'sum_outstanding_loan_portfolio' => $sum_outstanding_loan_portfolio, 'provision_percentage' => $provision_percentage, 'required_provision_amount' => $required_provision_amount, 'action_button' => $action_button]]); */
+            array_push($all_portfolio_details, [$aging_name . " ( " . $start_range . "-" . $end_range . " ) " => ['number_of_accounts' => count($all_portfolio_range_data[$aging_name]), 'sum_outstanding_loan_portfolio' => $sum_outstanding_loan_portfolio  ]]);
         }
         $_POST['end_date'] = date('y-m-d');
 
