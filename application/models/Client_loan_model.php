@@ -571,7 +571,7 @@ class Client_loan_model extends CI_Model
 
         if ($this->input->post('state_id') == 13 || $this->input->post('report') == 'true') {
             $loans_with_last_repayment_date = "(SELECT *,DATEDIFF(CURDATE(),repayment_date) days_in_arrears FROM fms_repayment_schedule
-                WHERE id in ( SELECT MAX(id) from fms_repayment_schedule WHERE status_id=1 GROUP BY client_loan_id ))";
+                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status=2 OR payment_status=4 AND repayment_date < CURDATE()  GROUP BY client_loan_id ))";
             $this->db->join("$loans_with_last_repayment_date repayment_schedule1", 'repayment_schedule1.client_loan_id=a.id', 'left');
         }
 

@@ -29,7 +29,7 @@
              "data": function(d){
               //d.date_to = moment(end_date,'X').format('YYYY-MM-DD');
               //d.date_from = moment(start_date,'X').format('YYYY-MM-DD');
-              d.state_id = 7;
+              d.state_ids = [7,13];
               <?php if(isset($user['id'])){ ?>
               d.client_id = <?php echo $user['id'] ?>; 
               <?php } ?>

@@ -87,6 +87,28 @@ if(empty($data['module_list'])){
                                 <?php } ?>
                             </ul>
                         </li>
+
+                        <li class="<?php  echo ($this->uri->segment(1) == 'loan_reports' || $this->uri->segment(1) == 'portfolio_aging')?'active':'';?>">
+                            <a href="#"><i class="fa fa-line-chart"></i> <span class="nav-label">Loan Reports  </span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li>
+                                    <a href="<?php echo site_url("loan_reports"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">In-Arrears</span></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url("portfolio_aging"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">In-Arrears By Age</span></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url("loan_reports/written_off"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Written Off</span></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url("loan_reports/member_loan_history"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Repayment History</span></a>
+                                </li>
+                                
+                                
+                                
+                            </ul>
+                        </li>
+
                       <?php }  if(in_array('8', $modules)){  ?>
                     
                         <li class="<?php  echo (($this->uri->segment(1) == 'accounts')||($this->uri->segment(1) == 'fees')||($this->uri->segment(1) == 'inventory')||($this->uri->segment(1) == 'journal_transaction'))?'active':'';?>">

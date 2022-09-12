@@ -796,11 +796,11 @@ class Repayment_schedule_model extends CI_Model
     public function inarrears_loans()
     {
         $loans_with_last_repayment_date = "(SELECT * FROM fms_repayment_schedule
-                WHERE id in ( SELECT MAX(id) from fms_repayment_schedule WHERE status_id=1 GROUP BY client_loan_id ))";
+                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status=2 OR  payment_status=4 AND repayment_date < CURDATE() GROUP BY client_loan_id ))";
         $this->db->select('*');
         $this->db->from("$loans_with_last_repayment_date loans_with_last_repayment_date");
-        $this->db->join("$this->max_state_id loan_state", "loan_state.client_loan_id=loans_with_last_repayment_date.client_loan_id");
-        $this->db->where("loan_state.state_id=7 AND repayment_date < CURDATE() AND (payment_status=4 OR  payment_status=2)");
+        $this->db->join("$this->max_state_id loan_state", "loan_state.client_loan_id=loans_with_last_repayment_date.client_loan_id", "LEFT");
+        $this->db->where("loan_state.state_id=7");
         $query = $this->db->get();
         return $query->result_array();
     }
