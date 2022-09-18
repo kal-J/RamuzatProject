@@ -101,7 +101,10 @@ if(empty($data['module_list'])){
                                     <a href="<?php echo site_url("loan_reports/written_off"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Written Off</span></a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url("loan_reports/member_loan_history"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Repayment History</span></a>
+                                    <a href="<?php echo site_url("loan_reports/member_loan_history"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Loan History</span></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url("loan_reports/repayments"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Repayments</span></a>
                                 </li>
                                 
                                 

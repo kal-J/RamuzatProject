@@ -15,7 +15,7 @@
             "language": {
               processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
             },
-            "serverSide": true,
+            //"serverSide": true,
             "deferRender": true,
             "searching": true,
             "paging": true,
@@ -39,6 +39,7 @@
               }
               },
               "order": [[ 12, "desc" ]],
+              
               "footerCallback": function (tfoot, data, start, end, display) {
                     var api = this.api();
                 $.each([2,3,4,5,6,7], function(key,val){
@@ -72,6 +73,7 @@
                   }
 
               },
+              
             "columns":[
 
                   {data: 'loan_no', render: function (data, type, full, meta) {
@@ -105,14 +107,14 @@
                   { data: "expected_interest" , render:function( data, type, full, meta ){
                   return (full.paid_amount)?curr_format( round(((parseFloat(full.expected_principal)+parseFloat(data))-parseFloat(full.paid_amount)) ,0)):curr_format( round((parseFloat(full.expected_principal)+parseFloat(data)),0));
                     } },
-                  { data: "action_date", render:function( data, type, full, meta ){
-                  return (data)?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'None';;
+                  { data: "loan_active_date", render:function( data, type, full, meta ){
+                  return (data)?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'None';
                     }  },
                   { data: "next_pay_date", render:function( data, type, full, meta ){
-                  return (data)?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'None';;
+                  return (data)?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'None';
                     }  },
                   { data: "last_pay_date", render:function( data, type, full, meta ){
-                  return (data)?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'None';;
+                  return (data)?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'None';
                     }  },
                   { data: "id", render:function ( data, type, full, meta ) {
                   var ret_txt ="<div class='btn-group'>";
