@@ -12,7 +12,7 @@ class Client_loan_model extends CI_Model
     private $more_columns = [
         "a.id",  "a.loan_no", "a.branch_id", "a.member_id", "concat(c.firstname, ' ', c.lastname, ' ', c.othernames) member_name",
         "a.credit_officer_id", "concat(d.firstname, ' ', d.lastname, ' ', d.othernames) credit_officer_name", "a.approved_installments", "a.approved_repayment_frequency",
-        "a.approved_repayment_made_every", "a.group_loan_id", "a.status_id", "a.loan_product_id", "e.min_guarantor", "e.min_collateral", "e.product_name","loan_product.product_name",
+        "a.approved_repayment_made_every", "a.group_loan_id", "a.status_id", "a.loan_product_id", "e.min_guarantor", "e.min_collateral", "e.product_name", "loan_product.product_name",
         "a.requested_amount", "a.application_date", "a.disbursement_date", "a.disbursement_note", "a.interest_rate", "a.offset_made_every", "a.offset_period",
         "f.made_every_name AS offset_every", "g.made_every_name AS approved_made_every_name", "a.grace_period", "a.repayment_frequency",
         "repayment_made_every.made_every_name", "a.repayment_made_every", "a.installments", "a.penalty_calculation_method_id", "a.penalty_tolerance_period",
@@ -31,6 +31,10 @@ class Client_loan_model extends CI_Model
         $this->table = 'client_loan';
         $this->max_state_id = "(SELECT client_loan_id,state_id,comment,action_date FROM fms_loan_state
                 WHERE id in ( SELECT MAX(id) from fms_loan_state GROUP BY client_loan_id ) )";
+
+        $this->active_state = "(SELECT client_loan_id,comment,action_date AS loan_active_date FROM fms_loan_state
+                WHERE id in ( SELECT MIN(id) from fms_loan_state WHERE state_id=7 GROUP BY client_loan_id ) )";
+
         $this->paid_amount = "(SELECT client_loan_id,SUM(paid_interest+paid_principal) AS paid_amount,SUM(paid_principal) AS paid_principal,SUM(paid_interest) AS paid_interest FROM fms_loan_installment_payment WHERE fms_loan_installment_payment.status_id=1 GROUP BY client_loan_id)";
         $this->pay_day = "(SELECT MIN(`repayment_date`) next_pay_date,MAX(`repayment_date`) last_pay_date,`client_loan_id` FROM fms_repayment_schedule WHERE `status_id`=1 AND `payment_status` IN (4,2) GROUP BY client_loan_id)";
         $this->approvals = "(SELECT client_loan_id,COUNT(client_loan_id) AS approvals FROM fms_loan_approval WHERE status_id=1 GROUP BY client_loan_id)";
@@ -78,7 +82,7 @@ class Client_loan_model extends CI_Model
 
         //
         $un_cleared_installments = "(SELECT SUM(lp.paid_principal) total_paid_principal, SUM(lp.paid_interest) total_paid_interest, rs.id AS schedule_id FROM fms_loan_installment_payment lp LEFT JOIN fms_repayment_schedule rs ON rs.id=lp.repayment_schedule_id WHERE lp.status_id=1 AND rs.payment_status<>1 AND rs.payment_status<>3 AND rs.repayment_date <= CURDATE() GROUP BY rs.id)";
-        
+
         $this->amount_in_demand = "(SELECT client_loan_id, (SUM(interest_amount+principal_amount) - SUM(ifnull(uci.total_paid_principal,0) + ifnull(uci.total_paid_interest, 0)) ) amount_in_demand, (SUM(principal_amount) - ifnull(uci.total_paid_principal, 0)) principal_in_demand, (SUM(interest_amount) - ifnull(uci.total_paid_interest, 0) ) interest_in_demand  FROM `fms_repayment_schedule` 
         LEFT JOIN $un_cleared_installments uci ON uci.schedule_id=fms_repayment_schedule.id
         WHERE payment_status IN(2,4) AND status_id=1 AND repayment_date <= CURDATE() GROUP BY client_loan_id)";
@@ -270,7 +274,7 @@ class Client_loan_model extends CI_Model
     private function get_select()
     {
         $this->db->from('client_loan a');
-        $this->db->select('fg.group_name,mm.payment_status as mm_payment_status,checkout_request_id,status_description AS mm_status_description,mm.message AS mm_massage, installments_no, paid_installments_no, a.interest_amount_bf,e.product_name,interest_in_demand');
+        $this->db->select('fg.group_name,mm.payment_status as mm_payment_status,checkout_request_id,status_description AS mm_status_description,mm.message AS mm_massage, installments_no, paid_installments_no, a.interest_amount_bf,e.product_name,interest_in_demand, active_state.loan_active_date');
         $this->db->join("$this->no_of_installments ins_no", 'ins_no.client_loan_id=a.id', 'left');
         $this->db->join("$this->paid_installments paid_ins_no", 'paid_ins_no.client_loan_id=a.id', 'left');
         $this->db->join('group_loan gl', 'gl.id=a.group_loan_id', 'left');
@@ -283,6 +287,7 @@ class Client_loan_model extends CI_Model
         $this->db->join('repayment_made_every f', 'f.id=a.offset_made_every', "left");
         $this->db->join('accounts_chart ac', 'ac.id=e.fund_source_account_id', "left");
         $this->db->join("$this->max_state_id loan_state", 'loan_state.client_loan_id=a.id', "left");
+        $this->db->join("$this->active_state active_state", 'active_state.client_loan_id=a.id', "left");
         $this->db->join("state", 'state.id=loan_state.state_id', 'left');
         $this->db->join("$this->paid_amount rsdl", 'rsdl.client_loan_id=a.id', 'left');
         $this->db->join("client_loan b", 'b.id=a.linked_loan_id AND a.topup_application =1', 'left');
@@ -295,7 +300,7 @@ class Client_loan_model extends CI_Model
         $this->db->join("$this->days_in_demand days_in_demand", 'days_in_demand.client_loan_id=a.id', 'left');
         $this->db->join('payment_details', 'a.id =payment_details.client_loan_id AND payment_details.status_id =1', 'left');
         $this->db->join('payment_mode', 'a.preferred_payment_id =payment_mode.id ', 'left');
-        
+
         if (isset($_SESSION['role']) && ($_SESSION['role'] == 'Credit Officer' || $_SESSION['role_id'] == 4)) {
             $this->db->where('a.credit_officer_id', $_SESSION['staff_id']);
         }
@@ -332,7 +337,7 @@ class Client_loan_model extends CI_Model
             if (isset($search['value']) && $search['value'] != "") {
                 $this->db->group_start();
                 for ($i = 0; $i < count($this->columns); $i++) {
-                   
+
                     if (isset($all_columns[$i]['searchable']) && $all_columns[$i]['searchable'] == "true") {
                         $column = preg_replace($this->alias_only_pattern, '', $this->columns[$i]);
                         $this->db->or_like($column, $search['value']);
@@ -601,21 +606,21 @@ class Client_loan_model extends CI_Model
 
 
         if ($this->input->post('date_to_filter') != NULL) {
-            $this->db->where("loan_state.action_date <='" . $this->input->post('date_to_filter') . "'");
+            $this->db->where("loan_active_date <='" . $this->input->post('date_to_filter') . "'");
         }
-        
+
         if ($this->input->post('date_from_filter') != NULL) {
-            $this->db->where("loan_state.action_date >='" . $this->input->post('date_from_filter') . "'");
+            $this->db->where("loan_active_date >='" . $this->input->post('date_from_filter') . "'");
         }
-        
+
         if ($this->input->post('repayment_expected_end_date') != NULL) {
             $this->db->where("pay_day.next_pay_date <='" . $this->input->post('repayment_expected_end_date') . "'");
         }
-        
+
         if ($this->input->post('repayment_expected_start_date') != NULL) {
             $this->db->where("pay_day.next_pay_date >='" . $this->input->post('repayment_expected_start_date') . "'");
         }
-        
+
         // end disbursed loan filters .
 
         if ($this->input->post('state_id') !== NULL && is_numeric($this->input->post('state_id'))) {
@@ -726,7 +731,7 @@ class Client_loan_model extends CI_Model
         }
 
         $query = $this->db->get();
-        
+
         return $query->result_array();
     }
 
@@ -1346,7 +1351,8 @@ class Client_loan_model extends CI_Model
         }
     }
 
-    public function get_interest_brought($id) {
+    public function get_interest_brought($id)
+    {
         $this->db->select('interest_amount_bf');
         $this->db->from('fms_client_loan');
         $this->db->where('id', $id);
@@ -1354,8 +1360,9 @@ class Client_loan_model extends CI_Model
         $result = $query->row_array();
         return isset($result['interest_amount_bf']) ? $result['interest_amount_bf'] : 0;
     }
-    
-    public function get_loan_payable_today(){
+
+    public function get_loan_payable_today()
+    {
         $all_columns = $this->input->post('columns');
 
         $this->db->select("SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $this->columns)), FALSE);

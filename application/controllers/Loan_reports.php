@@ -256,6 +256,96 @@ class Loan_reports extends CI_Controller
         $this->template->publish();
     }
     
+    public function repayments($group_loan_id = false)
+    {
+        $this->load->model('transactionChannel_model');
+        $this->load->model("loan_doc_type_model");
+
+        $this->load->model('user_income_type_model');
+        $this->load->model('user_expense_type_model');
+        $this->load->model('loan_product_fee_model');
+        $this->load->model('RolePrivilege_model');
+        $this->load->model('dashboard_model');
+        $this->load->model('branch_model');
+        $this->load->model('organisation_model');
+        // $this->load->model('loan_approval_setting_model');
+        $this->load->library("num_format_helper");
+
+        $this->data['case2'] = 'client_loan';
+        $this->data['org'] = $this->organisation_model->get($_SESSION['organisation_id']);
+        $this->data['fiscal_year'] = $this->dashboard_model->get_current_fiscal_year($_SESSION['organisation_id'], 1);
+        // $this->data['approval_info']=$this->loan_approval_setting_model->get();
+        if ($group_loan_id == false) {
+            $this->data['type'] = $this->data['sub_type'] = 'client_loan';
+            $this->data['title'] = $this->data['sub_title'] = $this->lang->line('cont_client_name') . ' Loans';
+            $this->data['modal_title'] = 'Individual Loan';
+            $this->data['members'] = $this->member_model->get_member_by_user_id("fms_member.status_id=1");
+            $this->data['loanProducts'] = $this->loan_product_model->get_product("loan_product.status_id=1 AND loan_product.available_to_id=3 OR loan_product.available_to_id=1");
+            $this->data['state_totals'] = $this->client_loan_model->state_totals();
+        } else {
+            $this->load->model('group_loan_model');
+            $this->load->model('Group_model');
+            $this->data['group_id'] = $group_loan_id;
+            $this->data['type'] = $this->data['sub_type'] = 'group_loan';
+            $this->data['modal_title'] = 'Group Loan';
+
+            $this->data['state_totals'] = $this->client_loan_model->state_totals("a.group_loan_id =" . $group_loan_id);
+            $this->data['group_loan_details'] = $this->group_loan_model->get($group_loan_id);
+            $this->data['title'] = $this->data['sub_title'] = $this->data['group_loan_details']['group_loan_no'] . ' - ' . $this->data['group_loan_details']['group_name'];
+            $this->data['groups'] = $this->Group_model->get_group($this->data['group_loan_details']['group_id']);
+
+            $this->data['loanProducts'] = $this->loan_product_model->get_product($this->data['group_loan_details']['loan_product_id']);
+            $this->data['loan_type'] = $this->miscellaneous_model->get_loan_type();
+            $this->data['members'] = $this->member_model->get_member_by_user_id("fms_member.id IN (SELECT member_id from fms_group_member WHERE status_id=1 AND group_id =" . $this->data['group_loan_details']['group_id'] . " AND member_id NOT IN  ( SELECT member_id from fms_client_loan WHERE group_loan_id = " . $group_loan_id . " ) AND status_id=1)");
+        }
+        $this->data['module_list'] = $this->RolePrivilege_model->get_user_modules($this->session->userdata('staff_id'));
+        $this->data['modules'] = array_column($this->data['module_list'], "module_id");
+
+        $this->data['loan_doc_types'] = $this->loan_doc_type_model->get();
+        $this->data['payment_modes'] = $this->miscellaneous_model->get_payment_mode('id <> 3');
+        $this->data['relationship_types'] = $this->miscellaneous_model->get_relationship_type();
+        $this->data['collateral_types'] = $this->loan_collateral_model->get_collateral_type();
+
+        $this->data['all_collaterals'] = $this->member_collateral_model->get_not_attached_to_active_loan('status_id=1');
+
+        $this->data['guarantors'] = $this->loan_guarantor_model->get_guarantor_savings("(ifnull( deposit ,0) ) - ( ifnull( withdraw ,0) + 
+        ifnull( transfer ,0) +ifnull(charges, 0) + ifnull( amount_locked, 0) ) >= 0 and j.state_id = 7 AND a.client_type=1");
+        $this->data['savings_accs'] = $this->loan_guarantor_model->get_guarantor_savings("(ifnull( deposit ,0) ) - ( ifnull( withdraw ,0) + ifnull( transfer ,0) +ifnull(charges, 0)+ ifnull( amount_locked, 0) ) > 0 and j.state_id = 7 AND a.client_type=1");
+        $this->data['share_guarantors'] = $this->shares_model->get("share_state.state_id = 7");
+
+        $this->data['share_accs'] = $this->shares_model->get("share_state.state_id = 7");
+        $this->data['income_items'] = $this->user_income_type_model->get();
+        $this->data['expense_items'] = $this->user_expense_type_model->get();
+        $this->data['available_loan_fees'] = $this->loan_product_fee_model->get();
+        $this->data['pay_with'] = $this->accounts_model->get_pay_with("10");
+
+        //print_r($this->data['pay_with']);die();
+
+        // $this->data['installments'] = $this->repayment_schedule_model->get('payment_status <> 1 AND repayment_schedule.status_id=1');
+        $this->data['active_loans'] = $this->client_loan_model->get_loans('loan_state.state_id=7 OR loan_state.state_id=13 OR loan_state.state_id=12');
+        //print_r($this->data['active_loans']);die();
+        $this->data['account_list'] = $this->accounts_model->get();
+
+        $this->data['available_loan_range_fees'] = $this->loan_fees_model->get_range_fees();
+        $this->data['staffs'] = $this->Staff_model->get_registeredby("status_id=1");
+        $this->data['penalty_calculation_method'] = $this->penalty_calculation_method_model->get();
+        $this->data['repayment_made_every'] = $this->miscellaneous_model->get();
+        //$this->data['new_loan_no'] = $this->client_loan_model->get_id();
+        $this->data['new_loan_acc_no'] = $this->num_format_helper->new_loan_acc_no();
+        $this->template->title = $this->data['title'];
+        $this->data['tchannel'] = $this->transactionChannel_model->get();
+        $this->data['org'] = $this->organisation_model->get($_SESSION['organisation_id']);
+        $this->data['branch'] = $this->branch_model->get($_SESSION['branch_id']);
+        $rand_no = mt_rand(1000, 1200);
+        $neededjs = array("plugins/select2/select2.full.min.js", "plugins/validate/jquery.validate.min.js", "plugins/daterangepicker/daterangepicker.js", "plugins/steps/jquery.steps.min.js?v=$rand_no", "plugins/printjs/print.min.js", "plugins/autoNumeric/autoNumeric.min.js", "node_modules/sweetalert2/dist/sweetalert2.all.min.js"); //,"plugins/steps/jquery.steps.fix.js"
+        $neededcss = array("plugins/select2/select2.min.css", "plugins/daterangepicker/daterangepicker-bs3.css", "plugins/steps/jquery.steps.css");
+
+        $this->helpers->dynamic_script_tags($neededjs, $neededcss);
+        $this->template->content->view('loan_reports/repayments', $this->data);
+        // Publish the template
+        $this->template->publish();
+    }
+    
     public function member_loan_history()
     {
         $this->load->model('Staff_model');
