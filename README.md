@@ -16,6 +16,7 @@ A system for managing account and financial services
 
 * Clone the project from the repository on Github
 * Create config.php and database.php files in the application/config folder
+* Create cache directory with contents footer.php header.php files under myassets root folder
 
 ### Executing program
 
