@@ -68,7 +68,8 @@
                 },
               rowCallback: function (row, data) {
                   <!-- defaulting installment -->
-                  if(data.unpaid_installments >= 1){
+                  
+                  if(data.days_in_demand > 0){
                       $(row).addClass('text-danger');
                   }
 
