@@ -106,6 +106,9 @@ if(empty($data['module_list'])){
                                 <li>
                                     <a href="<?php echo site_url("loan_reports/repayments"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Repayments</span></a>
                                 </li>
+                                <li>
+                                    <a href="<?php echo site_url("loan_reports/outstanding_balances"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Outstanding</span></a>
+                                </li>
                                 
                                 
                                 
