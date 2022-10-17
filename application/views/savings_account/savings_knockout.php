@@ -363,8 +363,8 @@
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                    savingsModel.withdraw_fees(response.withdraw_fees);
-                    savingsModel.deposit_fees(response.deposit_fees);
+                    savingsModel.withdraw_fees(response?.withdraw_fees);
+                    savingsModel.deposit_fees(response?.deposit_fees);
             },
             fail: function (jqXHR, textStatus, errorThrown) {
                 console.log("Network error. Data could not be loaded." + errorThrown + " " + textStatus);

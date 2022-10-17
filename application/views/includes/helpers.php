@@ -532,23 +532,23 @@
           reverseButtons: true,
           allowOutsideClick:false,
           showLoaderOnConfirm: true,
-       }).then((result) => {
-          if (result.isConfirmed) {
-            $("body").addClass("loading"); 
-
-            $.ajax({
+          preConfirm: () => {
+            $(Swal.getCancelButton()).hide()
+            return new Promise((resolve, reject) => {
+                $.ajax({
                 url: $form.attr('action'),
                 type: 'POST',
                 data: formData,
-                async: false,
+                dataType: 'json',
                 cache: false,
                 contentType: false,
                 processData: false,
-                dataType: 'json',
                 beforeSend: function () {
                     enableDisableButton(form, true);
                 },
                 success: function (feedback) {
+                    $(Swal.getCancelButton()).show();
+                    Swal.hideLoading()
                     if (feedback.success) {
                         if (isNaN(parseInt($form.attr('id')))) {
                             $modal = $form.parents('div.modal');
@@ -569,23 +569,26 @@
                         }, 1000);
                         $("body").removeClass("loading"); 
                         toastr.success(feedback.message, "Success");
+                        resolve(feedback.success)
                     } else {
                         $("body").removeClass("loading");
                         toastr.warning(feedback.message, "Failure!");
+                        reject(false)
                     }
                     //enableDisableButton(form, false);
                 }, error: function (jqXHR, textStatus, errorThrown) {
+                    $(Swal.getCancelButton()).show();
+                    Swal.hideLoading()
                     $("body").removeClass("loading");
                     network_error(jqXHR, textStatus, errorThrown, form);
+                    reject(false)
                 },
-                complete: function () {
-                    enableDisableButton(form, false);
-                }
             });
-           
-          } else  {
-            $("body").removeClass("loading");
-          }
+            })
+
+        },
+       }).then((result) => {
+          
         });
 
     }//End of the saveData2 function
