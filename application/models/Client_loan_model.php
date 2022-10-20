@@ -612,9 +612,16 @@ class Client_loan_model extends CI_Model
             $this->db->where("a.application_date >='" . $this->input->post('end_date_at') . "'");
         }
 
-
-
         if (($this->input->post('date_to_filter') != NULL) || ($this->input->post('date_from_filter') != NULL) ) {
+            $this->db->where("loan_state.state_id IN(7,8,9,10,11,12,13,14,15)");
+            $this->db->group_by('a.id'); 
+        }
+
+        if (($this->input->post('disbursed_date_to_filter') != NULL) || ($this->input->post('disbursed_date_from_filter') != NULL) ) {
+            $disbursed_date_to = $this->input->post('disbursed_date_to_filter');
+            $disbursed_date_from = $this->input->post('disbursed_date_from_filter');
+            $this->db->where("active_state.loan_active_date>='{$disbursed_date_from}'");
+            $this->db->where("active_state.loan_active_date<='{$disbursed_date_to}'");
             $this->db->where("loan_state.state_id IN(7,8,9,10,11,12,13,14,15)");
             $this->db->group_by('a.id'); 
         }

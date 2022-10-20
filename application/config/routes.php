@@ -53,6 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['spreadsheet'] = 'PhpspreadsheetController';
 $route['spreadsheet/import'] = 'PhpspreadsheetController/import';
 $route['spreadsheet/export'] = 'PhpspreadsheetController/export';
+$route['loan_portfolio_report/credit-officers'] = 'loan_portfolio_report/credit_officers';
 
 $route['default_controller'] = 'Welcome';
 $route['404_override'] = 'my404';
