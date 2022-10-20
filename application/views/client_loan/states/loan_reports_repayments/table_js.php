@@ -38,7 +38,7 @@
               if(date_from) {
                 d.date_from_filter = moment(date_from,'DD-MM-YYYY').format('YYYY-MM-DD');
               }
-              d.state_ids = [7,8,9,10,11,12,13,14,15];
+              //d.state_ids = [7,8,9,10,11,12,13,14,15];
               d.credit_officer_id = $("#selected_credit_officer").val();
               <?php if(isset($user['id'])){ ?>
               d.client_id = <?php echo $user['id'] ?>; 

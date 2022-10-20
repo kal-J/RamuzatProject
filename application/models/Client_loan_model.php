@@ -34,8 +34,16 @@ class Client_loan_model extends CI_Model
 
         $this->active_state = "(SELECT client_loan_id,comment,action_date AS loan_active_date FROM fms_loan_state
                 WHERE id in ( SELECT MIN(id) from fms_loan_state WHERE state_id=7 GROUP BY client_loan_id ) )";
-
+        
         $this->paid_amount = "(SELECT client_loan_id,SUM(paid_interest+paid_principal) AS paid_amount,SUM(paid_principal) AS paid_principal,SUM(paid_interest) AS paid_interest FROM fms_loan_installment_payment WHERE fms_loan_installment_payment.status_id=1 GROUP BY client_loan_id)";
+
+         if ( ($this->input->post('date_to_filter') != NULL) || ($this->input->post('date_from_filter') != NULL) )  {
+            $date_to = $this->input->post('date_to_filter') ? $this->input->post('date_to_filter') : 1;
+            $date_from = $this->input->post('date_from_filter') ? $this->input->post('date_from_filter') : 1;
+            $this->paid_amount = "(SELECT client_loan_id,SUM(paid_interest+paid_principal) AS paid_amount,SUM(paid_principal) AS paid_principal,SUM(paid_interest) AS paid_interest FROM fms_loan_installment_payment WHERE fms_loan_installment_payment.status_id=1 AND fms_loan_installment_payment.payment_date >= '{$date_from}' AND fms_loan_installment_payment.payment_date <= '{$date_to}' GROUP BY client_loan_id)";
+        } 
+        
+
         $this->pay_day = "(SELECT MIN(`repayment_date`) next_pay_date,MAX(`repayment_date`) last_pay_date,`client_loan_id` FROM fms_repayment_schedule WHERE `status_id`=1 AND `payment_status` IN (4,2) GROUP BY client_loan_id)";
         $this->approvals = "(SELECT client_loan_id,COUNT(client_loan_id) AS approvals FROM fms_loan_approval WHERE status_id=1 GROUP BY client_loan_id)";
         #######
@@ -281,7 +289,7 @@ class Client_loan_model extends CI_Model
         $this->db->join('group fg', 'fg.id=gl.group_id', 'left');
         $this->db->join('staff s', 'a.credit_officer_id = s.id', 'left');
         $this->db->join('user d', 's.user_id = d.id', 'left');
-        $this->db->join('loan_product e', 'e.id=a.loan_product_id')
+        $this->db->join('loan_product e', 'e.id=a.loan_product_id', 'left')
             ->join('repayment_made_every', 'repayment_made_every.id=a.repayment_made_every', "left")
             ->join('repayment_made_every g', 'g.id=a.approved_repayment_made_every', "left");
         $this->db->join('repayment_made_every f', 'f.id=a.offset_made_every', "left");
@@ -300,6 +308,7 @@ class Client_loan_model extends CI_Model
         $this->db->join("$this->days_in_demand days_in_demand", 'days_in_demand.client_loan_id=a.id', 'left');
         $this->db->join('payment_details', 'a.id =payment_details.client_loan_id AND payment_details.status_id =1', 'left');
         $this->db->join('payment_mode', 'a.preferred_payment_id =payment_mode.id ', 'left');
+        $this->db->join('fms_repayment_schedule pay_schedule', 'pay_schedule.client_loan_id=a.id AND pay_schedule.status_id=1', 'left');
 
         if (isset($_SESSION['role']) && ($_SESSION['role'] == 'Credit Officer' || $_SESSION['role_id'] == 4)) {
             $this->db->where('a.credit_officer_id', $_SESSION['staff_id']);
@@ -603,14 +612,18 @@ class Client_loan_model extends CI_Model
             $this->db->where("a.application_date >='" . $this->input->post('end_date_at') . "'");
         }
 
-
-
-        if ($this->input->post('date_to_filter') != NULL) {
-            $this->db->where("loan_active_date <='" . $this->input->post('date_to_filter') . "'");
+        if (($this->input->post('date_to_filter') != NULL) || ($this->input->post('date_from_filter') != NULL) ) {
+            $this->db->where("loan_state.state_id IN(7,8,9,10,11,12,13,14,15)");
+            $this->db->group_by('a.id'); 
         }
 
-        if ($this->input->post('date_from_filter') != NULL) {
-            $this->db->where("loan_active_date >='" . $this->input->post('date_from_filter') . "'");
+        if (($this->input->post('disbursed_date_to_filter') != NULL) || ($this->input->post('disbursed_date_from_filter') != NULL) ) {
+            $disbursed_date_to = $this->input->post('disbursed_date_to_filter');
+            $disbursed_date_from = $this->input->post('disbursed_date_from_filter');
+            $this->db->where("active_state.loan_active_date>='{$disbursed_date_from}'");
+            $this->db->where("active_state.loan_active_date<='{$disbursed_date_to}'");
+            $this->db->where("loan_state.state_id IN(7,8,9,10,11,12,13,14,15)");
+            $this->db->group_by('a.id'); 
         }
 
         if ($this->input->post('repayment_expected_end_date') != NULL) {

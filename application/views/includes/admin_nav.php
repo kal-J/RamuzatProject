@@ -16,7 +16,7 @@ if(empty($data['module_list'])){
 }
 
 ?>
-  <nav class="navbar-default navbar-static-side" role="navigation" style="background-color: #d54735">
+  <nav class="navbar-default navbar-static-side" role="navigation">
                 <div class="sidebar-collapse">
                     <ul class="nav metismenu" id="side-menu">
                         <li class="nav-header">
@@ -108,6 +108,9 @@ if(empty($data['module_list'])){
                                 </li>
                                 <li>
                                     <a href="<?php echo site_url("loan_reports/outstanding_balances"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Outstanding</span></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url("loan_portfolio_report/credit-officers"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Credit Officers</span></a>
                                 </li>
                                 
                                 

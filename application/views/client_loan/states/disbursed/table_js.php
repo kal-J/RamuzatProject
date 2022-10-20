@@ -33,10 +33,10 @@
               let date_from = $("#start_date_filter").val();
 
               if(date_to) {
-                d.date_to_filter = moment(date_to,'DD-MM-YYYY').format('YYYY-MM-DD');
+                d.disbursed_date_to_filter = moment(date_to,'DD-MM-YYYY').format('YYYY-MM-DD');
               }
               if(date_from) {
-                d.date_from_filter = moment(date_from,'DD-MM-YYYY').format('YYYY-MM-DD');
+                d.disbursed_date_from_filter = moment(date_from,'DD-MM-YYYY').format('YYYY-MM-DD');
               }
               d.state_ids = [7,8,9,10,11,12,13,14,15];
               d.credit_officer_id = $("#selected_credit_officer").val();
