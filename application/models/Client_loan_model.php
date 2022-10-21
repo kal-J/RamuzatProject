@@ -308,7 +308,7 @@ class Client_loan_model extends CI_Model
         $this->db->join("$this->days_in_demand days_in_demand", 'days_in_demand.client_loan_id=a.id', 'left');
         $this->db->join('payment_details', 'a.id =payment_details.client_loan_id AND payment_details.status_id =1', 'left');
         $this->db->join('payment_mode', 'a.preferred_payment_id =payment_mode.id ', 'left');
-        $this->db->join('fms_repayment_schedule pay_schedule', 'pay_schedule.client_loan_id=a.id AND pay_schedule.status_id=1', 'left');
+        // $this->db->join('fms_repayment_schedule pay_schedule', 'pay_schedule.client_loan_id=a.id AND pay_schedule.status_id=1', 'left');
 
         if (isset($_SESSION['role']) && ($_SESSION['role'] == 'Credit Officer' || $_SESSION['role_id'] == 4)) {
             $this->db->where('a.credit_officer_id', $_SESSION['staff_id']);
