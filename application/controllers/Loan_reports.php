@@ -74,6 +74,24 @@ class Loan_reports extends CI_Controller
                 }
             }
         }
+
+        if (empty($this->data['privilege_list'])) {
+            redirect('my404');
+        } else {
+            $this->data['report_privilege'] = array_column($this->data['privilege_list'], "privilege_code");
+        }
+        $this->data['fiscal_active'] = $this->Dashboard_model->get_current_fiscal_year($_SESSION['organisation_id'], 1);
+        if (empty($this->data['fiscal_active'])) {
+            redirect('dashboard');
+        } else {
+            $this->data['lock_month_access'] = $this->helpers->org_access_module($module_id = 23, $_SESSION['organisation_id']);
+            if (!empty($this->data['lock_month_access'])) {
+                $this->data['active_month'] = $this->Fiscal_month_model->get_active_month();
+                if (empty($this->data['active_month'])) {
+                    redirect('dashboard');
+                }
+            }
+        }
     }
 
     public function index($group_loan_id = false)
@@ -2728,5 +2746,33 @@ class Loan_reports extends CI_Controller
         $schedules = $this->parameter_construction(date('d-m-Y'), $loan_data);
 
         return $schedules;
+    }
+
+    public function loan_book()
+    {
+        $this->load->model('Staff_model');
+        $this->load->model('branch_model');
+        $this->load->model('organisation_model');
+        $this->load->model('member_model');
+
+        $this->data['org'] = $this->organisation_model->get($_SESSION['organisation_id']);
+        $this->data['branch'] = $this->branch_model->get($_SESSION['branch_id']);
+        $this->data['members'] = $this->member_model->get_member_by_user_id("fms_member.status_id=1");
+
+        $neededcss = array("fieldset.css", "1_12_1_jquery-ui.css", "plugins/daterangepicker/daterangepicker-bs3.css", "plugins/select2/select2.min.css");
+        $neededjs = array("plugins/validate/jquery.validate.min.js", "plugins/daterangepicker/daterangepicker.js", "plugins/highcharts/code/highcharts.js", "plugins/highcharts/code/highcharts-3d.js", "plugins/highcharts/code/modules/exporting.js", "plugins/highcharts/code/modules/export-data.js", "plugins/highcharts/code/modules/series-label.js", "plugins/printjs/print.min.js", "plugins/select2/select2.full.min.js");
+        $this->helpers->dynamic_script_tags($neededjs, $neededcss);
+        $this->data['loan_product_data'] = $this->loan_product_model->get_product();
+
+        //fiscal_year
+        $this->data['fiscal_year'] = $this->dashboard_model->get_current_fiscal_year($_SESSION['organisation_id'], 1);
+        $this->data['title'] = $this->data['sub_title'] = "Loan Reports";
+        //list of credit officers
+        $this->data['credit_officers'] = $this->Staff_model->get_registeredby("`fms_staff`.`id` IN (SELECT `credit_officer_id` FROM `fms_client_loan`)");
+
+        $this->template->title = $this->data['title'];
+        $this->template->content->view('loan_reports/loan_book/index', $this->data);
+        // Publish the template
+        $this->template->publish();
     }
 }

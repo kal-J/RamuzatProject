@@ -70,6 +70,7 @@ $end_fiscal_year = explode("-", $fiscal_period[0]['end_date']);
           <th>Classification(Days)</th>
           <th>Number of Accounts</th>
           <th>Outstanding Loan Portfolio (UGX)</th>
+          <th>% PAR</th>
         </tr>
         <tbody>
           <?php
@@ -83,7 +84,9 @@ $end_fiscal_year = explode("-", $fiscal_period[0]['end_date']);
                 <td><a href='<?php echo site_url('Portfolio_aging/get_category_loan_lists/');
                               echo ++$id ?>' title="View all"><?php echo $key1 ?><?php ?></a></td>
                 <?php
+                $portfolio_at_risk = 0;
                 foreach ($value1 as $key2 => $value2) {
+                  $portfolio_at_risk = $value2;
                   $value3 = is_numeric($value2) ? number_format($value2) : $value2;
                 ?>
 
@@ -92,6 +95,9 @@ $end_fiscal_year = explode("-", $fiscal_period[0]['end_date']);
 
                 }
                 ?>
+                <td>
+                <?php echo round(($portfolio_at_risk/$total_outstanding_loan_portfolio) * 100, 2 ) . " %"; ?>
+                </td>
               </tr>
           <?php
 

@@ -112,6 +112,9 @@ if(empty($data['module_list'])){
                                 <li>
                                     <a href="<?php echo site_url("loan_portfolio_report/credit-officers"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Credit Officers</span></a>
                                 </li>
+                                <li>
+                                    <a href="<?php echo site_url("loan_reports/loan_book"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Loan Performance</span></a>
+                                </li>
                                 
                                 
                                 
