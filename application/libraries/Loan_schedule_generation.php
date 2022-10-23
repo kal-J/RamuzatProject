@@ -75,10 +75,10 @@ class Loan_schedule_generation {
             //installment number
             $this->response['payment_schedule'][$x]['installment_number']=$installment_counter+1;
             //interest amount paid per installment alone
-            $this->response['payment_schedule'][$x]['interest_amount']=$interest_amount_per_installment=($i*$declining_loan_amount);
+            $this->response['payment_schedule'][$x]['interest_amount']=$interest_amount_per_installment=ceil( ($i*$declining_loan_amount) / 100 ) * 100;
             $this->response['payment_summation']['interest_amount']+=$interest_amount_per_installment;
             //principal amount payable
-            $this->response['payment_schedule'][$x]['principal_amount']=$principal_amount=$principal_amount_per_installment;
+            $this->response['payment_schedule'][$x]['principal_amount']=$principal_amount=ceil( ($principal_amount_per_installment) / 100 ) * 100;
             $this->response['payment_summation']['principal_amount']+=$principal_amount;
             //total principal amount paid 
             $this->response['payment_schedule'][$x]['paid_principal']=$paid_principal=($principal_amount_per_installment + $interest_amount_per_installment);
@@ -131,10 +131,10 @@ class Loan_schedule_generation {
             //installment number
             $this->response['payment_schedule'][$x]['installment_number']=$installment_counter+1;
             //interest amount paid per installment alone
-            $this->response['payment_schedule'][$x]['interest_amount']=$interest_amount_per_installment=($i*$p);
+            $this->response['payment_schedule'][$x]['interest_amount']=$interest_amount_per_installment = ceil( ($i*$p) / 100 ) * 100;
             $this->response['payment_summation']['interest_amount']+=$interest_amount_per_installment;
             //principal amount payable
-            $this->response['payment_schedule'][$x]['principal_amount']=$principal_amount=($EMI-$interest_amount_per_installment);
+            $this->response['payment_schedule'][$x]['principal_amount']=$principal_amount = ceil( ($EMI-$interest_amount_per_installment) / 100 ) * 100;
             $this->response['payment_summation']['principal_amount']+=$principal_amount;
             //total principal amount paid 
             $this->response['payment_schedule'][$x]['paid_principal']=$paid_principal=$EMI;
@@ -185,16 +185,20 @@ class Loan_schedule_generation {
             }
             //installment number
             $this->response['payment_schedule'][$x]['installment_number']=$installment_counter+1;
-            $this->response['payment_schedule'][$x]['interest_amount']=$interest_amount_per_installment=(($p*$number_of_years*$r)/$n);
+            $this->response['payment_schedule'][$x]['interest_amount']=$interest_amount_per_installment= ceil( (($p*$number_of_years*$r)/$n) / 100 ) * 100;
             $this->response['payment_summation']['interest_amount']+=$interest_amount_per_installment;
-            $this->response['payment_schedule'][$x]['principal_amount']=$principal_amount=($p/$n);
+            $this->response['payment_schedule'][$x]['principal_amount']=$principal_amount= ceil( ($p/$n) / 100 ) * 100;
             $this->response['payment_summation']['principal_amount']+=$principal_amount;
             $this->response['payment_schedule'][$x]['paid_principal']=$paid_principal=($interest_amount_per_installment+$principal_amount);
              $this->response['payment_summation']['paid_principal']+=$paid_principal;
              $x++;
              $installment_counter++;
         }
-
+        $extra = $this->response['payment_summation']['principal_amount'] -  $support_data['p'];
+        $this->response['payment_schedule'][$x-1]['principal_amount'] = $this->response['payment_schedule'][$x-1]['principal_amount'] - $extra;
+        $this->response['payment_schedule'][$x-1]['paid_principal'] = $this->response['payment_schedule'][$x-1]['paid_principal'] - $extra;
+        $this->response['payment_summation']['principal_amount'] = $this->response['payment_summation']['principal_amount'] -$extra;
+        $this->response['payment_summation']['paid_principal'] = $this->response['payment_summation']['paid_principal'] - $extra;
         $this->response['payment_date1']=$payment_date1;
         $this->response['payment_date2']=$payment_date2;
         return $this->response;

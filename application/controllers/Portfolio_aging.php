@@ -99,6 +99,7 @@ class Portfolio_aging extends CI_Controller
 
         $this->data['all_portfolio_details'] = $this->client_loans('state_id IN(7,13)');
         $this->data['all_portfolio_details_2'] = $this->client_loans("state_id IN(11,14,15)");
+        $this->data['total_outstanding_loan_portfolio'] = $this->get_total_outstanding_loan_portfolio();
         // Load a view in the content partial
         $this->template->content->view('reports/receivables/portfolio_aging_report_view', $this->data);
         // Publish the template
@@ -594,5 +595,10 @@ class Portfolio_aging extends CI_Controller
             ]
         ];
         $this->journal_transaction_line_model->set($journal_transaction_id, $data);
+    }
+
+    public function get_total_outstanding_loan_portfolio() {
+        $total_outstanding_loan_portfolio = $this->client_loan_model->get_total_outstanding_loan_portfolio();
+        return $total_outstanding_loan_portfolio;
     }
 }

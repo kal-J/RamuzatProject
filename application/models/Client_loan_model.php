@@ -1389,4 +1389,22 @@ class Client_loan_model extends CI_Model
         $query = $this->db->get();
         return $query !== FALSE && $query->num_rows() > 0 ? $query->result_array() : [];
     }
+
+    public function get_total_outstanding_loan_portfolio()
+    {
+        $un_cleared_installments = "(SELECT SUM(lp.paid_principal) total_paid_principal, rs.id AS schedule_id FROM fms_loan_installment_payment lp LEFT JOIN fms_repayment_schedule rs ON rs.id=lp.repayment_schedule_id WHERE lp.status_id=1 AND rs.payment_status<>1 AND rs.payment_status<>3 GROUP BY rs.id)";
+
+        $amount_in_demand = "(SELECT client_loan_id, (SUM(principal_amount) - ifnull(uci.total_paid_principal, 0)) principal_in_demand FROM `fms_repayment_schedule` 
+        LEFT JOIN $un_cleared_installments uci ON uci.schedule_id=fms_repayment_schedule.id
+        WHERE payment_status IN(2,4) AND status_id=1 GROUP BY client_loan_id)";
+
+        $this->db->select("SUM(ifnull(principal_in_demand,0)) total_outstanding_loan_portfolio");
+        $this->db->from("fms_client_loan cl");
+        $this->db->join("$amount_in_demand amount_in_demand", "amount_in_demand.client_loan_id=cl.id", "LEFT");
+
+        $query = $this->db->get();
+        $result = $query->row_array();
+
+        return $result['total_outstanding_loan_portfolio'];
+    }
 }
