@@ -83,12 +83,18 @@ class System_automations extends CI_Controller
     public function index()
     {
         $in_arrear_loans = $this->repayment_schedule_model->inarrears_loans();
+        $out_of_arrears_loans = $this->repayment_schedule_model->out_of_arrears_loans();
         if (!empty($in_arrear_loans) && $in_arrear_loans != '') {
-            $response = $this->loan_state_model->have_them_in_arrears($in_arrear_loans);
+            $response1 = $this->loan_state_model->have_them_in_arrears($in_arrear_loans);
         } else {
-            $response = "No in arrears loans found today " . date('d-m-Y H:i:s');
+            $response1 = "No in arrears loans found today " . date('d-m-Y H:i:s');
         }
-        print($response);
+        if (!empty($out_of_arrears_loans) && $out_of_arrears_loans != '') {
+            $response2 = $this->loan_state_model->have_them_out_of_arrears($out_of_arrears_loans);
+        } else {
+            $response2 = "No loans out of arrears found today " . date('d-m-Y H:i:s');
+        }
+        print($response1 . " & " . $response2);
     }
 
     public function callback()
@@ -167,7 +173,6 @@ class System_automations extends CI_Controller
 
         // print($count);
     }
-
 
     //auto loan installment repayments
     public function auto_installment_repayment()
@@ -494,7 +499,6 @@ class System_automations extends CI_Controller
         }
     }
 
-
     public function automated_membership()
     {
         $pay_membership = false;
@@ -619,10 +623,6 @@ class System_automations extends CI_Controller
         }
     }
 
-
-    //End of auto subscriptions
-
-
     //auto subscription
     public function auto_subscription()
     {
@@ -704,7 +704,6 @@ class System_automations extends CI_Controller
         } //end of the member loop
     }
 
-
     //Membership payment schedule - Joshua Nabuka
     public function fees()
     {
@@ -728,7 +727,6 @@ class System_automations extends CI_Controller
         );
         echo json_encode($member, true);
     }
-
 
     //accounting concepts
     private function loan_payment_journal_transaction($transaction_data)
@@ -869,7 +867,6 @@ class System_automations extends CI_Controller
             $this->journal_transaction_line_model->set($journal_transaction_id, $data);
         }
     }
-
 
     public function savings_schedule_script()
     {
@@ -1199,7 +1196,6 @@ Thank you for saving with us. Contact " . $contact_number;
         return $diff->format("%R%a");
     }
 
-
     private function computed_interest_journal_transaction($amount, $transaction_date, $payable_account, $expense_account)
     {
         $this->load->model('accounts_model');
@@ -1304,8 +1300,6 @@ Thank you for saving with us. Contact " . $contact_number;
 
         $this->journal_transaction_line_model->set($journal_transaction_id, $data);
     }
-
-
 
     public function auto_savings_penalty()
     {
@@ -1700,7 +1694,6 @@ Thank you for saving with us. Contact " . $contact_number;
 
         return $response;
     }
-
 
     private function record_disburse($attached_savings_accounts = false, $unique_id = false)
     {
