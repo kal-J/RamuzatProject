@@ -17,7 +17,7 @@ class Repayment_schedule_model extends CI_Model
                     FROM fms_loan_installment_payment 
                     JOIN fms_repayment_schedule ON fms_repayment_schedule.id=fms_loan_installment_payment.repayment_schedule_id 
                     JOIN($this->max_state_id) loan_state ON loan_state.client_loan_id=fms_loan_installment_payment.client_loan_id
-                    WHERE (loan_state.state_id=7 OR loan_state.state_id=12) AND fms_loan_installment_payment.status_id!=0
+                    WHERE (loan_state.state_id IN(7,12,13)) AND fms_loan_installment_payment.status_id!=0
                     GROUP BY fms_loan_installment_payment.repayment_schedule_id )";
         $this->paid_amount = "(SELECT fms_loan_installment_payment.client_loan_id,SUM(paid_interest+paid_principal) AS paid_amount,SUM(paid_principal) AS paid_principal,SUM(paid_interest) AS paid_interest, SUM(interest_amount) AS parent_expected_interest FROM fms_loan_installment_payment
         LEFT JOIN fms_repayment_schedule ON fms_repayment_schedule.client_loan_id=fms_loan_installment_payment.client_loan_id
@@ -189,6 +189,7 @@ class Repayment_schedule_model extends CI_Model
         $this->db->join("$this->loan_installment_payments loan_installment_payments", "loan_installment_payments.repayment_schedule_id=repayment_schedule.id", "LEFT");
         $this->db->where('repayment_schedule.status_id=1');
         $this->db->where($filter);
+        $this->db->order_by("repayment_schedule.id", "asc");
         $query = $this->db->get();
         //print_r($this->db->last_query()); die();
         return $query->result_array();
@@ -322,10 +323,10 @@ class Repayment_schedule_model extends CI_Model
         $this->db->select("SUM(ifnull(lp.paid_principal,0)) as paid_principal_sum, SUM(ifnull(lp.paid_interest,0)) as paid_interest_sum, SUM(ifnull(lp.paid_penalty,0)) as paid_penalty_sum");
         $this->db->where("lp.status_id=1");
 
-        if($start_date) {
+        if ($start_date) {
             $this->db->where("lp.payment_date >= '{$start_date}'");
         }
-        if($end_date) {
+        if ($end_date) {
             $this->db->where("lp.payment_date <= '{$end_date}'");
         }
 
@@ -333,14 +334,14 @@ class Repayment_schedule_model extends CI_Model
         $query = $this->db->get();
 
         $result = $query->row_array();
-        if(!is_numeric($result['paid_principal_sum'])) $result['paid_principal_sum'] = 0;
-        if(!is_numeric($result['paid_interest_sum'])) $result['paid_interest_sum'] = 0;
-        if(!is_numeric($result['paid_penalty_sum'])) $result['paid_penalty_sum'] = 0;
+        if (!is_numeric($result['paid_principal_sum'])) $result['paid_principal_sum'] = 0;
+        if (!is_numeric($result['paid_interest_sum'])) $result['paid_interest_sum'] = 0;
+        if (!is_numeric($result['paid_penalty_sum'])) $result['paid_penalty_sum'] = 0;
         return $result;
     }
 
     //Getting interest sum and principal sum
-    public function sum_interest_principal($filter = FALSE, $check = FALSE, $write_off = FALSE,$no_current_interest=FALSE)
+    public function sum_interest_principal($filter = FALSE, $check = FALSE, $write_off = FALSE, $no_current_interest = FALSE)
     {
         $where = "WHERE fms_repayment_schedule.status_id=1";
         if ($filter !== FALSE && is_numeric($filter)) {
@@ -353,8 +354,8 @@ class Repayment_schedule_model extends CI_Model
             $this->db->where($check);
         }
         if ($this->input->post('payment_date') != NULL && $this->input->post('payment_date') != '') {
-            $last_date=date('d-m-Y',strtotime($this->input->post('loan_end_date')));
-            $mydate=strtotime($this->input->post('payment_date'))>strtotime($last_date)?$last_date:$this->input->post('payment_date');
+            $last_date = date('d-m-Y', strtotime($this->input->post('loan_end_date')));
+            $mydate = strtotime($this->input->post('payment_date')) > strtotime($last_date) ? $last_date : $this->input->post('payment_date');
             $payment_date = $this->helpers->yr_transformer($mydate);
         } else {
             $payment_date = date('Y-m-d');
@@ -363,7 +364,7 @@ class Repayment_schedule_model extends CI_Model
 
         if ($write_off != FALSE) {
             $sql = "(SELECT *,CASE WHEN repayment_date <= '" . $payment_date . "' THEN interest_amount ELSE 0 END AS remaining_interest FROM fms_repayment_schedule $where)";
-        } else if($no_current_interest!=FALSE){
+        } else if ($no_current_interest != FALSE) {
             $sql1 = "(SELECT MIN(repayment_date) FROM  fms_repayment_schedule $where AND `repayment_date` >='" . $payment_date . "')";
             $sql = "(SELECT *,CASE WHEN repayment_date < $sql1 THEN interest_amount ELSE 0 END AS remaining_interest FROM fms_repayment_schedule $where)";
         } else { //pay off impact
@@ -513,6 +514,9 @@ class Repayment_schedule_model extends CI_Model
         $data['actual_payment_date'] = $action_date;
         $data['unique_id'] = $unique_id;
         $data['modified_by'] = (isset($_SESSION['id'])) ? $_SESSION['id'] : 1;
+
+        //echo json_encode($data); die;
+
         $query = $this->db->update('repayment_schedule', $data);
         if ($query) {
             return true;
@@ -967,7 +971,7 @@ class Repayment_schedule_model extends CI_Model
         $query = $this->db->get();
 
         $result = $query->row_array();
-        if(isset($result['installments_count'])) {
+        if (isset($result['installments_count'])) {
             return $result['installments_count'];
         }
 
@@ -980,8 +984,8 @@ class Repayment_schedule_model extends CI_Model
         $this->db->from('fms_repayment_schedule');
         $this->db->where('status_id', 1);
         $this->db->where('client_loan_id', $client_loan_id);
-        $this->db->order_by('id','desc');
-        $this->db->limit(1); 
+        $this->db->order_by('id', 'desc');
+        $this->db->limit(1);
         $query = $this->db->get();
         return $query->row_array();
     }
