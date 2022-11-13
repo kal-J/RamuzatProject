@@ -1376,7 +1376,8 @@ function get_member_data(new_data){
 
 $(document).on('keydown', function ( e ) {
 // You may replace m with whatever key you want
-    if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'm') ) {
+    if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'k') ) {
+        e.preventDefault();
         $("#modalSearch").modal('show');
     }
 });

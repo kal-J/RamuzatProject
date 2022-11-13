@@ -95,4 +95,18 @@ class Dashboard_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function save_dashboard_figures($data)
+    {
+        return $this->db->insert('fms_dashboard_figures', $data);
+    }
+
+    public function get_dashboard_figures()
+    {
+        $query = $this->db->query("SELECT * FROM fms_dashboard_figures ORDER BY id DESC LIMIT 1");
+
+        $result = $query->row_array();
+        $result['data'] = isset($result['data']) ? json_decode($result['data'], true) : [];
+        return $result;
+    }
+
 }
