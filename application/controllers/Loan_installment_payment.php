@@ -68,8 +68,12 @@ class Loan_installment_payment extends CI_Controller
       if ($this->input->post('state_id') == 13) {
         $data['interest_principal_sum'] = $this->repayment_schedule_model->sum_interest_principal($loan_id, false, True);
       } else {
-        if($this->orgdata['org']['no_current_interest']==1){$no_current_interest=1;}else{$no_current_interest=FALSE;}
-        $data['interest_principal_sum'] = $this->repayment_schedule_model->sum_interest_principal($loan_id,false,false,$no_current_interest);
+        if ($this->orgdata['org']['no_current_interest'] == 1) {
+          $no_current_interest = 1;
+        } else {
+          $no_current_interest = FALSE;
+        }
+        $data['interest_principal_sum'] = $this->repayment_schedule_model->sum_interest_principal($loan_id, false, false, $no_current_interest);
       }
 
       $data['paid_sum'] = $this->loan_installment_payment_model->sum_paid_installment($loan_id);
@@ -142,7 +146,7 @@ class Loan_installment_payment extends CI_Controller
         $response['payment_data'] = $this->client_loan_model->get_payment_data($loan_ref_no, $installment_number);
       }
     }
-     //print_r($response['payment_data']['id']); die;
+    //print_r($response['payment_data']['id']); die;
     if ($response['payment_data']['id'] == '') {
     } else {
       $response['penalty_data']['message'] = '';
@@ -241,7 +245,7 @@ class Loan_installment_payment extends CI_Controller
               if ($data['penalty_data']['penalty_rate_charged_per'] == 4) { // One time penalty 
                 $number_of_late_period = 1;
                 $response['penalty_data']['late_period'] = "";
-            } elseif ($data['penalty_data']['penalty_rate_charged_per'] == 3) {
+              } elseif ($data['penalty_data']['penalty_rate_charged_per'] == 3) {
                 $number_of_late_period = intdiv($number_of_late_days, 30);
                 $response['penalty_data']['late_period'] = $number_of_late_period . ' Month(s)';
               } elseif ($data['penalty_data']['penalty_rate_charged_per'] == 2) {
@@ -259,15 +263,14 @@ class Loan_installment_payment extends CI_Controller
                   $penalty_value = ($fixed_penalty_amount * $number_of_late_period);
 
                   $penalty_value = $data['penalty_data']['penalty_rate_charged_per'] == 4 ? ($data['payment_data']['already_paid_penalty'] > 0 ? 0 : ($fixed_penalty_amount * $number_of_late_period)) : ($fixed_penalty_amount * $number_of_late_period);
-
                 } else {
                   $penalty_value = ($over_due_principal * $number_of_late_period * $penalty_rate);
 
                   $penalty_value = $data['penalty_data']['penalty_rate_charged_per'] == 4 ? ($data['payment_data']['already_paid_penalty'] > 0 ? 0 : ($over_due_principal * $number_of_late_period * $penalty_rate)) : ($over_due_principal * $number_of_late_period * $penalty_rate);
-                }        
-        
+                }
+
                 if ((intval($penalty_applicable_after_due_date) == 1)) {
-        
+
                   if ($last_pay_date >= date('Y-m-d')) {
                     $penalty_value = 0;
                   }
@@ -299,7 +302,6 @@ class Loan_installment_payment extends CI_Controller
       $response['penalty_data']['penalty_value'] = round($penalty_value, 0);
       $response['penalty_data']['demanded_penalty'] = round($demanded_penalty, 0);
       $response['penalty_data']['total_installment_penalty'] = round(($penalty_value + $demanded_penalty), 0);
-      
     }
 
     if ($call_type !== false) {
@@ -374,7 +376,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $client_loan['loan_no'],
           'reference_id' => $value['id'],
           'transaction_date' => $transaction_date,
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $client_loan['loan_no'],
           $debit_or_credit3 => $value['interest_amount'],
           'narrative' => strtoupper("Interest on Loan Restructure done on " . $action_date),
@@ -387,7 +389,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $client_loan['loan_no'],
           'reference_id' => $value['id'],
           'transaction_date' => $transaction_date,
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $client_loan['loan_no'],
           $debit_or_credit4 => $value['interest_amount'],
           'narrative' => strtoupper("Interest on Loan Restructure done on " . $action_date),
@@ -503,7 +505,7 @@ class Loan_installment_payment extends CI_Controller
       'reference_no' => $this->input->post('loan_ref_no'),
       'reference_id' => $sent_id,
       'transaction_date' => $repayment_date,
-      'member_id' =>$this->input->post('member_id'),
+      'member_id' => $this->input->post('member_id'),
       'reference_key' => $this->input->post('loan_ref_no'),
 
       $debit_or_credit4 => $interest_amount ? $interest_amount : $this->input->post('forgiven_interest'),
@@ -516,7 +518,7 @@ class Loan_installment_payment extends CI_Controller
       'reference_no' => $this->input->post('loan_ref_no'),
       'reference_id' => $sent_id,
       'transaction_date' => $repayment_date,
-      'member_id' =>$this->input->post('member_id'),
+      'member_id' => $this->input->post('member_id'),
       'reference_key' => $this->input->post('loan_ref_no'),
       $debit_or_credit5 => $interest_amount ? $interest_amount : $this->input->post('forgiven_interest'),
       'narrative' => strtoupper("Un paid Interest / Cleared ") . " [ " . strtoupper($this->input->post('comment')) . "] [ " . $this->input->post('member_name') . " ] ",
@@ -587,7 +589,7 @@ class Loan_installment_payment extends CI_Controller
 
       $this->loan_reversal_model->set_trans_tracking($trans_data);
 
-      if ($this->db->trans_status()) {
+      if ($this->db->trans_status() && $response['success']) {
         $this->db->trans_commit();
       } else {
         $this->db->trans_rollback();
@@ -683,7 +685,7 @@ class Loan_installment_payment extends CI_Controller
     }
 
     $response = [
-      'installments_penalty' => round($installments_penalty, 0),
+      'installments_penalty' => $installments_penalty,
       'total_penalty' => round($total_penalty, 0)
     ];
 
@@ -701,7 +703,7 @@ class Loan_installment_payment extends CI_Controller
     $response['success'] = FALSE;
 
     // this assumed no payments were done $installment_data = $this->repayment_schedule_model->get2("client_loan_id=" . $this->input->post('client_loan_id') . " AND payment_status IN (2,4)");
-    $installment_data = $this->repayment_schedule_model->get_due_schedules("client_loan_id=" . $this->input->post('client_loan_id') . " AND payment_status IN (2,4)");
+    $installment_data = $this->repayment_schedule_model->get_due_schedules("client_loan_id=" . $this->input->post('client_loan_id') . " AND payment_status IN (2,4) ");
 
     $sent_date = explode('-', $this->input->post('payment_date'), 3);
     $payment_date = count($sent_date) === 3 ? ($sent_date[2] . "-" . $sent_date[1] . "-" . $sent_date[0]) : null;
@@ -1090,7 +1092,7 @@ class Loan_installment_payment extends CI_Controller
 
       $this->loan_reversal_model->set_trans_tracking($trans_data);
 
-      if ($this->db->trans_status()) {
+      if ($this->db->trans_status() && $response['success']) {
         $this->db->trans_commit();
       } else {
         $this->db->trans_rollback();
@@ -1107,7 +1109,12 @@ class Loan_installment_payment extends CI_Controller
     $sent_date = explode('-', $this->input->post('payment_date'), 3);
     $payment_date = count($sent_date) === 3 ? ($sent_date[2] . "-" . $sent_date[1] . "-" . $sent_date[0]) : null;
 
-    $installment = $this->repayment_schedule_model->get("repayment_schedule.id= '{$this->input->post('repayment_schedule_id')}' ")[0];
+    $installment = $this->repayment_schedule_model->get("repayment_schedule.id= '{$this->input->post('repayment_schedule_id')}' AND repayment_schedule.payment_status IN(2,4) ")[0];
+    if (empty($installment)) {
+      $response['success'] = false;
+      $response['message'] = "Installment No. '{$this->input->post('repayment_schedule_id')}'  is already fully paid.";
+      return $response;
+    }
     $data_trans = [
       'unique_id' => $unique_id,
       'prev_demanded_penalty' => $installment['demanded_penalty'],
@@ -1636,7 +1643,7 @@ class Loan_installment_payment extends CI_Controller
       }
 
 
-      
+
       $savings_product_details = $this->DepositProduct_model->get_products($savings_account['deposit_Product_id']);
       $debit_or_credit1 = $this->accounts_model->get_normal_side($savings_product_details['savings_liability_account_id'], true);
 
@@ -1663,7 +1670,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $savings_account['account_no'],
           'reference_id' => $transaction_data['transaction_no'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit2 => $principal_amount,
           'narrative' => strtoupper("Loan principal payment on [ " . $this->input->post('loan_no') . " ] " . $this->input->post('payment_date')),
@@ -1679,7 +1686,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $savings_account['account_no'],
           'reference_id' => $transaction_data['transaction_no'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit3 => $interest_amount,
           'narrative' => strtoupper("Loan interest payment on [ " . $this->input->post('loan_no') . " ] " . $this->input->post('payment_date')),
@@ -1691,7 +1698,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $savings_account['account_no'],
           'reference_id' => $transaction_data['transaction_no'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit4 => $interest_amount,
           'narrative' => strtoupper("Loan interest payment on [ " . $this->input->post('loan_no') . " ] " . $this->input->post('payment_date')),
@@ -1950,7 +1957,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $savings_payment_data['transaction_no'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit1 => $principal_amount,
           'narrative' => strtoupper("Loan principal payment on " . $this->input->post('payment_date')),
@@ -1962,7 +1969,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $savings_payment_data['transaction_no'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit3 => $principal_amount,
           'narrative' => strtoupper("Loan principal payment on " . $this->input->post('payment_date')),
@@ -1978,7 +1985,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $savings_payment_data['transaction_no'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit4 => $interest_amount,
           'narrative' => strtoupper("Loan interest payment on " . $this->input->post('payment_date')),
@@ -1990,7 +1997,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_data['transaction_id'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit3 => $interest_amount,
           'narrative' => strtoupper("Loan interest payment on " . $this->input->post('payment_date')),
@@ -2083,7 +2090,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_data['transaction_id'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit1 => $principal_amount,
           'narrative' => strtoupper("Loan principal payment on " . $this->input->post('payment_date')),
@@ -2095,7 +2102,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_data['transaction_id'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit3 => $principal_amount,
           'narrative' => strtoupper("Loan principal payment on " . $this->input->post('payment_date')),
@@ -2111,7 +2118,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_data['transaction_id'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit4 => $interest_amount,
           'narrative' => strtoupper("Loan interest payment on " . $this->input->post('payment_date')),
@@ -2123,7 +2130,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_data['transaction_id'],
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit3 => $interest_amount,
           'narrative' => strtoupper("Loan interest payment on " . $this->input->post('payment_date')),
@@ -2190,7 +2197,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_id,
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit2 => $penalty_amount,
           'narrative' => strtoupper("Loan penalty payment on " . $this->input->post('payment_date')),
@@ -2202,7 +2209,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_id,
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit3 => $penalty_amount,
           'narrative' => strtoupper("Loan penalty payment on " . $this->input->post('payment_date')),
@@ -2247,7 +2254,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_id,
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit6 => ($paid_total - $expected_total),
           'narrative' => strtoupper("Received amount over above the expected on loan payment made on " . $this->input->post('payment_date')),
@@ -2259,7 +2266,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_id,
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit3 => ($paid_total - $expected_total),
           'narrative' => strtoupper("Received amount over above the expected on loan payment made on " . $this->input->post('payment_date')),
@@ -2298,7 +2305,7 @@ class Loan_installment_payment extends CI_Controller
       'reference_no' => $this->input->post('loan_ref_no'),
       'reference_id' => $transaction_id,
       'transaction_date' => $this->input->post('payment_date'),
-      'member_id' =>$this->input->post('member_id'),
+      'member_id' => $this->input->post('member_id'),
       'reference_key' => $this->input->post('loan_ref_no'),
       $debit_or_credit6 => $balance,
       'narrative' => strtoupper("Received amount over above the expected on loan payment made on " . $this->input->post('payment_date')),
@@ -2310,7 +2317,7 @@ class Loan_installment_payment extends CI_Controller
       'reference_no' => $this->input->post('loan_ref_no'),
       'reference_id' => $transaction_id,
       'transaction_date' => $this->input->post('payment_date'),
-      'member_id' =>$this->input->post('member_id'),
+      'member_id' => $this->input->post('member_id'),
       'reference_key' => $this->input->post('loan_ref_no'),
       $debit_or_credit3 => $balance,
       'narrative' => strtoupper("Received amount over above the expected on loan payment made on " . $this->input->post('payment_date')),
@@ -2353,7 +2360,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_id,
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit6 => ($paid_total - $expected_total),
           'narrative' => strtoupper("Received amount over above the expected on loan payment made on " . $this->input->post('payment_date')),
@@ -2365,7 +2372,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $transaction_id,
           'transaction_date' => $this->input->post('payment_date'),
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit3 => ($paid_total - $expected_total),
           'narrative' => strtoupper("Received amount over above the expected on loan payment made on " . $this->input->post('payment_date')),
@@ -2431,7 +2438,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $savings_account['account_no'],
           'reference_id' => $transaction_data['transaction_no'],
           'transaction_date' => $date,
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit1 => $deposit_amount,
           'narrative' => "Deposit transaction made on " . $date,
@@ -2443,7 +2450,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $savings_account['account_no'],
           'reference_id' => $transaction_data['transaction_no'],
           'transaction_date' => $date,
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit2 => $deposit_amount,
           'narrative' => "Deposit transaction made on " . $date,
@@ -2512,7 +2519,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $savings_account['account_no'],
           'reference_id' => $transaction_data['transaction_no'],
           'transaction_date' => $date,
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit1 => $deposit_amount,
           'narrative' => "Deposit transaction made on " . $date,
@@ -2523,7 +2530,7 @@ class Loan_installment_payment extends CI_Controller
           'reference_no' => $savings_account['account_no'],
           'reference_id' => $transaction_data['transaction_no'],
           'transaction_date' => $date,
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           $debit_or_credit2 => $deposit_amount,
           'narrative' => "Deposit transaction made on " . $date,
@@ -2573,7 +2580,7 @@ class Loan_installment_payment extends CI_Controller
           'transaction_date' => $transaction_date,
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $loan_id,
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           'narrative' => 'Income received from ' . $fee['feename'] . ' on ' . $transaction_date,
           'account_id' => $fee['income_account_id'],
@@ -2585,7 +2592,7 @@ class Loan_installment_payment extends CI_Controller
           'transaction_date' => $transaction_date,
           'reference_no' => $this->input->post('loan_ref_no'),
           'reference_id' => $loan_id,
-          'member_id' =>$this->input->post('member_id'),
+          'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
           'narrative' => 'Income received from ' . $fee['feename'] . ' on ' . $transaction_date,
           'account_id' => $transaction_channel['linked_account_id'],
