@@ -32,7 +32,7 @@ class Member_import extends CI_Controller
     public function index()
     {
         $folder = "data_extract" . DIRECTORY_SEPARATOR . "mceesacco" . DIRECTORY_SEPARATOR;
-        $file_name = "MEMBER_TEMPLATE_LITE.csv";
+        $file_name = "LOAN_TEMPLATE2.csv";
         $file_path = FCPATH . $folder . $file_name;
         $feedback = $this->run_updates($file_path);
         echo json_encode($feedback);
@@ -56,7 +56,7 @@ class Member_import extends CI_Controller
                 if ($count == 0) { //the row with the field_names
                     $field_names = $data1;
 
-                    if ($field_names[0] != "Client_no") {
+                    if ($field_names[0] != "CLIENT_NO") {
                         $feedback['message'] = "Please ensure that the first cell (A1) contains the key Client_no";
                         fclose($handle);
                         return $feedback;
@@ -83,13 +83,13 @@ class Member_import extends CI_Controller
     private function insert_user_data($customer_data)
     {
         //echo json_encode($customer_data);die;
-        if ($customer_data[4]) {
+        /* if ($customer_data[4]) {
             $date_registered = $customer_data[4];
             $date_registered  = date('Y-m-d', strtotime($customer_data[4]));
         } else {
             $date_registered = "2022-01-01";
-        }
-        //$date_registered = $customer_data[7] !=''? $customer_data[7]: '2022-01-01';
+        } */
+        $date_registered = "2022-07-09";
 
         if ($customer_data[1] != "" && $customer_data[1] != NULL) {
             $names = explode(" ", trim($customer_data[1]));
@@ -98,7 +98,7 @@ class Member_import extends CI_Controller
                 "firstname" => $names[0],
                 "lastname" => isset($names[1]) ? $names[1] : '',
                 "othernames" => isset($names[2]) ? $names[2] : '',
-                "gender" => $customer_data[2] == "M" ? 1 : 0,
+                "gender" => $customer_data[5] == "M" ? 1 : 0,
                 "email" => '',
                 "marital_status_id" => 1,
                 "date_of_birth" => $date_registered,
@@ -111,6 +111,7 @@ class Member_import extends CI_Controller
             ];
             $user_id = $this->user_model->add_user($single_row);
             $member_data = [
+                "id" => $customer_data[0],
                 "user_id" => $user_id,
                 "client_no" => $this->member_no,
                 "branch_id" => 2,
@@ -124,9 +125,9 @@ class Member_import extends CI_Controller
             ];
             $member_id = $this->member_model->add_member(false, false, $member_data);
 
-            if ($customer_data[3]) {
+            /* if ($customer_data[3]) {
                 $this->do_insert_contacts($user_id, $customer_data[3]);
-            }
+            } */
             /* if ($customer_data[6]) {
                 $this->do_insert_contacts($user_id,$customer_data[6]);
             } */

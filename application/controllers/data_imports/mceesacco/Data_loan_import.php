@@ -46,7 +46,7 @@ class Data_loan_import extends CI_Controller {
     public function index() {
         $this->db->trans_start();
         $folder = "data_extract".DIRECTORY_SEPARATOR."mceesacco".DIRECTORY_SEPARATOR;
-        $file_name = "LOAN TEMPLATE.csv";
+        $file_name = "LOAN_TEMPLATE2.csv";
         $file_path = FCPATH . $folder . $file_name;
         $feedback = $this->run_updates($file_path);
         $this->db->trans_complete();
@@ -103,7 +103,7 @@ class Data_loan_import extends CI_Controller {
 
         $member_id = intval($loan_data[0]);
         $amount=intval($loan_data[2]);
-        $loan_product_id = intval($loan_data[4]);
+        $loan_product_id = 14;
         $interest_type = 1;
         //$repayment_frequency = $loan_data[8];
         //$repayment_made_every = 3;
@@ -125,7 +125,7 @@ class Data_loan_import extends CI_Controller {
                     "member_id" =>  $member_id,
                     "branch_id" => 2,
                     "loan_no" => $this->client_loan_no,
-                    "credit_officer_id" => intval($loan_data[5]), 
+                    "credit_officer_id" => intval($loan_data[4]), 
                     "loan_product_id" => $loan_product_id,
                     "topup_application" => 0,
                     "requested_amount" => $amount,
@@ -219,7 +219,7 @@ class Data_loan_import extends CI_Controller {
                         $interest_data[$index_key-1]=[
                             'reference_no' => $this->client_loan_no,
                             'reference_id' => $this->schedule_id,
-                            'transaction_date' => $repayment_date,
+                            'transaction_date' => $action_date,
                             $debit_or_credit3=> intval($loan_data[3]),
                             'narrative'=> strtoupper("Interest on Loan Disbursed on ".$action_date),
                             'account_id'=> 6,
@@ -228,8 +228,8 @@ class Data_loan_import extends CI_Controller {
 
                         $interest_data[$index_key] =  [
                             'reference_no' => $this->client_loan_no,
-                            'reference_id' => $this->schedule_id,
-                            'transaction_date' => $repayment_date,
+                            'reference_id' => $inserted_loan_id,
+                            'transaction_date' => $action_date,
                             $debit_or_credit4=> intval($loan_data[3]),
                             'narrative'=> strtoupper("Interest on Loan Disbursed on ".$action_date),
                             'account_id'=> 7,
