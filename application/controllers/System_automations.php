@@ -2120,4 +2120,13 @@ Thank you for saving with us. Contact " . $contact_number;
 
         return $unique_id;
     }
+
+    public function fix_interest()
+    {
+        $this->load->model('journal_transaction_line_model');
+        $data = $this->journal_transaction_line_model->fix_interest();
+        
+
+        echo json_encode($data);
+    }
 }
