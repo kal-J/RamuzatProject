@@ -32,7 +32,7 @@ class Member_import extends CI_Controller
     public function index()
     {
         $folder = "data_extract" . DIRECTORY_SEPARATOR . "mceesacco" . DIRECTORY_SEPARATOR;
-        $file_name = "LOAN_TEMPLATE2.csv";
+        $file_name = "NEW_LOANS.csv";
         $file_path = FCPATH . $folder . $file_name;
         $feedback = $this->run_updates($file_path);
         echo json_encode($feedback);

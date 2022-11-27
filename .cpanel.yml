@@ -2,3 +2,7 @@ deployment:
   tasks:
     - export DEPLOYPATH=/python/ramuzat/public_html/matrix
     - /bin/cp -R * $DEPLOYPATH
+    - export DEPLOYPATH=/python/ramuzat/public_html/kayunga.matrix
+    - /bin/cp -R * $DEPLOYPATH
+    - export DEPLOYPATH=/python/ramuzat/public_html/old-kayunga.matrix
+    - /bin/cp -R * $DEPLOYPATH

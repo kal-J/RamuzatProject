@@ -46,7 +46,7 @@ class Data_loan_import extends CI_Controller {
     public function index() {
         $this->db->trans_start();
         $folder = "data_extract".DIRECTORY_SEPARATOR."mceesacco".DIRECTORY_SEPARATOR;
-        $file_name = "LOAN_TEMPLATE2.csv";
+        $file_name = "NEW_LOANS.csv";
         $file_path = FCPATH . $folder . $file_name;
         $feedback = $this->run_updates($file_path);
         $this->db->trans_complete();
@@ -102,7 +102,7 @@ class Data_loan_import extends CI_Controller {
         
 
         $member_id = intval($loan_data[0]);
-        $amount=intval($loan_data[2]);
+        $amount=intval($loan_data[4]);
         $loan_product_id = 14;
         $interest_type = 1;
         //$repayment_frequency = $loan_data[8];
@@ -201,7 +201,7 @@ class Data_loan_import extends CI_Controller {
                         $repayment_schedule_array[] = [
                             "repayment_date" => $repayment_date,
                             "interest_amount" => intval($loan_data[3]),
-                            "principal_amount" => intval($loan_data[2]),
+                            "principal_amount" => intval($loan_data[4]),
                             "client_loan_id" => $inserted_loan_id,
                             "grace_period_on" => 1,
                             "grace_period_after" => 3,
@@ -247,7 +247,7 @@ class Data_loan_import extends CI_Controller {
                         'ref_id' => $inserted_loan_id,
                         'description' => 'Loan imported from Excel',
                         'action_date' => $action_date,
-                        'principal_amount'=>intval($loan_data[2]),
+                        'principal_amount'=>intval($loan_data[4]),
                         'interest_amount' => intval($loan_data[3]),
                         'source_fund_account_id'=>27,
                         'loan_receivable_account_id'=>1,
