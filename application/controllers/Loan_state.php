@@ -794,7 +794,7 @@ class Loan_state extends CI_Controller
         }
       }
 
-      foreach ($interest_data as $key => $value) {
+      /* foreach ($interest_data as $key => $value) {
         $index_key += 2;
         $transaction_date = date('d-m-Y', strtotime($value['repayment_date']));
         $data[$index_key - 1] = [
@@ -822,7 +822,35 @@ class Loan_state extends CI_Controller
           'status_id' => 1,
           'unique_id' => $unique_id
         ];
-      }
+      } */
+      $index_key += 2;
+        $transaction_date = date('d-m-Y', strtotime($this->input->post('action_date')));
+        $data[$index_key - 1] = [
+          'reference_no' => $client_loan['loan_no'],
+          'reference_id' => $this->input->post('client_loan_id'),
+          'transaction_date' => $transaction_date,
+          'member_id' => $membere_id,
+          'reference_key' => $client_loan['loan_no'],
+          $debit_or_credit3 => $interest_amount,
+          'narrative' => strtoupper("Interest on Loan Disbursed on " . $this->input->post('action_date')) . " [ " . strtoupper($this->input->post('comment')) . "] [ " . $client_loan['member_name'] . " ] ",
+          'account_id' => $loan_product_details['interest_income_account_id'],
+          'status_id' => 1,
+          'unique_id' => $unique_id
+        ];
+
+        $data[$index_key] =  [
+          'reference_no' => $client_loan['loan_no'],
+          'reference_id' => $this->input->post('client_loan_id'),
+          'transaction_date' => $transaction_date,
+          'member_id' => $membere_id,
+          'reference_key' => $client_loan['loan_no'],
+          $debit_or_credit4 => $interest_amount,
+          'narrative' => strtoupper("Interest on Loan Disbursed on " . $this->input->post('action_date')) . " [ " . strtoupper($this->input->post('comment')) . "] [ " . $client_loan['member_name'] . " ] ",
+          'account_id' => $loan_product_details['interest_receivable_account_id'],
+          'status_id' => 1,
+          'unique_id' => $unique_id
+        ];
+
       $this->journal_transaction_line_model->set($journal_transaction_id, $data);
     }
   }

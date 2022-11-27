@@ -318,4 +318,42 @@ class Journal_transaction_line_model extends CI_Model {
         return $this->db->update('journal_transaction_line', $data);
     }
 
+    public function fix_interest()
+    {
+        $today = date('Y-m-d');
+        $this->db->select("*");
+        $this->db->from("fms_journal_transaction_line");
+        $this->db->where("status_id", 1);
+        $this->db->where("account_id IN(7,6)");
+        $this->db->where("transaction_date > '{$today}'");
+        $this->db->limit(500);
+        $query = $this->db->get();
+        $lines = $query->result_array();
+        if(empty($lines)) return [];
+        $data = [];
+
+        foreach ($lines as $key => $line) {            
+            $loan_active_date = $this->get_loan_disbursement_date_using_journal_transaction_id($line["journal_transaction_id"]);
+
+            $this->db->trans_start();
+            $this->db->where('id', $line['id']);
+            $this->db->update("fms_journal_transaction_line", [
+                "transaction_date" => $loan_active_date
+            ]);
+            $this->db->trans_complete();
+            array_push($data, $line);
+        }
+        return $data;
+    }
+
+    public function get_loan_disbursement_date_using_journal_transaction_id($id)
+    {
+        $this->db->select('transaction_date');
+        $this->db->from("fms_journal_transaction");
+        $this->db->where("id", $id);
+        $query = $this->db->get();
+        $journal = $query->row_array();
+        return $journal["transaction_date"];
+
+    }
 }

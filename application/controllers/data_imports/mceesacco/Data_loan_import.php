@@ -35,7 +35,7 @@ class Data_loan_import extends CI_Controller {
         $this->load->model("accounts_model");
         $this->load->model("Data_import_model");
         $this->schedule_id=0;
-        $this->client_loan_no='LN000001';
+        $this->client_loan_no='LN0001';
 
         $this->debit_or_credit1 =  $this->accounts_model->get_normal_side(1,true);//loan_receivable_account_id
         $this->debit_or_credit3= $this->accounts_model->get_normal_side(27);//linked_account_id
@@ -46,7 +46,7 @@ class Data_loan_import extends CI_Controller {
     public function index() {
         $this->db->trans_start();
         $folder = "data_extract".DIRECTORY_SEPARATOR."mceesacco".DIRECTORY_SEPARATOR;
-        $file_name = "mcee_loansv2.csv";
+        $file_name = "NEW_LOANS.csv";
         $file_path = FCPATH . $folder . $file_name;
         $feedback = $this->run_updates($file_path);
         $this->db->trans_complete();
@@ -65,7 +65,7 @@ class Data_loan_import extends CI_Controller {
                 $data1 = $this->security->xss_clean($data);
                 if ($count == 0) {//the row with the field_names
                     $field_names = $data1;
-                    if ($field_names[0] != "Member ID") {
+                    if ($field_names[0] != "CLIENT_NO") {
                         $feedback['message'] = "Please ensure that the first cell (A1) contains the key Member ID";
                         fclose($handle);
                         return $feedback;
@@ -95,15 +95,15 @@ class Data_loan_import extends CI_Controller {
         $date_created = time();
         //$date_parts = explode('.', $loan_data[5]);
         //print_r($date_parts); die;
-        $action_date = date("Y-m-d", strtotime($loan_data[5]));
+        $action_date = "2022-11-08";
         //print_r($action_date); die;
         
         $next_pay_date = date('Y-m-d', strtotime($action_date . '+1 months'));
         
 
         $member_id = intval($loan_data[0]);
-        $amount=intval($loan_data[2]);
-        $loan_product_id = 1;
+        $amount=intval($loan_data[4]);
+        $loan_product_id = 14;
         $interest_type = 1;
         //$repayment_frequency = $loan_data[8];
         //$repayment_made_every = 3;
@@ -111,10 +111,10 @@ class Data_loan_import extends CI_Controller {
         $repayment_frequency = 1;
         $repayment_made_every = 3;//Monthly payments
 
-        $installments= intval($loan_data[3]);
+        $installments= 1;
         //print_r($loan_data[3]); die;
         //print_r($loan_data[2]); die;
-        $loan_interest_rate = $loan_data[6];
+        $loan_interest_rate = 36;
         // $loan_interest_rate = ((intval($loan_data[3]) * intval($loan_data[4])) / intval($loan_data[2])) * 12;
         
         //print_r($action_date); die;
@@ -123,15 +123,15 @@ class Data_loan_import extends CI_Controller {
             if ($loan_data[0] != "" && $loan_data[0] != 'NULL') {
                 $single_row = [
                     "member_id" =>  $member_id,
-                    "branch_id" => 1,
+                    "branch_id" => 2,
                     "loan_no" => $this->client_loan_no,
-                    "credit_officer_id" => 2, 
+                    "credit_officer_id" => intval($loan_data[4]), 
                     "loan_product_id" => $loan_product_id,
                     "topup_application" => 0,
                     "requested_amount" => $amount,
                     'disbursed_amount' => $amount,
                     "application_date" => $action_date,
-                    "source_fund_account_id" => 40, //$source_fund_id[$loan_product_id-1],
+                    "source_fund_account_id" => 27, //$source_fund_id[$loan_product_id-1],
                     "disbursement_date" => $action_date,
                     "suggested_disbursement_date" => $action_date,
                     "interest_rate" => $loan_interest_rate,
@@ -140,7 +140,7 @@ class Data_loan_import extends CI_Controller {
                     "repayment_frequency" => $repayment_frequency,
                     "repayment_made_every" => $repayment_made_every,
                     "installments" => $installments,
-                    "link_to_deposit_account" => 1,
+                    "link_to_deposit_account" => 0,
                     "comment" => 'Loan imported from the old system/Excel',
                     "amount_approved" => $amount,
                     "approval_date" => $action_date,
@@ -152,7 +152,7 @@ class Data_loan_import extends CI_Controller {
                     "loan_purpose" => 'N/L',
                     "preferred_payment_id" => 1,
                     'date_created' => $date_created,
-                    "created_by" =>2
+                    "created_by" =>1
                 ];
                  
                 //insert into the client table
@@ -166,7 +166,7 @@ class Data_loan_import extends CI_Controller {
                         "comment" => 'Loan Disbursed - Data imported',
                         "action_date" => $action_date,
                         "date_created" => $date_created,
-                        "created_by" => 2
+                        "created_by" => 1
                     ];
                     $this->loan_state_model->set2($loan_state_details);
                     //Schedule genration
@@ -200,8 +200,8 @@ class Data_loan_import extends CI_Controller {
 
                         $repayment_schedule_array[] = [
                             "repayment_date" => $repayment_date,
-                            "interest_amount" => $interest_amount,
-                            "principal_amount" => $principal_amount,
+                            "interest_amount" => intval($loan_data[3]),
+                            "principal_amount" => intval($loan_data[4]),
                             "client_loan_id" => $inserted_loan_id,
                             "grace_period_on" => 1,
                             "grace_period_after" => 3,
@@ -219,8 +219,8 @@ class Data_loan_import extends CI_Controller {
                         $interest_data[$index_key-1]=[
                             'reference_no' => $this->client_loan_no,
                             'reference_id' => $this->schedule_id,
-                            'transaction_date' => $repayment_date,
-                            $debit_or_credit3=> $interest_amount,
+                            'transaction_date' => $action_date,
+                            $debit_or_credit3=> intval($loan_data[3]),
                             'narrative'=> strtoupper("Interest on Loan Disbursed on ".$action_date),
                             'account_id'=> 6,
                             'status_id'=> 1
@@ -228,9 +228,9 @@ class Data_loan_import extends CI_Controller {
 
                         $interest_data[$index_key] =  [
                             'reference_no' => $this->client_loan_no,
-                            'reference_id' => $this->schedule_id,
-                            'transaction_date' => $repayment_date,
-                            $debit_or_credit4=> $interest_amount,
+                            'reference_id' => $inserted_loan_id,
+                            'transaction_date' => $action_date,
+                            $debit_or_credit4=> intval($loan_data[3]),
                             'narrative'=> strtoupper("Interest on Loan Disbursed on ".$action_date),
                             'account_id'=> 7,
                             'status_id'=> 1
@@ -247,9 +247,9 @@ class Data_loan_import extends CI_Controller {
                         'ref_id' => $inserted_loan_id,
                         'description' => 'Loan imported from Excel',
                         'action_date' => $action_date,
-                        'principal_amount'=>$amount,
-                        'interest_amount' => $interest_sum,
-                        'source_fund_account_id'=>40,
+                        'principal_amount'=>intval($loan_data[4]),
+                        'interest_amount' => intval($loan_data[3]),
+                        'source_fund_account_id'=>27,
                         'loan_receivable_account_id'=>1,
                         'interest_income_account_id' =>6,
                         'interest_receivable_account_id' =>7
@@ -291,7 +291,7 @@ class Data_loan_import extends CI_Controller {
                 'transaction_date' => $sent_data['action_date'],
                 $debit_or_credit2=> $sent_data['principal_amount'],
                 'narrative'=> strtoupper("Loan Disbursement on ".$sent_data['action_date']),
-                'account_id'=> 40,
+                'account_id'=> 27,
                 'status_id'=> 1
             ];
             $data[1] = [
@@ -353,7 +353,7 @@ private function insert_loan_payment_transaction($loan_data, $loan_id) {
                     'action_date' => $payment_date,
                     'principal_amount' => $paid_principal,
                     'interest_amount' => $paid_interest,
-                    'linked_account_id' =>40,
+                    'linked_account_id' =>27,
                     'loan_receivable_account_id' =>1,
                     'interest_income_account_id' =>6,
                     'interest_receivable_account_id' =>7
