@@ -1,14 +1,14 @@
-if ($("#tblRepayment_schedule").length && tabClicked === "tab-repayment_schedule") {
-                if (typeof (dTable['tblRepayment_schedule']) !== 'undefined') {
+if ($("#tblLoan_ledger_card").length && tabClicked === "tab-loan_ledger_card") {
+                if (typeof (dTable['tblLoan_ledger_card']) !== 'undefined') {
                     $(".tab-pane").removeClass("active");
-                    $("#tab-repayment_schedule").addClass("active");
-                    dTable['tblRepayment_schedule'].ajax.reload(null, true);
+                    $("#tab-loan_ledger_card").addClass("active");
+                    dTable['tblLoan_ledger_card'].ajax.reload(null, true);
                 } else {
-                    dTable['tblRepayment_schedule'] = $('#tblRepayment_schedule').DataTable({
+                    dTable['tblLoan_ledger_card'] = $('#tblLoan_ledger_card').DataTable({
                       "pageLength": 50,
                         "dom": '<"html5buttons"B>lTfgitp',
                         "ajax":{
-                            "url": "<?php echo base_url('repayment_schedule/jsonList/'); ?>",
+                            "url": "<?php echo base_url('repayment_schedule/loan_ledger_card/'); ?>",
                             "dataType": "json",
                             "type": "POST",
                             "data": function (d) {
@@ -24,11 +24,19 @@ if ($("#tblRepayment_schedule").length && tabClicked === "tab-repayment_schedule
               "footerCallback": function (tfoot, data, start, end, display) {
                     var api = this.api();
 
-                $.each([2,3,4,5], function(key,val){
+                $.each([2,3,4,5,6,7], function(key,val){
                   if(val==5){
-                    var total_overall_amount = parseFloat(api.column(5).data().sum()) + parseFloat(api.column(4).data().sum()) ;
+                    var total_overall_amount = parseFloat(api.column(5).data().sum()) + parseFloat(api.column(4).data().sum());
                     $(api.column(5).footer()).html(curr_format(round(total_overall_amount,2)));
                     
+                  }else if(val==6) {
+                    var amount_paid = parseFloat(api.column(6).data().sum());
+                    $(api.column(6).footer()).html(curr_format(round(amount_paid,2)));
+                  }else if(val==7) {
+                    var total_overall_amount = parseFloat(api.column(5).data().sum()) + parseFloat(api.column(4).data().sum());
+                    var amount_paid = parseFloat(api.column(6).data().sum());
+                    
+                    $(api.column(7).footer()).html(curr_format(round(total_overall_amount-amount_paid,2)));
                   }else{
                     var total_overall_amount = api.column(val).data().sum();
                     $(api.column(val).footer()).html(curr_format(round(total_overall_amount,2)));
@@ -74,6 +82,12 @@ if ($("#tblRepayment_schedule").length && tabClicked === "tab-repayment_schedule
                       },
                       { data: "total_amount", render:function( data, type, full, meta ){
                         return (full.penalty_value != '')? curr_format( round((parseFloat(data)+parseFloat(full.penalty_value)),2) ):curr_format(data*1);} 
+                      },
+                      { data: "amount_paid", render:function( data, type, full, meta ){
+                        return curr_format(data*1);} 
+                      },
+                      { data: "amount_paid", render:function( data, type, full, meta ){
+                        return curr_format( (parseFloat(full.total_amount) - parseFloat(data*1)) + parseFloat(full.penalty_value*1) );} 
                       },
                       { data: "actual_payment_date", render:function( data, type, full, meta ){
                         return (!(data=='0000-00-00'))?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'';

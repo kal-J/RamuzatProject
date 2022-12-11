@@ -129,6 +129,51 @@ class Repayment_schedule_model extends CI_Model
         }
     }
 
+    public function get_loan_ledger_card($filter = FALSE)
+    {
+        $amount_paid_per_installment = " (SELECT repayment_schedule_id, SUM(ifnull(paid_interest, 0)+ifnull(paid_principal,0)+ifnull(paid_penalty,0)) amount_paid FROM fms_loan_installment_payment WHERE status_id=1 GROUP BY repayment_schedule_id) ";
+
+        $this->db->select("amount_paid, repayment_schedule.*,(interest_amount+principal_amount) AS total_amount,payment_name,
+            CASE 
+                WHEN fms_repayment_schedule.repayment_date < NOW() THEN 1
+                WHEN fms_repayment_schedule.repayment_date = NOW() THEN 2
+                ELSE 0 
+            END AS installment_status
+            ", FALSE);
+        $query = $this->db->from('repayment_schedule')->join('loan_payment_status', 'loan_payment_status.id=repayment_schedule.payment_status', 'left')->join($amount_paid_per_installment . " amount_paid_per_installment", "amount_paid_per_installment.repayment_schedule_id=repayment_schedule.id", "LEFT");
+        
+
+        if ($this->input->post('status_id') !== NULL && is_numeric($this->input->post('status_id'))) {
+            $this->db->where('repayment_schedule.status_id', $this->input->post('status_id'));
+        } else {
+            $this->db->where('repayment_schedule.status_id=1');
+        }
+        if ($this->input->post('client_loan_id') !== NULL && is_numeric($this->input->post('client_loan_id'))) {
+            $this->db->where('repayment_schedule.client_loan_id', $this->input->post('client_loan_id'));
+        }
+        if ($this->input->post('payment_status') !== NULL && is_numeric($this->input->post('payment_status'))) {
+            $this->db->where('repayment_schedule.payment_status', $this->input->post('payment_status'));
+        }
+        if ($this->input->post('payment_status') !== NULL && is_array($this->input->post('payment_status'))) {
+            $this->db->where_in('repayment_schedule.payment_status', $this->input->post('payment_status'));
+        }
+        $this->db->order_by("repayment_date", "ASC");
+        if ($filter === FALSE) {
+            $query = $this->db->get();
+            return $query->result_array();
+        } else {
+            if (is_numeric($filter)) {
+                $this->db->where('repayment_schedule.client_loan_id=' . $filter);
+                $query = $this->db->get();
+                return $query->result_array();
+            } else {
+                $this->db->where($filter);
+                $query = $this->db->get();
+                return $query->result_array();
+            }
+        }
+    }
+
     public function get22($filter = FALSE)
     {
         $this->db->select("repayment_schedule.*,(interest_amount+principal_amount) AS total_amount,payment_name,paid_principal_amount,paid_interest_amount,
