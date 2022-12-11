@@ -290,16 +290,16 @@ if (empty($data['module_list'])) {
 
                 </div>
             </div>
-            <div class="col-12 d-flex justify-content-end align-items-center">
+            <div class="col-12 d-flex justify-content-start align-items-center">
                 
-                <button type="button" class="btn btn-dark rounded ml-2 my-2 py-auto">
+                <!-- <button type="button" class="btn btn-dark rounded ml-2 my-2 py-auto">
                 CASH AT HAND <span class="badge badge-light">UGX 5,000,000</span>
-                </button>
-                <button type="button" class="btn btn-dark rounded ml-2 my-2 py-auto">
+                </button> -->
+                <!-- <button type="button" class="btn btn-dark rounded ml-2 my-2 py-auto">
                 CASH AT HAND <span class="badge badge-light">UGX 5,000,000</span>
-                </button>
+                </button> -->
                 <button type="button" class="btn btn-dark rounded ml-2 my-2 py-auto">
-                SMS CREDIT <span class="badge badge-light">UGX 5,000,000</span>
+                SMS CREDIT <span id="sms_balance" class="badge badge-light">UGX 0</span>
                 </button>
             </div>
 

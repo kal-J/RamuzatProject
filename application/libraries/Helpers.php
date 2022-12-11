@@ -297,7 +297,7 @@ class Helpers {
    public function send_sms($mobile_number, $message)
     {       $api_key=$this->CI->payment_engine_model->get_sms(1);
             $request = new HTTP_Request2();
-            $request->setUrl('https://api.textug.com/sms/send');
+            $request->setUrl('http://207.180.194.196/sms-api/sms/send');
             $request->setMethod(HTTP_Request2::METHOD_POST);
             $request->setConfig(array(
               'follow_redirects' => TRUE

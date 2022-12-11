@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use GuzzleHttp\Client;
+
 class Dashboard extends CI_Controller {
 
     public function __construct() {
@@ -450,5 +452,27 @@ class Dashboard extends CI_Controller {
         $data['savings_dataset']['withdraw_percentage']=($savings_data['withdraw_sum']/$savings_data['deposits_sum'])*100;
 
         echo json_encode($data);
+    }
+
+    public function get_sms_balance()
+    {
+        $url = 'http://207.180.194.196/sms-api/login';
+        $client = new Client();
+        $data = [
+            "email" => "kalujja.dev@gmail.com",
+            "password" => "#@_GmT/admin",
+        ];
+
+        $response = $client->post($url, [
+            'form_params' => $data,
+        ]);
+
+        $body = $response->getBody()->getContents();
+        $arr_body = json_decode($body, true);
+
+        //$user = $arr_body["data"]["user"];
+
+        echo json_encode(['balance' => number_format($arr_body['user']['acc_balance'])]);
+
     }
 }

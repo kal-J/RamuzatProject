@@ -1373,6 +1373,22 @@ function get_member_data(new_data){
     });
 }
 
+function get_sms_balance(){
+    var url = "<?php echo site_url("dashboard/get_sms_balance"); ?>";
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType:'json',
+        success:function (response) {
+         console.log("SMS : ", response)
+         $("#sms_balance").text('UGX ' + response.balance);
+        },
+        fail:function (jqXHR, textStatus, errorThrown) {
+            console.log("Network error. Data could not be loaded." + errorThrown + " " + textStatus);
+            }
+    });
+}
+
 
 $(document).on('keydown', function ( e ) {
 // You may replace m with whatever key you want
@@ -1388,6 +1404,10 @@ document.querySelectorAll('.loan_security_fees')
         .forEach(select => {
             $(select).select2();
 })
+});
+
+$(document).ready(() => {
+    get_sms_balance();
 });
 
 
