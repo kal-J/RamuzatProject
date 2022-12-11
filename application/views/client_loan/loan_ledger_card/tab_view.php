@@ -40,6 +40,8 @@
                           <th>0</th>
                           <th>0</th>
                           <th>0</th>
+                          <th>0</th>
+                          <th>0</th>
                           <th colspan="3">&nbsp;</th>
                       </tr>
                   </tfoot>

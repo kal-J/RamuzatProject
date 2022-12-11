@@ -24,11 +24,19 @@ if ($("#tblLoan_ledger_card").length && tabClicked === "tab-loan_ledger_card") {
               "footerCallback": function (tfoot, data, start, end, display) {
                     var api = this.api();
 
-                $.each([2,3,4,5], function(key,val){
+                $.each([2,3,4,5,6,7], function(key,val){
                   if(val==5){
-                    var total_overall_amount = parseFloat(api.column(5).data().sum()) + parseFloat(api.column(4).data().sum()) ;
+                    var total_overall_amount = parseFloat(api.column(5).data().sum()) + parseFloat(api.column(4).data().sum());
                     $(api.column(5).footer()).html(curr_format(round(total_overall_amount,2)));
                     
+                  }else if(val==6) {
+                    var amount_paid = parseFloat(api.column(6).data().sum());
+                    $(api.column(6).footer()).html(curr_format(round(amount_paid,2)));
+                  }else if(val==7) {
+                    var total_overall_amount = parseFloat(api.column(5).data().sum()) + parseFloat(api.column(4).data().sum());
+                    var amount_paid = parseFloat(api.column(6).data().sum());
+                    
+                    $(api.column(7).footer()).html(curr_format(round(total_overall_amount-amount_paid,2)));
                   }else{
                     var total_overall_amount = api.column(val).data().sum();
                     $(api.column(val).footer()).html(curr_format(round(total_overall_amount,2)));
