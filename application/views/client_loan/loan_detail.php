@@ -53,6 +53,7 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li><a class="nav-link active firsttab" data-toggle="tab" href="#tab-loan_details">Loan
                                 Details</a></li>
+                        <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-loan_ledger_card"><i class="fa fa-credit-card"></i> Ledger Card</a></li>
                         <li><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-repayment_schedule"><i class="fa fa-credit-card"></i> Loan Schedule</a></li>
                         <li data-bind="visible: (parseInt($root.loan_detail().state_id) >=7)"><a class="nav-link" data-bind="click: display_table" data-toggle="tab" href="#tab-loan_installment_payment"><i class="fa fa-money"></i>Transactions</a></li>
                         <?php if (in_array('3', $client_loan_privilege)) { ?>
@@ -476,6 +477,7 @@
                             $this->view('client_loan/loan_attached_saving_accounts/tab_view');
                         } ?>
                         <?php $this->view('client_loan/repayment_schedule/tab_view'); ?>
+                        <?php $this->view('client_loan/loan_ledger_card/tab_view'); ?>
                         <?php $this->view('client_loan/loan_docs/tab_view'); ?>
                         <?php $this->view('client_loan/approval/tab_view'); ?>
                         <?php $this->view('client_loan/history/tab_view'); ?>
@@ -711,8 +713,7 @@ if ($org['loan_app_stage'] == 0) {
             });
 
             //paying for the loan
-            self.payment_date = ko.observable('<?php //echo date('d-m-Y');
-                                                ?>');
+            self.payment_date = ko.observable('<?php //echo date('d-m-Y'); ?>');
             self.payment_details = ko.observable();
             self.penalty_amount = ko.observable();
             self.extra_amount_available = ko.observable(0);
@@ -1463,8 +1464,7 @@ if ($org['loan_app_stage'] == 0) {
                 }
             });
 
-            self.action_date = ko.observable('<?php // echo date('d-m-Y'); 
-                                                ?>');
+            self.action_date = ko.observable('<?php // echo date('d-m-Y'); ?>');
             self.initialize_edit = function() {
                 edit_data(self.loan_detail(), "formClient_loan");
             };
@@ -1593,8 +1593,7 @@ if ($org['loan_app_stage'] == 0) {
                     dataType: 'json',
                     success: function(response) {
                         self.action_date(null);
-                        self.action_date('<?php // echo date('d-m-Y'); 
-                                            ?>');
+                        self.action_date('<?php // echo date('d-m-Y'); ?>');
                         self.payment_schedule(null);
                         self.payment_schedule(response.payment_schedule);
                         self.payment_summation(response.payment_summation);
@@ -1622,8 +1621,7 @@ if ($org['loan_app_stage'] == 0) {
                     dataType: 'json',
                     success: function(response) {
                         self.action_date(null);
-                        self.action_date('<?php // echo date('d-m-Y'); 
-                                            ?>');
+                        self.action_date('<?php // echo date('d-m-Y'); ?>');
                         self.payment_schedule(null);
                         self.payment_schedule(response.payment_schedule);
                         self.payment_summation(response.payment_summation);
@@ -1978,6 +1976,7 @@ if ($org['loan_app_stage'] == 0) {
             } ?>
             <?php $this->view('client_loan/security/collateral/table_js'); ?>
             <?php $this->view('client_loan/repayment_schedule/table_js'); ?>
+            <?php $this->view('client_loan/loan_ledger_card/table_js'); ?>
             <?php $this->view('client_loan/loan_docs/table_js'); ?>
             <?php $this->view('client_loan/fees/table_js'); ?>
             <?php if ((in_array('6', $modules)) && (in_array('5', $modules))) {

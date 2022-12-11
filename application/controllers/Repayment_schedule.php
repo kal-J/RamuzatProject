@@ -21,6 +21,73 @@ class Repayment_schedule extends CI_Controller
     $this->load->model("repayment_schedule_model");
   }
 
+  public function loan_ledger_card()
+  {
+    $data['data'] = $this->repayment_schedule_model->get_loan_ledger_card();
+
+    $loan_details = $this->client_loan_model->get_client_loan($this->input->post('client_loan_id'));
+    $penalty_applicable_after_due_date = $loan_details['penalty_applicable_after_due_date'];
+    $fixed_penalty_amount = $loan_details['fixed_penalty_amount'];
+    $penalty_calculation_method_id = $loan_details['penalty_calculation_method_id'];
+    $last_pay_date = $loan_details['last_pay_date'];
+    // $next_pay_date = $loan_details['next_pay_date'];
+
+    foreach ($data['data'] as $key => $value) {
+      $due_installments_data = $this->repayment_schedule_model->due_installments_data($value['id']);
+      if (!empty($due_installments_data)) {
+        $over_due_principal = $due_installments_data['due_principal'];
+        if ($value['demanded_penalty'] > 0) {
+          $number_of_late_days = $due_installments_data['due_days2'];
+        } else {
+          $number_of_late_days = $due_installments_data['due_days'] - $due_installments_data['grace_period_after'];
+        }
+
+        ##
+        if (intval($penalty_calculation_method_id) == 1) {
+          $penalty_rate = (($due_installments_data['penalty_rate']) / 100);
+        } else {
+          $penalty_rate = 1;
+        }
+
+        if ($due_installments_data['penalty_rate_charged_per'] == 4) { // One time penalty 
+          $number_of_late_period = 1;
+        } elseif ($due_installments_data['penalty_rate_charged_per'] == 3) {
+          $number_of_late_period = intdiv($number_of_late_days, 30);
+        } elseif ($due_installments_data['penalty_rate_charged_per'] == 2) {
+          $number_of_late_period = intdiv($number_of_late_days, 7);
+        } else {
+          $number_of_late_period = $number_of_late_days;
+        }
+
+
+        if (intval($penalty_calculation_method_id) == 2) { // Fixed amount Penalty
+
+          $penalty_value = ($fixed_penalty_amount * $number_of_late_period);
+
+          $penalty_value = $due_installments_data['penalty_rate_charged_per'] == 4 ? ($due_installments_data['paid_penalty_amount'] > 0 ? 0 : ($fixed_penalty_amount * $number_of_late_period)) : ($fixed_penalty_amount * $number_of_late_period);
+
+        } else {
+          $penalty_value = ($over_due_principal * $number_of_late_period * $penalty_rate);
+
+          $penalty_value = $due_installments_data['penalty_rate_charged_per'] == 4 ? ($due_installments_data['paid_penalty_amount'] > 0 ? 0 : ($over_due_principal * $number_of_late_period * $penalty_rate)) : ($over_due_principal * $number_of_late_period * $penalty_rate);
+        }
+
+
+        if ((intval($penalty_applicable_after_due_date) == 1)) {
+
+          if ($last_pay_date >= date('Y-m-d')) {
+            $penalty_value = 0;
+          }
+        }
+
+        $data['data'][$key]['penalty_value'] = $value['demanded_penalty'] > 0 ? round($penalty_value + $value['demanded_penalty'], 0) : round($penalty_value, 0);
+      } else {
+        $data['data'][$key]['penalty_value'] = $value['demanded_penalty'];
+      }
+    }
+    echo json_encode($data);
+  }
+
   public function jsonList()
   {
     $data['data'] = $this->repayment_schedule_model->get();

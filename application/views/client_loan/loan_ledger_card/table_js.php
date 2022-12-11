@@ -1,14 +1,14 @@
-if ($("#tblRepayment_schedule").length && tabClicked === "tab-repayment_schedule") {
-                if (typeof (dTable['tblRepayment_schedule']) !== 'undefined') {
+if ($("#tblLoan_ledger_card").length && tabClicked === "tab-loan_ledger_card") {
+                if (typeof (dTable['tblLoan_ledger_card']) !== 'undefined') {
                     $(".tab-pane").removeClass("active");
-                    $("#tab-repayment_schedule").addClass("active");
-                    dTable['tblRepayment_schedule'].ajax.reload(null, true);
+                    $("#tab-loan_ledger_card").addClass("active");
+                    dTable['tblLoan_ledger_card'].ajax.reload(null, true);
                 } else {
-                    dTable['tblRepayment_schedule'] = $('#tblRepayment_schedule').DataTable({
+                    dTable['tblLoan_ledger_card'] = $('#tblLoan_ledger_card').DataTable({
                       "pageLength": 50,
                         "dom": '<"html5buttons"B>lTfgitp',
                         "ajax":{
-                            "url": "<?php echo base_url('repayment_schedule/jsonList/'); ?>",
+                            "url": "<?php echo base_url('repayment_schedule/loan_ledger_card/'); ?>",
                             "dataType": "json",
                             "type": "POST",
                             "data": function (d) {
@@ -74,6 +74,12 @@ if ($("#tblRepayment_schedule").length && tabClicked === "tab-repayment_schedule
                       },
                       { data: "total_amount", render:function( data, type, full, meta ){
                         return (full.penalty_value != '')? curr_format( round((parseFloat(data)+parseFloat(full.penalty_value)),2) ):curr_format(data*1);} 
+                      },
+                      { data: "amount_paid", render:function( data, type, full, meta ){
+                        return curr_format(data*1);} 
+                      },
+                      { data: "amount_paid", render:function( data, type, full, meta ){
+                        return curr_format( (parseFloat(full.total_amount) - parseFloat(data*1)) + parseFloat(full.penalty_value*1) );} 
                       },
                       { data: "actual_payment_date", render:function( data, type, full, meta ){
                         return (!(data=='0000-00-00'))?moment(data,'YYYY-MM-DD').format('D-MMM-YYYY'):'';
