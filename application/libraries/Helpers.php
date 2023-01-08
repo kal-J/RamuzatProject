@@ -235,9 +235,10 @@ class Helpers {
             } elseif (preg_match("/^[07]+[0-9]{9,10}$/", $contacts['mobile_number'])) {
                 $mobile_number = '+256' . substr($contacts['mobile_number'], -9);
             } else {
-                $mobile_number = '';
+                $mobile_number = $contacts['mobile_number'];
             }
             # send SMS
+
             if (!empty($mobile_number)) {
                 if ($this->send_sms($mobile_number, $message)) {
                     $this->CI->sms_model->set($sent_data);
@@ -297,7 +298,7 @@ class Helpers {
    public function send_sms($mobile_number, $message)
     {       $api_key=$this->CI->payment_engine_model->get_sms(1);
             $request = new HTTP_Request2();
-            $request->setUrl('http://207.180.194.196/sms-api/sms/send');
+            $request->setUrl('https://kal.codes/sms-api/sms/send');
             $request->setMethod(HTTP_Request2::METHOD_POST);
             $request->setConfig(array(
               'follow_redirects' => TRUE

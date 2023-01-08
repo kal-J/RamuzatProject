@@ -456,11 +456,11 @@ class Dashboard extends CI_Controller {
 
     public function get_sms_balance()
     {
-        $url = 'http://207.180.194.196/sms-api/login';
+        $url = 'https://kal.codes/sms-api/login';
         $client = new Client();
         $data = [
-            "email" => "kalujja.dev@gmail.com",
-            "password" => "#@_GmT/admin",
+            "email" => "admin@ramuzatcompany.com",
+            "password" => "L8g4JgfcrcjthSW",
         ];
 
         $response = $client->post($url, [

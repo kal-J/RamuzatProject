@@ -2511,4 +2511,34 @@ class Client_loan extends CI_Controller
 
         return $schedules;
     }
+
+    public function send_sms_remainder()
+    {
+        $client_loan_id = $this->input->post('loan_id');
+        try {
+            $amount_due = $this->client_loan_model->get_loan_amount_due($client_loan_id);
+        } catch (\Throwable $th) {
+            echo json_encode([
+                'success' => false,
+                'message' => "Sorry, Something Went Wrong",
+            ]);
+            return;
+        }
+        
+        if (!empty($result = $this->miscellaneous_model->check_org_module(22))) {
+            $message = "Dear Customer, You are remainded to clear all your due loan balance of " . number_format($amount_due) . " today. - " . ".
+  " . $this->organisation . ", Contact " . $this->contact_number;
+            $text_response = $this->helpers->notification($client_loan_id, $message);
+          } else {
+            echo json_encode([
+                'success' => false,
+                'message' => "SMS not Enabled, Contact IT support",
+            ]);
+            return;
+          }
+        echo json_encode([
+            'success' => true,
+            'message' => $text_response,
+        ]);
+    }
 }

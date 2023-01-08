@@ -1376,4 +1376,15 @@ class Client_loan_model extends CI_Model
         $query = $this->db->get();
         return $query !== FALSE && $query->num_rows() > 0 ? $query->result_array() : [];
     }
+
+    public function get_loan_amount_due($client_loan_id)
+    {
+        $this->db->select('amount_in_demand');
+        $this->db->from('fms_client_loan a');
+        $this->db->join("$this->amount_in_demand amount_in_demand", 'amount_in_demand.client_loan_id=a.id', 'left');
+        $this->db->where("a.id", $client_loan_id);
+        $query = $this->db->get();
+
+        return $query->row_array()['amount_in_demand'];
+    }
 }

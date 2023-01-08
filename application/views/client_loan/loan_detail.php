@@ -284,7 +284,8 @@
                                             <td colspan="7"></td>
                                             <td>
                                                 <!--ko if: (parseInt($root.loan_detail().state_id) >= 7) -->
-                                                <button style="font-weight: bold;" href="#adjust_penalty_modal" data-toggle="modal" class="btn btn-warning btn-sm">
+                                                
+                                                <button onclick="send_sms_remainder()" id="btn-send-sms-remainder" style="font-weight: bold;"  data-toggle="modal" class="btn btn-warning btn-sm">
                                                     <i class="fa fa-bell"></i> SEND SMS PAYMENT REMAINDER
                                                 </button>
                                                 <!--/ko-->
@@ -547,6 +548,7 @@ if ($org['loan_app_stage'] == 0) {
 <?php $this->view('client_loan/loan_transactions/edit_transaction_date_modal'); ?>
 
 <script>
+    
     var dTable = {};
     var loanDetailModel = {};
     var TableManageButtons = {};
@@ -719,8 +721,7 @@ if ($org['loan_app_stage'] == 0) {
             });
 
             //paying for the loan
-            self.payment_date = ko.observable('<?php //echo date('d-m-Y');
-                                                ?>');
+            self.payment_date = ko.observable('<?php //echo date('d-m-Y'); ?>');
             self.payment_details = ko.observable();
             self.penalty_amount = ko.observable();
             self.extra_amount_available = ko.observable(0);
@@ -1471,8 +1472,7 @@ if ($org['loan_app_stage'] == 0) {
                 }
             });
 
-            self.action_date = ko.observable('<?php // echo date('d-m-Y'); 
-                                                ?>');
+            self.action_date = ko.observable('<?php // echo date('d-m-Y'); ?>');
             self.initialize_edit = function() {
                 edit_data(self.loan_detail(), "formClient_loan");
             };
@@ -1601,8 +1601,7 @@ if ($org['loan_app_stage'] == 0) {
                     dataType: 'json',
                     success: function(response) {
                         self.action_date(null);
-                        self.action_date('<?php // echo date('d-m-Y'); 
-                                            ?>');
+                        self.action_date('<?php // echo date('d-m-Y'); ?>');
                         self.payment_schedule(null);
                         self.payment_schedule(response.payment_schedule);
                         self.payment_summation(response.payment_summation);
@@ -1630,8 +1629,7 @@ if ($org['loan_app_stage'] == 0) {
                     dataType: 'json',
                     success: function(response) {
                         self.action_date(null);
-                        self.action_date('<?php // echo date('d-m-Y'); 
-                                            ?>');
+                        self.action_date('<?php // echo date('d-m-Y'); ?>');
                         self.payment_schedule(null);
                         self.payment_schedule(response.payment_schedule);
                         self.payment_summation(response.payment_summation);
@@ -2716,6 +2714,8 @@ if ($org['loan_app_stage'] == 0) {
 
         });
 
+        
+
     });
 
 
@@ -2767,5 +2767,30 @@ if ($org['loan_app_stage'] == 0) {
     }
     let get_guarantors = () => {
         dTable['tblGuarantor'].ajax.reload(null, true);
+    }
+    
+    const send_sms_remainder = () => {
+        $("#btn-send-sms-remainder").attr("disabled", true);
+        $("#btn-send-sms-remainder").html("Sending SMS ...");
+        $.ajax({
+            url: '<?php echo site_url("client_loan/send_sms_remainder"); ?>',
+            data: {
+                loan_id: '<?php echo ($loan_detail['id']); ?>',
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                console.log(response)
+                if(!response.success) toastr.error(response.message, "An Error Occured");
+                if(response.success) toastr.success(response.message, "SMS Remainder has been sent");
+                $("#btn-send-sms-remainder").attr("disabled", false);
+                $("#btn-send-sms-remainder").html("SEND SMS PAYMENT REMAINDER");
+            },
+            fail: function(jqXHR, textStatus, errorThrown) {
+                $("#btn-send-sms-remainder").attr("disabled", false);
+                $("#btn-send-sms-remainder").html("SEND SMS PAYMENT REMAINDER");
+                console.log("Network error. Data could not be loaded." + errorThrown + " " + textStatus);
+            },
+        });
     }
 </script>
