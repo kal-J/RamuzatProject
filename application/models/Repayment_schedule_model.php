@@ -854,6 +854,18 @@ class Repayment_schedule_model extends CI_Model
         return $query->result_array();
     }
 
+    public function out_of_arrears_loans()
+    {
+        $out_of_arrears_loans = "(SELECT * FROM fms_repayment_schedule
+                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status IN(2,4) AND repayment_date >= CURDATE() GROUP BY client_loan_id ))";
+        $this->db->select('*');
+        $this->db->from("$out_of_arrears_loans out_of_arrears_loans");
+        $this->db->join("$this->max_state_id loan_state", "loan_state.client_loan_id=out_of_arrears_loans.client_loan_id", "LEFT");
+        $this->db->where("loan_state.state_id=13");
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     public function get_expected_principal_and_interest($filter = FALSE, $check = FALSE)
     {
         $where = "WHERE 1 ";

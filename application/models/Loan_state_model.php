@@ -128,6 +128,27 @@ class Loan_state_model extends CI_Model {
         }
          return  $query;
     }
+    
+    public function have_them_out_of_arrears($sent_data){
+        $data = [];
+        $query="No out of arrears loans found today ".date('d-m-Y H:i:s');
+        $action_date = date('Y-m-d');
+        foreach($sent_data as $key=>$loan_data){ 
+                $data[] = array(
+                    'client_loan_id' => $loan_data['client_loan_id'],
+                    'state_id' =>7,
+                    'date_created' =>time(),
+                    'action_date' => $action_date,
+                    'comment' =>'Loan automatically moved out of arrears',
+                    'created_by' =>1,
+                );
+        }//End of foreach loop
+        if(!empty($data)){
+            $query=$this->db->insert_batch('loan_state', $data);
+            $query.=" Loans out of arrears found today ".date('d-m-Y H:i:s');
+        }
+         return  $query;
+    }
 
     public function get($client_loan_id = FALSE) {
         $this->db->select("loan_state.*,state_name,concat(salutation,' ',firstname,' ', lastname,' ', othernames) staff_name,salutation,firstname,lastname, othernames");

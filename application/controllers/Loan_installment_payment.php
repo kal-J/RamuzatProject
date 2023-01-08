@@ -1180,7 +1180,10 @@ class Loan_installment_payment extends CI_Controller
           $message = $message . " settling the whole loan";
         }
 
-        // $email_response = $this->helpers->send_email($this->input->post('client_loan_id'), $message);
+        if (!empty($this->miscellaneous_model->check_org_module(24))) {
+          // $email_response = $this->helpers->send_email($this->input->post('client_loan_id'), $message);
+        }
+
 
         if (!empty($result = $this->miscellaneous_model->check_org_module(22))) {
           $message = $message . ".
@@ -1722,12 +1725,16 @@ class Loan_installment_payment extends CI_Controller
       if ($this->journal_transaction_line_model->set($journal_transaction_id, $data)) {
         $update = true;
         $message = "Payment of amount " . number_format($amount, 2) . "/= has been made from your account " . $savings_account['account_no'] . " today " . date('d-m-Y H:i:s');
-        //$this->helpers->send_email($this->input->post('savings_account_id'),$message,false);
+        
+        if (!empty($this->miscellaneous_model->check_org_module(24))) {
+          //$this->helpers->send_email($this->input->post('savings_account_id'),$message,false);
+        }
+        
         #check for the sms module
         if (!empty($result = $this->miscellaneous_model->check_org_module(22, 1))) {
           $message = $message . ".
 " . $this->organisation . ", Contact " . $this->contact_number;
-          //$this->helpers->notification($this->input->post('savings_account_id'),$message,false);
+          $this->helpers->notification($this->input->post('savings_account_id'),$message,false);
         }
       }
     }

@@ -34,15 +34,15 @@ class Client_loan_model extends CI_Model
 
         $this->active_state = "(SELECT client_loan_id,comment,action_date AS loan_active_date FROM fms_loan_state
                 WHERE id in ( SELECT MIN(id) from fms_loan_state WHERE state_id=7 GROUP BY client_loan_id ) )";
-        
+
         $this->paid_amount = "(SELECT client_loan_id,SUM(paid_interest+paid_principal) AS paid_amount,SUM(paid_principal) AS paid_principal,SUM(paid_interest) AS paid_interest FROM fms_loan_installment_payment WHERE fms_loan_installment_payment.status_id=1 GROUP BY client_loan_id)";
 
-         if ( ($this->input->post('date_to_filter') != NULL) || ($this->input->post('date_from_filter') != NULL) )  {
+        if (($this->input->post('date_to_filter') != NULL) || ($this->input->post('date_from_filter') != NULL)) {
             $date_to = $this->input->post('date_to_filter') ? $this->input->post('date_to_filter') : 1;
             $date_from = $this->input->post('date_from_filter') ? $this->input->post('date_from_filter') : 1;
             $this->paid_amount = "(SELECT client_loan_id,SUM(paid_interest+paid_principal) AS paid_amount,SUM(paid_principal) AS paid_principal,SUM(paid_interest) AS paid_interest FROM fms_loan_installment_payment WHERE fms_loan_installment_payment.status_id=1 AND fms_loan_installment_payment.payment_date >= '{$date_from}' AND fms_loan_installment_payment.payment_date <= '{$date_to}' GROUP BY client_loan_id)";
-        } 
-        
+        }
+
 
         $this->pay_day = "(SELECT MIN(`repayment_date`) next_pay_date,MAX(`repayment_date`) last_pay_date,`client_loan_id` FROM fms_repayment_schedule WHERE `status_id`=1 AND `payment_status` IN (4,2) GROUP BY client_loan_id)";
         $this->approvals = "(SELECT client_loan_id,COUNT(client_loan_id) AS approvals FROM fms_loan_approval WHERE status_id=1 GROUP BY client_loan_id)";
@@ -612,18 +612,18 @@ class Client_loan_model extends CI_Model
             $this->db->where("a.application_date >='" . $this->input->post('end_date_at') . "'");
         }
 
-        if (($this->input->post('date_to_filter') != NULL) || ($this->input->post('date_from_filter') != NULL) ) {
+        if (($this->input->post('date_to_filter') != NULL) || ($this->input->post('date_from_filter') != NULL)) {
             $this->db->where("loan_state.state_id IN(7,8,9,10,11,12,13,14,15)");
-            $this->db->group_by('a.id'); 
+            $this->db->group_by('a.id');
         }
 
-        if (($this->input->post('disbursed_date_to_filter') != NULL) || ($this->input->post('disbursed_date_from_filter') != NULL) ) {
+        if (($this->input->post('disbursed_date_to_filter') != NULL) || ($this->input->post('disbursed_date_from_filter') != NULL)) {
             $disbursed_date_to = $this->input->post('disbursed_date_to_filter');
             $disbursed_date_from = $this->input->post('disbursed_date_from_filter');
             $this->db->where("active_state.loan_active_date>='{$disbursed_date_from}'");
             $this->db->where("active_state.loan_active_date<='{$disbursed_date_to}'");
             $this->db->where("loan_state.state_id IN(7,8,9,10,11,12,13,14,15)");
-            $this->db->group_by('a.id'); 
+            $this->db->group_by('a.id');
         }
 
         if ($this->input->post('repayment_expected_end_date') != NULL) {
@@ -1406,5 +1406,16 @@ class Client_loan_model extends CI_Model
         $result = $query->row_array();
 
         return $result['total_outstanding_loan_portfolio'];
+    }
+    
+    public function get_loan_amount_due($client_loan_id)
+    {
+        $this->db->select('amount_in_demand');
+        $this->db->from('fms_client_loan a');
+        $this->db->join("$this->amount_in_demand amount_in_demand", 'amount_in_demand.client_loan_id=a.id', 'left');
+        $this->db->where("a.id", $client_loan_id);
+        $query = $this->db->get();
+
+        return $query->row_array()['amount_in_demand'];
     }
 }
