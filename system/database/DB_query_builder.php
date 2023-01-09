@@ -1524,7 +1524,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		$this->_reset_write();
 
 		// Clear cache after update
-		$this->cache_delete_all();
+		// $this->cache_delete_all();
 
 		return $affected_rows;
 	}
@@ -1673,7 +1673,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		$this->_reset_write();
 
 		// Clear cache before inserting new records
-		$this->cache_delete_all();
+		// $this->cache_delete_all();
 
 		return $this->query($sql);
 	}
@@ -1855,7 +1855,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		$this->_reset_write();
 
 		// Clear cache before updating new records
-		$this->cache_delete_all();
+		// $this->cache_delete_all();
 
 		return $this->query($sql);
 	}
@@ -1955,7 +1955,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		$this->_reset_write();
 
 		// Clear cache after update
-		$this->cache_delete_all();
+		// $this->cache_delete_all();
 
 		return $affected_rows;
 	}

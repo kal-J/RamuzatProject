@@ -225,9 +225,9 @@
                                     if (in_array('13', $client_loan_privilege)) { ?>
                                         <!--ko if: (parseInt($root.loan_detail().state_id) == 7 || parseInt($root.loan_detail().state_id) == 13) -->
 
-                                        <a class="btn btn-sm btn-primary text-white" data-toggle="modal" data-target="#multiple_installment_payment-modal"><i class="fa fa-money"></i>
+                                        <a class="btn btn-lg btn-primary text-white mx-1" data-toggle="modal" data-target="#multiple_installment_payment-modal"><i class="fa fa-money"></i>
                                             Multiple Installment Payment</a>
-                                        <a class="btn btn-sm btn-primary text-white" data-toggle="modal" data-target="#installment_payment-modal"><i class="fa fa-money"></i> Payment</a>
+                                        <a class="btn btn-lg btn-primary text-white mx-1" data-toggle="modal" data-target="#installment_payment-modal"><i class="fa fa-money"></i> Single Installment Payment</a>
                                         <!--/ko-->
                                     <?php }  ?>
                                     <?php
@@ -277,8 +277,17 @@
                                         <tr>
                                             <td>
                                                 <!--ko if: (parseInt($root.loan_detail().state_id) >= 7) -->
-                                                <button href="#adjust_penalty_modal" data-toggle="modal" class="btn btn-danger btn-sm">
+                                                <button href="#adjust_penalty_modal" data-toggle="modal" class="btn btn-secondary btn-sm">
                                                     <i class="fa fa-edit"></i> Adjust Penalty Payable
+                                                </button>
+                                                <!--/ko-->
+                                            </td>
+                                            <td colspan="7"></td>
+                                            <td>
+                                                <!--ko if: (parseInt($root.loan_detail().state_id) >= 7) -->
+                                                
+                                                <button onclick="send_sms_remainder()" id="btn-send-sms-remainder" style="font-weight: bold;"  data-toggle="modal" class="btn btn-warning btn-sm">
+                                                    <i class="fa fa-bell"></i> SEND SMS PAYMENT REMAINDER
                                                 </button>
                                                 <!--/ko-->
                                             </td>
@@ -541,6 +550,7 @@ if ($org['loan_app_stage'] == 0) {
 <?php $this->view('client_loan/loan_transactions/edit_transaction_date_modal'); ?>
 
 <script>
+    
     var dTable = {};
     var loanDetailModel = {};
     var TableManageButtons = {};
@@ -2707,6 +2717,8 @@ if ($org['loan_app_stage'] == 0) {
 
         });
 
+        
+
     });
 
 
@@ -2758,5 +2770,30 @@ if ($org['loan_app_stage'] == 0) {
     }
     let get_guarantors = () => {
         dTable['tblGuarantor'].ajax.reload(null, true);
+    }
+    
+    const send_sms_remainder = () => {
+        $("#btn-send-sms-remainder").attr("disabled", true);
+        $("#btn-send-sms-remainder").html("Sending SMS ...");
+        $.ajax({
+            url: '<?php echo site_url("client_loan/send_sms_remainder"); ?>',
+            data: {
+                loan_id: '<?php echo ($loan_detail['id']); ?>',
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                console.log(response)
+                if(!response.success) toastr.error(response.message, "An Error Occured");
+                if(response.success) toastr.success(response.message, "SMS Remainder has been sent");
+                $("#btn-send-sms-remainder").attr("disabled", false);
+                $("#btn-send-sms-remainder").html("SEND SMS PAYMENT REMAINDER");
+            },
+            fail: function(jqXHR, textStatus, errorThrown) {
+                $("#btn-send-sms-remainder").attr("disabled", false);
+                $("#btn-send-sms-remainder").html("SEND SMS PAYMENT REMAINDER");
+                console.log("Network error. Data could not be loaded." + errorThrown + " " + textStatus);
+            },
+        });
     }
 </script>

@@ -7,9 +7,12 @@ class Loan_portfolio_report extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->library("session");
+        /* if (empty($this->session->userdata('id'))) {
+            redirect('welcome');
+        } */
         ini_set('max_execution_time', 3600);
 
-        $this->load->library("session");
         $this->load->library('helpers');
 
         $this->load->model('Transaction_model');
@@ -64,7 +67,7 @@ class Loan_portfolio_report extends CI_Controller
     {
         $inserted_id = $this->Loan_portfolio_report_model->compute_credit_officers_report();
 
-        if($inserted_id) {
+        if ($inserted_id) {
             echo json_encode(['success' => true]);
         } else {
             http_response_code(500);
