@@ -330,9 +330,10 @@ class Dashboard extends CI_Controller {
         return $penalty_data;
     }
 
-    private function get_line_graph_data($start_date, $end_date) {
+    private function get_line_graph_data($end_date, $start_date) {
         $graph_data['yAxis']['title']['text'] = "UGX";
         $period_dates = [];
+
         if (($graph_periods = $this->helpers->get_graph_periods($end_date, $start_date)) !== TRUE) {
             $graph_data['title']['text'] = "Income vs Expenses (" . $graph_periods['date_range'].")";
             $graph_data['xAxis'] = $graph_periods['xAxis'];
