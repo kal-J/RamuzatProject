@@ -261,7 +261,7 @@ class Dashboard extends CI_Controller {
         $start_date = $this->input->post('start_date'); 
         $end_date = $this->input->post('end_date');
          /* ========================== Income vs Expenses =================================== */
-         $data['income_expense'] = $this->get_line_graph_data($start_date,$end_date);
+         $data['income_expense'] = $this->get_line_graph_data($end_date, $start_date);
          $between_interest = "(repayment_date BETWEEN '" . ($start_date) . "' AND '" . ($end_date) . "')";
          $between_install = "(payment_date BETWEEN '" . ($start_date) . "' AND '" . ($end_date) . "')";
          $sums['savings_totals']=$this->Dashboard_model->client_savings_sums();
@@ -471,9 +471,7 @@ class Dashboard extends CI_Controller {
         $body = $response->getBody()->getContents();
         $arr_body = json_decode($body, true);
 
-        //$user = $arr_body["data"]["user"];
-
-        echo json_encode(['balance' => number_format($arr_body['user']['acc_balance'])]);
+        echo json_encode(['balance' => number_format($arr_body['user']['acc_balance']), 'auth_token'=> $arr_body['auth_token']]);
 
     }
 }
