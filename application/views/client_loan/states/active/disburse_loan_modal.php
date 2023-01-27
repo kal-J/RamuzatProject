@@ -117,7 +117,7 @@
                 </tr>
               </thead>
               <tbody data-bind='foreach: $root.available_loan_fees'>
-                <tr data-bind="if:parseInt(fee_applied_to)===0 && parseInt(chargetrigger_id)<=3 || (parseInt(chargetrigger_id)===(parseInt($parent.preferred_payment_id)===1?4:0 || parseInt($parent.preferred_payment_id)===2?5:0 ||parseInt($parent.preferred_payment_id)===7?9:0||parseInt($parent.preferred_payment_id)===6?8:0||parseInt($parent.preferred_payment_id)===8?10:0|| parseInt($parent.preferred_payment_id)===4?6:0))">
+                <tr data-bind="if:parseInt(fee_applied_to)===0 && parseInt(chargetrigger_id)<=3 || (parseInt(chargetrigger_id)===(parseInt($parent.preferred_payment_id)===1?4:0 || parseInt($parent.preferred_payment_id)===2?5:0 ||parseInt($parent.preferred_payment_id)===7?9:0||parseInt($parent.preferred_payment_id)===6?8:0||parseInt($parent.preferred_payment_id)===8?10:0|| parseInt($parent.preferred_payment_id)===4?6:0)) && parseInt(fee_applied_to)===0">
 
                   <td>
                     <span data-bind="text:feename"></span>
@@ -157,7 +157,7 @@
 
                 </tr>
 
-                <tr data-bind="if:parseInt(fee_applied_to)===1 && parseInt(chargetrigger_id)<=3 || (parseInt(chargetrigger_id)===(parseInt($parent.preferred_payment_id)===1?4:0 || parseInt($parent.preferred_payment_id)===2?5:0 ||parseInt($parent.preferred_payment_id)===7?9:0||parseInt($parent.preferred_payment_id)===6?8:0||parseInt($parent.preferred_payment_id)===8?10:0|| parseInt($parent.preferred_payment_id)===4?6:0))">
+                <tr data-bind="if:parseInt(fee_applied_to)===1 && parseInt(chargetrigger_id)<=3 || (parseInt(chargetrigger_id)===(parseInt($parent.preferred_payment_id)===1?4:0 || parseInt($parent.preferred_payment_id)===2?5:0 ||parseInt($parent.preferred_payment_id)===7?9:0||parseInt($parent.preferred_payment_id)===6?8:0||parseInt($parent.preferred_payment_id)===8?10:0|| parseInt($parent.preferred_payment_id)===4?6:0)) && parseInt(fee_applied_to)===1 ">
 
                   <td>
                     <span data-bind="text:feename"></span>
