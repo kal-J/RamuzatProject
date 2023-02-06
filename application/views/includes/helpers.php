@@ -1410,7 +1410,7 @@ document.querySelectorAll('.loan_security_fees')
 });
 
 $(document).ready(() => {
-    get_sms_balance();
+    //get_sms_balance();
 });
 
 
