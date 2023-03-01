@@ -38,6 +38,11 @@ class Loan_portfolio_report extends CI_Controller
         $this->load->view('loan_portfolio_report/index.html');
     }
 
+    public function loan_balances_report()
+    {
+        $this->load->view('loan_balances_report/index.html');
+    }
+
 
 
     public function get_loan_portfolio_report()
@@ -62,6 +67,28 @@ class Loan_portfolio_report extends CI_Controller
 
         echo json_encode(['success' => true]);
     }
+
+
+    public function compute_current_loan_balance_sums()
+    {
+        $loanBalanceSums = $this->Loan_portfolio_report_model->compute_current_loan_balance_sums();
+
+        echo json_encode($loanBalanceSums);
+    }
+    public function compute_current_loan_balances()
+    {
+        $loanBalances = $this->Loan_portfolio_report_model->compute_current_loan_balances();
+
+        echo json_encode($loanBalances);
+    }
+    public function get_current_loan_balances()
+    {
+        $loanBalances = $this->Loan_portfolio_report_model->get_current_loan_balances();
+
+        echo json_encode(["data" => ["report_data" => json_decode($loanBalances['report_data'], true), "date_modified" => $loanBalances['date_modified']]]);
+    }
+
+
 
     public function compute_credit_officers_report()
     {

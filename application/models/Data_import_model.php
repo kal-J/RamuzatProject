@@ -277,4 +277,15 @@ class Data_import_model extends CI_Model
         $query = $this->db->get();
         return $query->row_array();
     }
+
+    public function get_savings_account_id_using_share_account_no($share_account_no)
+    {
+        $this->db->select("sv.id");
+        $this->db->from("fms_share_account sh");
+        $this->db->join("fms_savings_account sv", "sv.member_id=sh.member_id", "LEFT");
+        $this->db->where("sh.share_account_no", $share_account_no);
+
+        $query = $this->db->get();
+        return $query->row_array();
+    }
 }

@@ -101,6 +101,13 @@ class Accounts extends CI_Controller {
         // Publish the template
         $this->template->publish();
     }
+    public function expenses() {
+
+        $this->data["subcat_list"] = $this->accounts_model->get_subcat_list(" acs.category_id=5 ");
+        echo json_encode(($this->data["subcat_list"])); die;
+
+        echo json_encode($this->data);
+    }
 
     public function create() {
         if ((is_numeric($this->input->post('account_type_id'))) && ($this->input->post('account_type_id') == 2)) {

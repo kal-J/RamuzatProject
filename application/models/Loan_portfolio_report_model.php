@@ -140,4 +140,371 @@ class Loan_portfolio_report_model extends CI_Model
         $result['data'] = isset($result['data']) ? json_decode($result['data'], true) : [];
         return $result;
     }
+
+    public function compute_current_loan_balance_sums()
+    {
+        $query = $this->db->query("
+
+            SELECT
+            SUM( IFNULL(principal_disbursed,0) ) total_principal_disbursed,
+            SUM( IFNULL(paid_principal,0) ) total_principal_collected,
+            SUM( IFNULL(expected_interest,0) ) total_expected_interest,
+            SUM( IFNULL(paid_interest,0) ) total_interest_collected,
+            SUM( IFNULL(paid_interest,0) ) + SUM( IFNULL(paid_principal,0) ) total_amount_paid,
+            SUM( IFNULL(out_standing_principal,0) ) total_out_standing_principal,
+            FROM
+            (
+            SELECT
+                cl.id AS client_loan_id,
+                cl.loan_no,
+                CONCAT(u.firstname, ' ', u.lastname) member_name,
+                b.branch_name,
+                loan_state.action_date,
+                fms_state.state_name,
+                cl.requested_amount,
+                SUM(
+                    IFNULL(rps.principal_amount, 0)
+                ) principal_disbursed,
+                SUM(
+                    IFNULL(rps.interest_amount, 0)
+                ) expected_interest,
+                SUM(
+                    IFNULL(instp.paid_principal, 0)
+                ) paid_principal,
+                SUM(
+                    IFNULL(instp.paid_interest, 0)
+                ) paid_interest,
+                SUM(
+                    IFNULL(rps.principal_amount, 0)
+                ) - SUM(
+                    IFNULL(instp.paid_principal, 0)
+                ) out_standing_principal
+            FROM
+                fms_client_loan cl
+            LEFT JOIN(
+                SELECT
+                    MAX(state_id) state_id,
+                    client_loan_id,
+                    action_date
+                FROM
+                    fms_loan_state
+                GROUP BY
+                    client_loan_id
+            ) loan_state
+            ON
+            loan_state.client_loan_id = cl.id
+            LEFT JOIN(
+            SELECT
+                client_loan_id,
+                SUM(IFNULL(principal_amount, 0)) principal_amount,
+                SUM(IFNULL(interest_amount, 0)) interest_amount
+            FROM
+                fms_repayment_schedule
+            WHERE
+                status_id = 1
+            GROUP BY
+                client_loan_id
+            ) rps
+            ON
+            rps.client_loan_id = cl.id
+
+            LEFT JOIN(
+            SELECT
+                client_loan_id,
+                SUM(IFNULL(paid_principal, 0)) paid_principal,
+                SUM(IFNULL(paid_interest, 0)) paid_interest
+            FROM
+                fms_loan_installment_payment
+            WHERE
+                status_id = 1
+            GROUP BY
+                client_loan_id
+            ) instp
+            ON
+            instp.client_loan_id = cl.id
+            LEFT JOIN fms_state ON fms_state.id = loan_state.state_id
+            LEFT JOIN fms_member m ON
+            m.id = cl.member_id
+            LEFT JOIN fms_user u ON
+            u.id = m.user_id
+            LEFT JOIN fms_branch b ON
+            cl.branch_id = b.id
+            WHERE
+            loan_state.state_id IN(7, 9, 10, 12, 13, 15)
+            GROUP BY
+            cl.id
+            ) dd
+        
+        ");
+
+        $result1 = $query->row_array();
+
+        $this->db->insert("fms_reports", ['report_type' => 'overall_loan_balance_sums', 'report_data' => json_encode($result1)]);
+        
+        $branch_ids = [1,2,3];
+        $loan_balances_by_branch = array();
+        foreach($branch_ids as $key=>$branch_id) {
+            $data = $this->compute_current_loan_balance_sums_by_branch($branch_id);
+            $loan_balances_by_branch["$branch_id"] = $data;
+        }
+
+        $this->db->insert("fms_reports", ['report_type' => 'branch_level_loan_balance_sums', 'report_data' => json_encode($loan_balances_by_branch)]);
+
+        return ['overall' => $result1, "branch_level" => $loan_balances_by_branch];
+    }
+    public function compute_current_loan_balance_sums_by_branch($branch_id)
+    {
+        $query = $this->db->query("
+
+            SELECT
+            SUM( IFNULL(principal_disbursed,0) ) total_principal_disbursed,
+            SUM( IFNULL(paid_principal,0) ) total_principal_collected,
+            SUM( IFNULL(expected_interest,0) ) total_expected_interest,
+            SUM( IFNULL(paid_interest,0) ) total_interest_collected,
+            SUM( IFNULL(paid_interest,0) ) + SUM( IFNULL(paid_principal,0) ) total_amount_paid,
+            SUM( IFNULL(out_standing_principal,0) ) total_out_standing_principal,
+            FROM
+            (
+            SELECT
+                cl.id AS client_loan_id,
+                cl.loan_no,
+                CONCAT(u.firstname, ' ', u.lastname) member_name,
+                b.branch_name,
+                cl.branch_id,
+                loan_state.action_date,
+                fms_state.state_name,
+                cl.requested_amount,
+                SUM(
+                    IFNULL(rps.principal_amount, 0)
+                ) principal_disbursed,
+                SUM(
+                    IFNULL(rps.interest_amount, 0)
+                ) expected_interest,
+                SUM(
+                    IFNULL(instp.paid_principal, 0)
+                ) paid_principal,
+                SUM(
+                    IFNULL(instp.paid_interest, 0)
+                ) paid_interest,
+                SUM(
+                    IFNULL(rps.principal_amount, 0)
+                ) - SUM(
+                    IFNULL(instp.paid_principal, 0)
+                ) out_standing_principal
+            FROM
+                fms_client_loan cl
+            LEFT JOIN(
+                SELECT
+                    MAX(state_id) state_id,
+                    client_loan_id,
+                    action_date
+                FROM
+                    fms_loan_state
+                GROUP BY
+                    client_loan_id
+            ) loan_state
+            ON
+            loan_state.client_loan_id = cl.id
+            LEFT JOIN(
+            SELECT
+                client_loan_id,
+                SUM(IFNULL(principal_amount, 0)) principal_amount,
+                SUM(IFNULL(interest_amount, 0)) interest_amount
+            FROM
+                fms_repayment_schedule
+            WHERE
+                status_id = 1
+            GROUP BY
+                client_loan_id
+            ) rps
+            ON
+            rps.client_loan_id = cl.id
+
+            LEFT JOIN(
+            SELECT
+                client_loan_id,
+                SUM(IFNULL(paid_principal, 0)) paid_principal,
+                SUM(IFNULL(paid_interest, 0)) paid_interest
+            FROM
+                fms_loan_installment_payment
+            WHERE
+                status_id = 1
+            GROUP BY
+                client_loan_id
+            ) instp
+            ON
+            instp.client_loan_id = cl.id
+
+            LEFT JOIN fms_state ON fms_state.id = loan_state.state_id
+            LEFT JOIN fms_member m ON
+            m.id = cl.member_id
+            LEFT JOIN fms_user u ON
+            u.id = m.user_id
+            LEFT JOIN fms_branch b ON
+            cl.branch_id = b.id
+            WHERE
+            loan_state.state_id IN(7, 9, 10, 12, 13, 15)
+            GROUP BY
+            cl.id
+            ) dd
+            WHERE dd.branch_id=$branch_id
+        
+        ");
+
+        $result = $query->row_array();
+        
+        return $result;
+    }
+    public function compute_current_loan_balances()
+    {
+        $query = $this->db->query("
+
+            SELECT
+            dd.*
+            FROM
+            (
+            SELECT
+                cl.id AS client_loan_id,
+                cl.loan_no,
+                CONCAT(u.firstname, ' ', u.lastname) member_name,
+                b.branch_name,
+                loan_state.action_date,
+                fms_state.state_name,
+                cl.requested_amount,
+                d_date.action_date disbursement_date,
+                IFNULL(d_days.days_in_demand,0) days_in_demand,
+                SUM(
+                    IFNULL(rps.principal_amount, 0)
+                ) principal_disbursed,
+                SUM( IFNULL(rps.interest_amount,0) ) expected_interest,
+                SUM( IFNULL(paid_interest,0) ) + SUM( IFNULL(paid_principal,0) ) total_amount_paid,
+                SUM( IFNULL(principal_amount,0) ) + SUM( IFNULL(interest_amount,0) ) total_loan_amount,
+                SUM( IFNULL(interest_amount,0) ) - SUM( IFNULL(paid_interest,0) ) out_standing_interest,
+                SUM(
+                    IFNULL(instp.paid_principal, 0)
+                ) paid_principal,
+                SUM(
+                    IFNULL(instp.paid_interest, 0)
+                ) paid_interest,
+                SUM(
+                    IFNULL(rps.principal_amount, 0)
+                ) - SUM(
+                    IFNULL(instp.paid_principal, 0)
+                ) out_standing_principal
+            FROM
+                fms_client_loan cl
+            LEFT JOIN(
+                SELECT
+                    MAX(state_id) state_id,
+                    client_loan_id,
+                    action_date
+                FROM
+                    fms_loan_state
+                GROUP BY
+                    client_loan_id
+            ) loan_state
+            ON
+            loan_state.client_loan_id = cl.id
+
+            LEFT JOIN (
+                SELECT 
+                    client_loan_id,
+                    MAX(id) id,
+                    action_date
+                FROM fms_loan_state
+                WHERE state_id=7 GROUP BY client_loan_id
+            ) d_date
+            ON d_date.client_loan_id=cl.id
+
+            LEFT JOIN(
+            SELECT
+                client_loan_id,
+                SUM(IFNULL(principal_amount, 0)) principal_amount,
+                SUM(IFNULL(interest_amount, 0)) interest_amount
+            FROM
+                fms_repayment_schedule
+            WHERE
+                status_id = 1
+            GROUP BY
+                client_loan_id
+            ) rps
+            ON
+            rps.client_loan_id = cl.id
+            LEFT JOIN(
+            SELECT
+                client_loan_id,
+                SUM(IFNULL(paid_principal, 0)) paid_principal,
+                SUM(IFNULL(paid_interest, 0)) paid_interest
+            FROM
+                fms_loan_installment_payment
+            WHERE
+                status_id = 1
+            GROUP BY
+                client_loan_id
+            ) instp
+            ON
+            instp.client_loan_id = cl.id
+
+            LEFT JOIN(
+                SELECT
+                client_loan_id,
+                days_in_demand
+                FROM
+                    (
+                    SELECT
+                        *,
+                        DATEDIFF(CURDATE(), repayment_date) days_in_demand
+                    FROM
+                        fms_repayment_schedule
+                    WHERE
+                        id IN(
+                        SELECT
+                            MIN(id)
+                        FROM
+                            fms_repayment_schedule
+                        WHERE
+                            repayment_date <= CURDATE() AND payment_status <> 1 AND payment_status <> 3 AND status_id = 1
+                        GROUP BY
+                            client_loan_id)
+                    ) due_days
+            ) d_days ON cl.id=d_days.client_loan_id
+
+            LEFT JOIN fms_state ON fms_state.id = loan_state.state_id
+            LEFT JOIN fms_member m ON
+            m.id = cl.member_id
+            LEFT JOIN fms_user u ON
+            u.id = m.user_id
+            LEFT JOIN fms_branch b ON
+            cl.branch_id = b.id
+            WHERE
+            loan_state.state_id IN(7, 9, 10, 12, 13, 14, 15)
+            GROUP BY
+            cl.id
+            ) dd
+            ORDER BY
+            dd.member_name ASC,
+            dd.loan_no ASC;
+        
+        ");
+
+        $result = $query->result_array();
+
+        $this->db->insert("fms_reports", ['report_type' => 'loan_balances', 'report_data' => json_encode($result)]);
+
+        return $result;
+    }
+
+    public function get_current_loan_balances()
+    {
+        $this->db->select("*");
+        $this->db->from("fms_reports");
+        $this->db->where("report_type", "loan_balances");
+        $this->db->order_by("id", "desc");
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+        $result = $query->row_array();
+
+        return $result;
+    }
 }

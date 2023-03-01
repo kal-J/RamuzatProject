@@ -123,6 +123,11 @@ if (empty($data['module_list'])) {
                     </ul>
                 </li>
 
+                <!-- Expenses -->
+                <li class="<?php echo ($this->uri->segment(1) == 'expenses') ? 'active' : ''; ?>">
+                    <a href="<?php echo site_url("expenses"); ?>"><i class="fa fa-line-chart"></i> <span class="nav-label">Expenses <span class="pull-right badge badge-danger" style="background-color: red;">New</span></span></a>
+                </li>
+
             <?php }
             if (in_array('8', $modules)) {  ?>
 
