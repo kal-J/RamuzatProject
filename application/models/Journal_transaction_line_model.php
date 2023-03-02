@@ -101,6 +101,21 @@ class Journal_transaction_line_model extends CI_Model {
         //print_r($this->db->last_query()); die;
         return $query->result_array();
     }
+    public function get_expenses($filter = 1) {
+        
+        
+        $this->db->select("jtl.*, ach.account_name, asub.sub_cat_name");
+        $this->db->from("fms_journal_transaction_line jtl");
+        $this->db->join("fms_journal_transaction jt", "jt.id=jtl.journal_transaction_id", "LEFT");
+        $this->db->join("fms_accounts_chart ach", "ach.id=jtl.account_id", "LEFT");
+        $this->db->join("fms_account_sub_categories asub", "asub.id=ach.sub_category_id", "LEFT");
+        $this->db->where(" asub.category_id = 5 AND jtl.status_id=1 AND jtl.debit_amount>0 AND jt.status_id=1 ");
+        $this->db->where($filter);
+                
+        $query = $this->db->get();
+        //print_r($this->db->last_query()); die;
+        return $query->result_array();
+    }
 
 
     private function set_filters($all_columns) {
