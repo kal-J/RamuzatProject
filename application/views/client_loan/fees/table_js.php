@@ -7,6 +7,7 @@ if ($("#tblApplied_loan_fee").length && tabClicked === "tab-loan_fee") {
                     dTable['tblApplied_loan_fee'] = $('#tblApplied_loan_fee').DataTable({
                         "dom": '<"html5buttons"B>lTfgitp',
                         order: [[1, 'asc']],
+                        "lengthMenu": [[10, 25, 50, 100, 500, -1], [10, 25, 50, 100, 500, "All"]],
                         deferRender: true,
                         "ajax":{
                             "url": "<?php echo base_url('applied_loan_fee/jsonList/'); ?>",

@@ -3,9 +3,6 @@ services:
 
   app:
     build:
-      args:
-        user: sammy
-        uid: 1000
       context: ./
       dockerfile: Dockerfile
     image: efinanci
@@ -55,9 +52,6 @@ services:
 
   php_fpm:
     build:
-      args:
-          user: sammy
-          uid: 1000
       context: ./
       dockerfile: Dockerfile
     working_dir: /var/www/
