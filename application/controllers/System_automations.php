@@ -79,30 +79,43 @@ class System_automations extends CI_Controller
             echo 'Error: ' . $e->getMessage();
         }
     }
-    //putting loans in arrears
+
+    // loan arrears script
     public function index()
     {
+        $this->put_loans_in_of_arrears();
+        echo "<br/>";
+        $this->put_loans_out_of_arrears();
+    }
+
+
+    public function put_loans_in_of_arrears()
+    {
+        $response = "";
+
         $in_arrear_loans = $this->repayment_schedule_model->inarrears_loans();
-        $out_of_arrears_loans = $this->repayment_schedule_model->out_of_arrears_loans();
-
-        $response1 = "";
-        $response2 = "";
-
-        if (!empty($out_of_arrears_loans) && $out_of_arrears_loans != '') {
-            $response2 = $this->loan_state_model->have_them_out_of_arrears($out_of_arrears_loans);
-        } else {
-            $response2 = "No loans out of arrears found today " . date('d-m-Y H:i:s');
-        }
-
         if (!empty($in_arrear_loans) && $in_arrear_loans != '') {
-            $response1 = $this->loan_state_model->have_them_in_arrears($in_arrear_loans);
+            $response = $this->loan_state_model->have_them_in_arrears($in_arrear_loans);
         } else {
-            $response1 = "No in arrears loans found today " . date('d-m-Y H:i:s');
+            $response = "No in arrears loans found today " . date('d-m-Y H:i:s');
         }
 
+        print($response);
+        return 0;
+    }
 
+    public function put_loans_out_of_arrears()
+    {
+        $response = "";
+        $out_of_arrears_loans = $this->repayment_schedule_model->out_of_arrears_loans();
+        if (!empty($out_of_arrears_loans) && $out_of_arrears_loans != '') {
+            $response = $this->loan_state_model->have_them_out_of_arrears($out_of_arrears_loans);
+        } else {
+            $response = "No loans out of arrears found today " . date('d-m-Y H:i:s');
+        }
 
-        print($response1 . " & " . $response2);
+        print($response);
+        return 0;
     }
 
     public function callback()
@@ -632,7 +645,7 @@ class System_automations extends CI_Controller
     }
 
     //auto subscription
-    public function auto_subscription()
+    /* public function auto_subscription()
     {
         $members = $this->member_model->get_member();
         //print_r($members);die();
@@ -711,7 +724,7 @@ class System_automations extends CI_Controller
             } //if checking whether member has plan attached
         } //end of the member loop
     }
-
+ */
     //Membership payment schedule - Joshua Nabuka
     public function fees()
     {

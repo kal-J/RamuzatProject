@@ -845,7 +845,7 @@ class Repayment_schedule_model extends CI_Model
     public function inarrears_loans()
     {
         $loans_with_last_repayment_date = "(SELECT * FROM fms_repayment_schedule
-                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status IN(2,4) AND repayment_date < CURDATE() GROUP BY client_loan_id ))";
+                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status IN(2,4) AND DATE(repayment_date) < CURDATE() GROUP BY client_loan_id ))";
         $this->db->select('*');
         $this->db->from("$loans_with_last_repayment_date loans_with_last_repayment_date");
         $this->db->join("$this->max_state_id loan_state", "loan_state.client_loan_id=loans_with_last_repayment_date.client_loan_id", "LEFT");
@@ -857,13 +857,47 @@ class Repayment_schedule_model extends CI_Model
 
     public function out_of_arrears_loans()
     {
-        $out_of_arrears_loans = "(SELECT * FROM fms_repayment_schedule
-                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status IN(2,4) AND actual_payment_date >= CURDATE() GROUP BY client_loan_id ))";
-        $this->db->select('*');
-        $this->db->from("$out_of_arrears_loans out_of_arrears_loans");
-        $this->db->join("$this->max_state_id loan_state", "loan_state.client_loan_id=out_of_arrears_loans.client_loan_id", "LEFT");
-        $this->db->where("loan_state.state_id=13");
-        $query = $this->db->get();
+        $raw_query = "
+
+            SELECT
+            *
+            FROM
+                (
+                SELECT
+                    rs1.*,
+                    MIN(rs1.repayment_date) min_date
+                FROM
+                    fms_repayment_schedule rs1
+                WHERE
+                    rs1.status_id = 1 AND rs1.payment_status IN(2, 4)
+                GROUP BY
+                    rs1.client_loan_id
+            ) min_dates
+            LEFT JOIN(
+                SELECT
+                    client_loan_id,
+                    state_id,
+                    action_date
+                FROM
+                    fms_loan_state
+                WHERE
+                    id IN(
+                    SELECT
+                        MAX(id)
+                    FROM
+                        fms_loan_state
+                    GROUP BY
+                        client_loan_id
+                )
+            ) loan_state
+            ON
+                loan_state.client_loan_id = min_dates.client_loan_id
+            WHERE
+                loan_state.state_id = 13 AND min_dates.repayment_date >= CURRENT_DATE()
+        
+        ";
+
+        $query = $this->db->query($raw_query);
         //print_r($this->db->last_query());  die;
         return $query->result_array();
     }
