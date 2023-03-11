@@ -141,7 +141,7 @@ class Repayment_schedule_model extends CI_Model
             END AS installment_status
             ", FALSE);
         $query = $this->db->from('repayment_schedule')->join('loan_payment_status', 'loan_payment_status.id=repayment_schedule.payment_status', 'left')->join($amount_paid_per_installment . " amount_paid_per_installment", "amount_paid_per_installment.repayment_schedule_id=repayment_schedule.id", "LEFT");
-        
+
 
         if ($this->input->post('status_id') !== NULL && is_numeric($this->input->post('status_id'))) {
             $this->db->where('repayment_schedule.status_id', $this->input->post('status_id'));
@@ -845,24 +845,26 @@ class Repayment_schedule_model extends CI_Model
     public function inarrears_loans()
     {
         $loans_with_last_repayment_date = "(SELECT * FROM fms_repayment_schedule
-                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status=2 OR  payment_status=4 AND repayment_date < CURDATE() GROUP BY client_loan_id ))";
+                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status IN(2,4) AND repayment_date < CURDATE() GROUP BY client_loan_id ))";
         $this->db->select('*');
         $this->db->from("$loans_with_last_repayment_date loans_with_last_repayment_date");
         $this->db->join("$this->max_state_id loan_state", "loan_state.client_loan_id=loans_with_last_repayment_date.client_loan_id", "LEFT");
         $this->db->where("loan_state.state_id=7");
         $query = $this->db->get();
+        //print_r($this->db->last_query());  die;
         return $query->result_array();
     }
 
     public function out_of_arrears_loans()
     {
         $out_of_arrears_loans = "(SELECT * FROM fms_repayment_schedule
-                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status IN(2,4) AND repayment_date >= CURDATE() GROUP BY client_loan_id ))";
+                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status IN(2,4) AND actual_payment_date >= CURDATE() GROUP BY client_loan_id ))";
         $this->db->select('*');
         $this->db->from("$out_of_arrears_loans out_of_arrears_loans");
         $this->db->join("$this->max_state_id loan_state", "loan_state.client_loan_id=out_of_arrears_loans.client_loan_id", "LEFT");
         $this->db->where("loan_state.state_id=13");
         $query = $this->db->get();
+        //print_r($this->db->last_query());  die;
         return $query->result_array();
     }
 

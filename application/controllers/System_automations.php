@@ -84,16 +84,24 @@ class System_automations extends CI_Controller
     {
         $in_arrear_loans = $this->repayment_schedule_model->inarrears_loans();
         $out_of_arrears_loans = $this->repayment_schedule_model->out_of_arrears_loans();
-        if (!empty($in_arrear_loans) && $in_arrear_loans != '') {
-            $response1 = $this->loan_state_model->have_them_in_arrears($in_arrear_loans);
-        } else {
-            $response1 = "No in arrears loans found today " . date('d-m-Y H:i:s');
-        }
+
+        $response1 = "";
+        $response2 = "";
+
         if (!empty($out_of_arrears_loans) && $out_of_arrears_loans != '') {
             $response2 = $this->loan_state_model->have_them_out_of_arrears($out_of_arrears_loans);
         } else {
             $response2 = "No loans out of arrears found today " . date('d-m-Y H:i:s');
         }
+
+        if (!empty($in_arrear_loans) && $in_arrear_loans != '') {
+            $response1 = $this->loan_state_model->have_them_in_arrears($in_arrear_loans);
+        } else {
+            $response1 = "No in arrears loans found today " . date('d-m-Y H:i:s');
+        }
+
+
+
         print($response1 . " & " . $response2);
     }
 
@@ -2125,7 +2133,7 @@ Thank you for saving with us. Contact " . $contact_number;
     {
         $this->load->model('journal_transaction_line_model');
         $data = $this->journal_transaction_line_model->fix_interest();
-        
+
 
         echo json_encode($data);
     }
