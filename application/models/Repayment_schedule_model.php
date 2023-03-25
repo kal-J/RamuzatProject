@@ -1082,4 +1082,48 @@ class Repayment_schedule_model extends CI_Model
         $query = $this->db->get();
         return $query->row_array();
     }
+
+    public function get_expected_loan_repayments($start_date, $end_date)
+    {
+        $query = $this->db->query("
+
+        SELECT
+        *
+        FROM
+            (
+            SELECT
+                cl.loan_no,
+                CONCAT(co.firstname, ' ', co.lastname) credit_officer_name,
+                CONCAT(u.firstname, ' ', u.lastname) member_name,
+                rs.client_loan_id,
+                SUM(IFNULL(rs.principal_amount, 0)) expected_principal,
+                SUM(IFNULL(rs.interest_amount, 0)) expected_interest,
+                SUM(IFNULL(rs.demanded_penalty, 0)) expected_penalty,
+                SUM(
+                    IFNULL(rs.principal_amount, 0) + IFNULL(rs.interest_amount, 0) + IFNULL(rs.demanded_penalty, 0)
+                ) total_amount_expected
+            FROM
+                fms_repayment_schedule rs
+            LEFT JOIN fms_client_loan cl ON
+                cl.id = rs.client_loan_id
+            LEFT JOIN fms_member m ON
+                m.id = cl.member_id
+            LEFT JOIN fms_user u ON
+                u.id = m.user_id
+            LEFT JOIN fms_staff staff ON
+                staff.id = cl.credit_officer_id
+            LEFT JOIN fms_user co ON
+                co.id = staff.user_id
+            WHERE
+                rs.status_id = 1 AND rs.payment_status IN(2, 4) AND (repayment_date <= '{$start_date}' OR repayment_date <= '{$end_date}')
+            GROUP BY
+                rs.client_loan_id
+            ) expected_repayments
+            WHERE
+                expected_repayments.total_amount_expected > 0;
+        
+        ");
+
+        return $query->result_array();
+    }
 }

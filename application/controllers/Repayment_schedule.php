@@ -65,7 +65,6 @@ class Repayment_schedule extends CI_Controller
           $penalty_value = ($fixed_penalty_amount * $number_of_late_period);
 
           $penalty_value = $due_installments_data['penalty_rate_charged_per'] == 4 ? ($due_installments_data['paid_penalty_amount'] > 0 ? 0 : ($fixed_penalty_amount * $number_of_late_period)) : ($fixed_penalty_amount * $number_of_late_period);
-
         } else {
           $penalty_value = ($over_due_principal * $number_of_late_period * $penalty_rate);
 
@@ -132,7 +131,6 @@ class Repayment_schedule extends CI_Controller
           $penalty_value = ($fixed_penalty_amount * $number_of_late_period);
 
           $penalty_value = $due_installments_data['penalty_rate_charged_per'] == 4 ? ($due_installments_data['paid_penalty_amount'] > 0 ? 0 : ($fixed_penalty_amount * $number_of_late_period)) : ($fixed_penalty_amount * $number_of_late_period);
-
         } else {
           $penalty_value = ($over_due_principal * $number_of_late_period * $penalty_rate);
 
@@ -319,5 +317,16 @@ class Repayment_schedule extends CI_Controller
     $unique_id = join("", explode('-', $key));
 
     return $unique_id;
+  }
+
+  public function get_expected_loan_repayments()
+  {
+    $start_date = $this->input->post('repayment_expected_start_date') ? $this->input->post('repayment_expected_start_date') : ($this->input->post('repayment_expected_end_date') ? $this->input->post('repayment_expected_end_date') : date('Y-m-d')
+    );
+    $end_date = $this->input->post('repayment_expected_end_date') ? $this->input->post('repayment_expected_end_date') : $start_date;
+
+    $data['data'] = $this->repayment_schedule_model->get_expected_loan_repayments($start_date, $end_date);
+
+    echo json_encode($data);
   }
 }

@@ -43,37 +43,23 @@
                     <th>Ref #</th>
                     <th>Credit Officer</th>
                     <th>Client Name</th>
-                    <th>Disbursed Amount (UGX)</th>
-                    <th>Expected Interest (UGX)</th>
-                    <th>Paid Amount (UGX)</th>
-                    <th>Principal Due</th>
-                    <th>Interest Due</th>
-                    <th>Total Amount Due</th>
-                    <th>Due Days</th>
-                    <th>Disbursement Date</th>
-                    <th>Next Pay Date</th>
-                    <th>Loan Due Date</th>
-                    <th></th>
-                    <th></th>
+                    <th>Expected Principal</th>
+                    <th>Expected Interest</th>
+                    <th>Expected Penalty</th>
+                    <th>Total Amount Expected</th>
+
                 </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="2">Totals</th>
+                    <th colspan="3">Totals</th>
                     <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
+                    
                 </tr>
             </tfoot>
         </table>
