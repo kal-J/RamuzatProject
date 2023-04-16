@@ -2150,4 +2150,154 @@ Thank you for saving with us. Contact " . $contact_number;
 
         echo json_encode($data);
     }
+
+    public function daily_penalty_calculations()
+    {
+        $in_arrear_loans = $this->repayment_schedule_model->get_loans_with_late_payments();
+
+        $this->db->trans_begin();
+
+        foreach($in_arrear_loans as $key=>$loan) {
+            $loan_schedules_penalty_data = $this->loan_penalty_calcution($loan['client_loan_id']);
+            foreach($loan_schedules_penalty_data as $key=>$penalty_data) {
+                if(isset($penalty_data['penalty_value']) && ($penalty_data['penalty_value'] > 0)) {
+                    //echo json_encode($penalty_data); die;
+                    $this->do_journal_transaction_daily_penalty($penalty_data);
+                }
+            }
+            
+            
+        }
+        
+
+        if ($this->db->trans_status()) {
+            $this->db->trans_commit();
+            echo json_encode([
+                'message' => 'Done recording penalties'
+            ]);
+          } else {
+            $this->db->trans_rollback();
+            echo json_encode([
+                'message' => 'Failed recording penalties'
+            ]);
+          }
+
+        
+    }
+
+    private function loan_penalty_calcution($client_loan_id)
+    {
+        $data['data'] = $this->repayment_schedule_model->get_loan_schedule_data(" client_loan_id=$client_loan_id ");
+
+        $loan_details = $this->client_loan_model->get_client_loan($client_loan_id);
+        $penalty_applicable_after_due_date = $loan_details['penalty_applicable_after_due_date'];
+        $fixed_penalty_amount = $loan_details['fixed_penalty_amount'];
+        $penalty_calculation_method_id = $loan_details['penalty_calculation_method_id'];
+        $last_pay_date = $loan_details['last_pay_date'];
+        // $next_pay_date = $loan_details['next_pay_date'];
+
+        foreach ($data['data'] as $key => $value) {
+            $due_installments_data = $this->repayment_schedule_model->due_installments_data($value['id']);
+            if (!empty($due_installments_data)) {
+                $over_due_principal = $due_installments_data['due_principal'];
+                if ($value['demanded_penalty'] > 0) {
+                    $number_of_late_days = $due_installments_data['due_days2'];
+                } else {
+                    $number_of_late_days = $due_installments_data['due_days'] - $due_installments_data['grace_period_after'];
+                }
+
+                ##
+                if (intval($penalty_calculation_method_id) == 1) {
+                    $penalty_rate = (($due_installments_data['penalty_rate']) / 100);
+                } else {
+                    $penalty_rate = 1;
+                }
+
+                if ($due_installments_data['penalty_rate_charged_per'] == 4) { // One time penalty 
+                    $number_of_late_period = 1;
+                } elseif ($due_installments_data['penalty_rate_charged_per'] == 3) {
+                    $number_of_late_period = intdiv($number_of_late_days, 30);
+                } elseif ($due_installments_data['penalty_rate_charged_per'] == 2) {
+                    $number_of_late_period = intdiv($number_of_late_days, 7);
+                } else {
+                    $number_of_late_period = 1; // $number_of_late_days; set to 1 since penalies will be computed daily.
+                }
+
+
+                if (intval($penalty_calculation_method_id) == 2) { // Fixed amount Penalty
+
+                    $penalty_value = ($fixed_penalty_amount * $number_of_late_period);
+
+                    $penalty_value = $due_installments_data['penalty_rate_charged_per'] == 4 ? ($due_installments_data['paid_penalty_amount'] > 0 ? 0 : ($fixed_penalty_amount * $number_of_late_period)) : ($fixed_penalty_amount * $number_of_late_period);
+                } else {
+                    $penalty_value = ($over_due_principal * $number_of_late_period * $penalty_rate);
+
+                    $penalty_value = $due_installments_data['penalty_rate_charged_per'] == 4 ? ($due_installments_data['paid_penalty_amount'] > 0 ? 0 : ($over_due_principal * $number_of_late_period * $penalty_rate)) : ($over_due_principal * $number_of_late_period * $penalty_rate);
+                }
+
+
+                if ((intval($penalty_applicable_after_due_date) == 1)) {
+
+                    if ($last_pay_date >= date('Y-m-d')) {
+                        $penalty_value = 0;
+                    }
+                }
+
+                $data['data'][$key]['penalty_value'] = $value['demanded_penalty'] > 0 ? round($penalty_value + $value['demanded_penalty'], 0) : round($penalty_value, 0);
+            } else {
+                $data['data'][$key]['penalty_value'] = $value['demanded_penalty'];
+            }
+        }
+        //echo json_encode($data); die;
+        return $data['data'];
+        
+    }
+
+    public function do_journal_transaction_daily_penalty($penalty_data)
+    {
+        $this->load->model('journal_transaction_model');
+        $this->load->model('journal_transaction_line_model');
+        $this->load->model('client_loan_model');
+        $client_loan = $this->client_loan_model->get_client_data($penalty_data['client_loan_id']);
+        $data = [
+            'transaction_date' => date("d-m-Y"),
+            'description' => "AUTOMATIC PENALTY APPLIED TO LOAN",
+            'ref_no' => $client_loan['loan_no'],
+            'ref_id' => $penalty_data['client_loan_id'],
+            'status_id' => 1,
+            'journal_type_id' => 5,
+            // 'unique_id' => $unique_id
+        ];
+        //then we post this to the journal transaction
+        $journal_transaction_id = $this->journal_transaction_model->set($data);
+        unset($data);
+
+        $data = [
+            [
+                'credit_amount' => $penalty_data['penalty_value'],
+                'transaction_date' => date("d-m-Y"),
+                'reference_no' =>  $client_loan['loan_no'],
+                'reference_id' => $penalty_data['client_loan_id'],
+                //'member_id' => $membere_id,
+                'reference_key' => $client_loan['loan_no'],
+                'narrative' => "AUTOMATIC PENALTY APPLIED TO LOAN",
+                'account_id' => 4, // Penalty Income Account
+                'status_id' => 1,
+                //'unique_id' => $unique_id
+            ],
+            [
+                'debit_amount' => $penalty_data['penalty_value'],
+                'transaction_date' => date("d-m-Y"),
+                'reference_no' =>  $client_loan['loan_no'],
+                'reference_id' => $penalty_data['client_loan_id'],
+                //'member_id' => $membere_id,
+                'reference_key' => $client_loan['loan_no'],
+                'narrative' => "AUTOMATIC PENALTY APPLIED TO LOAN",
+                'account_id' => 136, // Penalty Receivable asset account
+                'status_id' => 1,
+                //'unique_id' => $unique_id
+            ]
+        ];
+        $this->journal_transaction_line_model->set($journal_transaction_id, $data);
+    }
 }

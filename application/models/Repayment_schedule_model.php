@@ -129,6 +129,28 @@ class Repayment_schedule_model extends CI_Model
         }
     }
 
+    public function get_loan_schedule_data($filter = FALSE)
+    {
+        $this->db->select("id, demanded_penalty, client_loan_id");
+        $query = $this->db->from('repayment_schedule');
+        $this->db->where('repayment_schedule.status_id=1');
+
+        if ($filter === FALSE) {
+            $query = $this->db->get();
+            return $query->result_array();
+        } else {
+            if (is_numeric($filter)) {
+                $this->db->where('repayment_schedule.client_loan_id=' . $filter);
+                $query = $this->db->get();
+                return $query->result_array();
+            } else {
+                $this->db->where($filter);
+                $query = $this->db->get();
+                return $query->result_array();
+            }
+        }
+    }
+
     public function get_loan_ledger_card($filter = FALSE)
     {
         $amount_paid_per_installment = " (SELECT repayment_schedule_id, SUM(ifnull(paid_interest, 0)+ifnull(paid_principal,0)+ifnull(paid_penalty,0)) amount_paid FROM fms_loan_installment_payment WHERE status_id=1 GROUP BY repayment_schedule_id) ";
@@ -839,6 +861,19 @@ class Repayment_schedule_model extends CI_Model
         $this->db->having("due_days > grace_period_after");
         $query = $this->db->get();
         // print_r($this->db->last_query());die();
+        return $query->result_array();
+    }
+
+    public function get_loans_with_late_payments()
+    {
+        $loans_with_last_repayment_date = "(SELECT * FROM fms_repayment_schedule
+                WHERE id in ( SELECT MIN(id) from fms_repayment_schedule WHERE status_id=1 AND payment_status IN(2,4) AND DATE(repayment_date) < CURDATE() GROUP BY client_loan_id ))";
+        $this->db->select('*');
+        $this->db->from("$loans_with_last_repayment_date loans_with_last_repayment_date");
+        $this->db->join("$this->max_state_id loan_state", "loan_state.client_loan_id=loans_with_last_repayment_date.client_loan_id", "LEFT");
+        $this->db->where("loan_state.state_id IN(7,11,12,13,14,20)");
+        $query = $this->db->get();
+        //print_r($this->db->last_query());  die;
         return $query->result_array();
     }
 

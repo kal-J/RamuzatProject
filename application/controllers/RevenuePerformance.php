@@ -50,6 +50,8 @@ class RevenuePerformance extends CI_Controller
         $this->data['fiscal_year'] = $this->Dashboard_model->get_current_fiscal_year($_SESSION['organisation_id'], 1);
         $this->data['revenue_data'] = $this->Revenue_performance_model->get_category_sums_data(4);
 
+        //echo json_encode($this->data['revenue_data']); die;
+
         //$this->data['payment_modes'] = $this->miscellaneous_model->get_payment_mode('id <> 3');
 
         $this->data['title'] = $this->data['sub_title'] = "Revenue Performance";

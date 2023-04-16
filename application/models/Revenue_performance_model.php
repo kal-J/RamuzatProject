@@ -164,7 +164,7 @@ class Revenue_performance_model extends CI_Model
 
         foreach ($data as $val) {
 
-          if ($val['id'] != 6 && $val['id'] != 7) { // Not Accrued Interest account & Not receivable interest account
+          if ($val['id'] != 7) { // Not receivable interest account
             if ($category == 5) {
               $income =  abs($val['debit_sum'] - $val['credit_sum']);
             } else {
@@ -173,9 +173,9 @@ class Revenue_performance_model extends CI_Model
             $total += $income;
             array_push($response, ["name" => $val['account_name'], "income" => $income]);
           } elseif ($val['id'] == 7) { // Receivable Interest on loans
-            $income = abs($val['credit_sum']); // Actual interest income on loans is the credit sum on the receivable
-            $total += $income;
-            array_push($response, ["name" => "Interest on Loans", "income" => $income]);
+            // $income = abs($val['credit_sum']); // Actual interest income on loans is the credit sum on the receivable
+            // $total += $income;
+            // array_push($response, ["name" => "Interest on Loans", "income" => $income]);
           }
         }
       }
@@ -235,7 +235,7 @@ class Revenue_performance_model extends CI_Model
           $data = $this->get_accounts_sums("ac.sub_category_id=$sub_category_id", $first_day_of_month, $today);
 
           foreach ($data as $val) {
-            if ($val['id'] != 6 && $val['id'] != 7) { // Not Accrued Interest account & Not receivable interest account
+            if ($val['id'] != 7) { //  Not receivable interest account
               if ($category == 5) {
                 $income =  abs($val['debit_sum'] - $val['credit_sum']);
               } else {
@@ -244,9 +244,9 @@ class Revenue_performance_model extends CI_Model
               $total += $income;
               array_push($monthly_data, ["month" => $month, "name" => $val['account_name'], "income" => $income]);
             } elseif ($val['id'] == 7) { // Receivable Interest on loans
-              $income = abs($val['credit_sum']); // Actual interest income on loans is the credit sum on the receivable
-              $total += $income;
-              array_push($monthly_data, ["month" => $month, "name" => "Interest on Loans", "income" => $income]);
+              // $income = abs($val['credit_sum']); // Actual interest income on loans is the credit sum on the receivable
+              // $total += $income;
+              // array_push($monthly_data, ["month" => $month, "name" => "Interest on Loans", "income" => $income]);
             }
           }
         }
@@ -276,7 +276,7 @@ class Revenue_performance_model extends CI_Model
           $data = $this->get_accounts_sums("ac.sub_category_id=$sub_category_id", $first_day_of_month, $today);
 
           foreach ($data as $val) {
-            if (($val['id']) != 6 && $val['id'] != 7) { // Not Accrued Interest account & Not receivable interest account
+            if ( $val['id'] != 7) { // Not receivable interest account
               if ($category == 5) {
                 $income =  abs($val['debit_sum'] - $val['credit_sum']);
               } else {
@@ -285,9 +285,9 @@ class Revenue_performance_model extends CI_Model
               $total += $income;
               array_push($monthly_data, ["month" => $month, "name" => $val['account_name'], "income" => $income]);
             } elseif ($val['id'] == 7) { // Receivable Interest on loans
-              $income = abs($val['credit_sum']); // Actual interest income on loans is the credit sum on the receivable
-              $total += $income;
-              array_push($monthly_data, ["month" => $month, "name" => "Interest on Loans", "income" => $income]);
+              // $income = abs($val['credit_sum']); // Actual interest income on loans is the credit sum on the receivable
+              // $total += $income;
+              // array_push($monthly_data, ["month" => $month, "name" => "Interest on Loans", "income" => $income]);
             }
           }
         }

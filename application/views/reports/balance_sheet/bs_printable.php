@@ -53,21 +53,76 @@
                         </td>
                     </tr>
                     <!-- ko foreach: liab_equity -->
+
+
                     <!-- ko if: ((parseFloat(amount)!==parseInt(0)) &&(parseFloat(cat)===parseInt(1))) -->
-                    <tr style="background-color: #fafafc;">
-                        <td style="padding-left:40px; font-weight:bold;" data-bind="text: '['+account_code+'] '+account_name"></td>
-                        <td>
-                            <h4 class="no-margins"><span style="font-weight:bold;" data-bind="text:curr_format(round(amount,2))">0</span></h4>
-                        </td>
-                    </tr>
+
+                        
+
+                        <!-- ko  if: ( parseInt(id) === 19 ) -->
+                            <tr style="background-color: #fafafc;">
+                                <td style="padding-left:40px; font-weight:bold;" data-bind="text: '['+account_code+'] '+account_name"></td>
+                                <td>
+                                    <h4 class="no-margins"><span style="font-weight:bold;" data-bind="text: curr_format(round(amount + $root.print_sums().net_profit_loss,2))">0</span></h4>
+                                </td>
+                            </tr>
+                           
+                        <!-- /ko -->
+
+                        <!-- ko if: ( parseInt(id) != 19 ) -->
+                        <tr style="background-color: #fafafc;">
+                            <td style="padding-left:40px; font-weight:bold;" data-bind="text: '['+account_code+'] '+account_name"></td>
+                            <td>
+                                <h4 class="no-margins"><span style="font-weight:bold;" data-bind="text:curr_format(round(amount,2))">0</span></h4>
+                            </td>
+                        </tr>
+                        <!-- /ko -->
+
                     <!-- /ko -->
+
+
                     <!-- ko if: ((parseFloat(amount)!==parseInt(0)) &&(parseFloat(cat)===parseInt(0))) -->
+
+
+                    <!-- ko if: ( parseInt(id) === 39 ) -->
+                        <tr>
+                            
+                            <td style="padding-left:80px;"><a data-bind="attr: {href:'<?php echo site_url("accounts/view/"); ?>'+id}, text:'['+account_code+'] '+'Profit/Loss B/F'"></a></td>
+                            <td>
+                                <h4 class="no-margins"><span class="text-success" data-bind="text:curr_format(round(amount,2))">0</span></h4>
+                            </td>
+                            
+                        </tr>
+
+                        <!-- ko with: $parent.print_sums -->
+                        <tr >
+                            
+                            <td style="padding-left:80px;"><a data-bind="attr: {href:'#'}, text:'['+ '3-2-1' +'] '+'Profit/Loss'"></a></td>
+                            <td data-bind="visible: parseFloat(net_profit_loss)>0">
+                                <h4 class="no-margins"><span class="text-success" data-bind="text:curr_format(round(net_profit_loss,2))">0</span></h4>
+                            </td>
+                            <td data-bind="visible: parseFloat(net_profit_loss)<0">
+                                <h4 class="no-margins"><span class="text-success" data-bind="text: '(' + curr_format(round(net_profit_loss * -1,2)) + ')'">0</span></h4>
+                            </td>
+                        </tr>
+                    <!-- /ko -->
+                    
+                    <!-- /ko -->
+
+                    <!-- ko if: ( parseInt(id) != 39 ) -->
                     <tr>
+
+                        
                         <td style="padding-left:80px;"><a data-bind="attr: {href:'<?php echo site_url("accounts/view/"); ?>'+id}, text:'['+account_code+'] '+account_name"></a></td>
                         <td>
                             <h4 class="no-margins"><span class="text-success" data-bind="text:curr_format(round(amount,2))">0</span></h4>
                         </td>
+                        
+
                     </tr>
+                    <!-- /ko -->
+
+
                     <!-- /ko -->
                     <!-- /ko -->
                     <tr>

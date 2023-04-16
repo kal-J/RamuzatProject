@@ -2206,9 +2206,9 @@ class Loan_installment_payment extends CI_Controller
           'transaction_date' => $this->input->post('payment_date'),
           'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
-          $debit_or_credit2 => $penalty_amount,
+          'credit_amount' => $penalty_amount,
           'narrative' => strtoupper("Loan penalty payment on " . $this->input->post('payment_date')),
-          'account_id' => $loan_product_details['penalty_income_account_id'],
+          'account_id' => 136,//  Penalty receivable,
           'status_id' => 1,
           'unique_id' => $unique_id
         ];
@@ -2218,7 +2218,7 @@ class Loan_installment_payment extends CI_Controller
           'transaction_date' => $this->input->post('payment_date'),
           'member_id' => $this->input->post('member_id'),
           'reference_key' => $this->input->post('loan_ref_no'),
-          $debit_or_credit3 => $penalty_amount,
+          'debit_amount' => $penalty_amount,
           'narrative' => strtoupper("Loan penalty payment on " . $this->input->post('payment_date')),
           'account_id' => $linked_account_id,
           'status_id' => 1,
