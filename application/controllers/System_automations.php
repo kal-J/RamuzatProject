@@ -2213,16 +2213,7 @@ Thank you for saving with us. Contact " . $contact_number;
                     $penalty_rate = 1;
                 }
 
-                if ($due_installments_data['penalty_rate_charged_per'] == 4) { // One time penalty 
-                    $number_of_late_period = 1;
-                } elseif ($due_installments_data['penalty_rate_charged_per'] == 3) {
-                    $number_of_late_period = intdiv($number_of_late_days, 30);
-                } elseif ($due_installments_data['penalty_rate_charged_per'] == 2) {
-                    $number_of_late_period = intdiv($number_of_late_days, 7);
-                } else {
-                    $number_of_late_period = 1; // $number_of_late_days; set to 1 since penalies will be computed daily.
-                }
-
+                $number_of_late_period = 1; // $number_of_late_days; set to 1 since penalies will be computed daily.
 
                 if (intval($penalty_calculation_method_id) == 2) { // Fixed amount Penalty
 
