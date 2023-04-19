@@ -40,6 +40,12 @@ class System_automations extends CI_Controller
         $this->load->model("automated_fees_model");
         $this->load->model("organisation_model");
         $this->load->library("session");
+
+        ini_set('memory_limit', '200M');
+        ini_set('upload_max_filesize', '200M');
+        ini_set('post_max_size', '200M');
+        ini_set('max_input_time', 3600);
+        ini_set('max_execution_time', 3600);
     }
 
     public function sentepaytest($value = '')
@@ -2157,32 +2163,28 @@ Thank you for saving with us. Contact " . $contact_number;
 
         $this->db->trans_begin();
 
-        foreach($in_arrear_loans as $key=>$loan) {
+        foreach ($in_arrear_loans as $key => $loan) {
             $loan_schedules_penalty_data = $this->loan_penalty_calcution($loan['client_loan_id'], $days);
-            foreach($loan_schedules_penalty_data as $key=>$penalty_data) {
-                if(isset($penalty_data['penalty_value']) && ($penalty_data['penalty_value'] > 0)) {
+            foreach ($loan_schedules_penalty_data as $key => $penalty_data) {
+                if (isset($penalty_data['penalty_value']) && ($penalty_data['penalty_value'] > 0)) {
                     //echo json_encode($penalty_data); die;
                     $this->do_journal_transaction_daily_penalty($penalty_data);
                 }
             }
-            
-            
         }
-        
+
 
         if ($this->db->trans_status()) {
             $this->db->trans_commit();
             echo json_encode([
                 'message' => 'Done recording penalties'
             ]);
-          } else {
+        } else {
             $this->db->trans_rollback();
             echo json_encode([
                 'message' => 'Failed recording penalties'
             ]);
-          }
-
-        
+        }
     }
 
     private function loan_penalty_calcution($client_loan_id, $days)
@@ -2241,7 +2243,6 @@ Thank you for saving with us. Contact " . $contact_number;
         }
         //echo json_encode($data); die;
         return $data['data'];
-        
     }
 
     public function do_journal_transaction_daily_penalty($penalty_data)
