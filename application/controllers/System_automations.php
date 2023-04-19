@@ -2151,14 +2151,14 @@ Thank you for saving with us. Contact " . $contact_number;
         echo json_encode($data);
     }
 
-    public function daily_penalty_calculations()
+    public function daily_penalty_calculations($days = 1)
     {
         $in_arrear_loans = $this->repayment_schedule_model->get_loans_with_late_payments();
 
         $this->db->trans_begin();
 
         foreach($in_arrear_loans as $key=>$loan) {
-            $loan_schedules_penalty_data = $this->loan_penalty_calcution($loan['client_loan_id']);
+            $loan_schedules_penalty_data = $this->loan_penalty_calcution($loan['client_loan_id'], $days);
             foreach($loan_schedules_penalty_data as $key=>$penalty_data) {
                 if(isset($penalty_data['penalty_value']) && ($penalty_data['penalty_value'] > 0)) {
                     //echo json_encode($penalty_data); die;
@@ -2185,7 +2185,7 @@ Thank you for saving with us. Contact " . $contact_number;
         
     }
 
-    private function loan_penalty_calcution($client_loan_id)
+    private function loan_penalty_calcution($client_loan_id, $days)
     {
         $data['data'] = $this->repayment_schedule_model->get_loan_schedule_data(" client_loan_id=$client_loan_id ");
 
@@ -2213,7 +2213,7 @@ Thank you for saving with us. Contact " . $contact_number;
                     $penalty_rate = 1;
                 }
 
-                $number_of_late_period = 1; // $number_of_late_days; set to 1 since penalies will be computed daily.
+                $number_of_late_period = $days; // $number_of_late_days; defaults to 1 since penalies will be computed daily.
 
                 if (intval($penalty_calculation_method_id) == 2) { // Fixed amount Penalty
 
