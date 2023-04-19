@@ -2157,7 +2157,7 @@ Thank you for saving with us. Contact " . $contact_number;
         echo json_encode($data);
     }
 
-    public function daily_penalty_calculations($days = 1)
+    public function daily_penalty_calculations($days = 1, $narrative = "AUTOMATIC PENALTY APPLIED TO LOAN")
     {
         $in_arrear_loans = $this->repayment_schedule_model->get_loans_with_late_payments();
 
@@ -2168,7 +2168,7 @@ Thank you for saving with us. Contact " . $contact_number;
             foreach ($loan_schedules_penalty_data as $key => $penalty_data) {
                 if (isset($penalty_data['penalty_value']) && ($penalty_data['penalty_value'] > 0)) {
                     //echo json_encode($penalty_data); die;
-                    $this->do_journal_transaction_daily_penalty($penalty_data);
+                    $this->do_journal_transaction_daily_penalty($penalty_data, $narrative);
                 }
             }
         }
@@ -2245,7 +2245,7 @@ Thank you for saving with us. Contact " . $contact_number;
         return $data['data'];
     }
 
-    public function do_journal_transaction_daily_penalty($penalty_data)
+    public function do_journal_transaction_daily_penalty($penalty_data, $narrative)
     {
         $this->load->model('journal_transaction_model');
         $this->load->model('journal_transaction_line_model');
@@ -2253,7 +2253,7 @@ Thank you for saving with us. Contact " . $contact_number;
         $client_loan = $this->client_loan_model->get_client_data($penalty_data['client_loan_id']);
         $data = [
             'transaction_date' => date("d-m-Y"),
-            'description' => "AUTOMATIC PENALTY APPLIED TO LOAN",
+            'description' => $narrative,
             'ref_no' => $client_loan['loan_no'],
             'ref_id' => $penalty_data['client_loan_id'],
             'status_id' => 1,
@@ -2272,7 +2272,7 @@ Thank you for saving with us. Contact " . $contact_number;
                 'reference_id' => $penalty_data['client_loan_id'],
                 //'member_id' => $membere_id,
                 'reference_key' => $client_loan['loan_no'],
-                'narrative' => "AUTOMATIC PENALTY APPLIED TO LOAN",
+                'narrative' => $narrative,
                 'account_id' => 4, // Penalty Income Account
                 'status_id' => 1,
                 //'unique_id' => $unique_id
@@ -2284,7 +2284,7 @@ Thank you for saving with us. Contact " . $contact_number;
                 'reference_id' => $penalty_data['client_loan_id'],
                 //'member_id' => $membere_id,
                 'reference_key' => $client_loan['loan_no'],
-                'narrative' => "AUTOMATIC PENALTY APPLIED TO LOAN",
+                'narrative' => $narrative,
                 'account_id' => 136, // Penalty Receivable asset account
                 'status_id' => 1,
                 //'unique_id' => $unique_id
